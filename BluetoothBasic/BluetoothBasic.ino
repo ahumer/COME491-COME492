@@ -1,5 +1,5 @@
 /*
- * Controlling led via BlueTooth by using a mobile application coded with MIT App Inventor.
+ * Controlling led via BlueTooth by using a mobile app. coded with MIT App Inventor.
  */
 #define LED 13
 char sendedData = 0;
