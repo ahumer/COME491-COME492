@@ -1,3 +1,7 @@
+/*
+ * Detection of red, green and blue color
+ */
+
 int redPin = 12;
 int greenPin = 11;
 int bluePin = 10;
