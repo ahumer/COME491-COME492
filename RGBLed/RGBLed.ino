@@ -30,7 +30,6 @@ void loop() {
   }
 
   myColor=Serial.readString();
-  Serial.println(myColor+"/first");
   
 
   if(myColor=="R")
@@ -38,7 +37,7 @@ void loop() {
     digitalWrite(redPin,LOW);
     digitalWrite(greenPin,HIGH);
     digitalWrite(bluePin,HIGH);
-    Serial.println(myColor+"/second");
+    Serial.println(myColor);
     
   }
 
@@ -55,6 +54,15 @@ void loop() {
     digitalWrite(redPin,HIGH);
     digitalWrite(greenPin,HIGH);
     digitalWrite(bluePin,LOW);
+    Serial.println(myColor);
+  }
+
+//Off the led
+  if(myColor=="O")
+  {
+    digitalWrite(redPin,HIGH);
+    digitalWrite(greenPin,HIGH);
+    digitalWrite(bluePin,HIGH);
     Serial.println(myColor);
   }
 
