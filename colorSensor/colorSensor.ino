@@ -1,5 +1,5 @@
 /*
- * Detection of red, green and blue color
+ * Detection of red, green and blue color and light the led in detected color.
  */
 
 int redPin = 12;
