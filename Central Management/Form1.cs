@@ -28,9 +28,7 @@ namespace Central_Management
                 MessageBox.Show("Enter the port name!");
             else
             {
-                serialPort1.PortName = PortTB.Text;
-                serialPort1.BaudRate = 9600;
-                serialPort1.Open();
+                SerialConnection();
             }
 
             if (serialPort1.IsOpen == true)
@@ -41,16 +39,49 @@ namespace Central_Management
         private void CLOSEbtn_Click(object sender, EventArgs e)
         {
             serialPort1.Close();
+            if (serialPort1.IsOpen == false)
+                MessageBox.Show("Connection closed!");
         }
 
         private void ONbtn_Click(object sender, EventArgs e)
         {
-            serialPort1.Write("1");
+            try
+            {
+                serialPort1.Write("1");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+            
         }
 
         private void OFFbtn_Click(object sender, EventArgs e)
         {
-            serialPort1.Write("0");
+            try
+            {
+                serialPort1.Write("0");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+        }
+
+        private void SerialConnection ()
+        {
+            try
+            {
+                serialPort1.PortName = PortTB.Text;
+                serialPort1.BaudRate = 9600;
+                serialPort1.Open();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
