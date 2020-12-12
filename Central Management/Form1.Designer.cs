@@ -38,6 +38,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.PortTB = new System.Windows.Forms.TextBox();
+            this.StateLBL = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -100,6 +101,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.StateLBL);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.PortTB);
             this.groupBox2.Controls.Add(this.OPENbtn);
@@ -132,6 +134,15 @@
             this.PortTB.Size = new System.Drawing.Size(76, 20);
             this.PortTB.TabIndex = 4;
             // 
+            // StateLBL
+            // 
+            this.StateLBL.AutoSize = true;
+            this.StateLBL.Location = new System.Drawing.Point(161, 37);
+            this.StateLBL.Name = "StateLBL";
+            this.StateLBL.Size = new System.Drawing.Size(78, 13);
+            this.StateLBL.TabIndex = 6;
+            this.StateLBL.Text = "Not connected";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,6 +170,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox PortTB;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label StateLBL;
     }
 }
 

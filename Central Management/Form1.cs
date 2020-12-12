@@ -28,9 +28,12 @@ namespace Central_Management
             {
                 if(SerialConnection()==true)
                 {
-                    MessageBox.Show("Connected!");
                     OPENbtn.Enabled = false;
                     CLOSEbtn.Enabled = true;
+                    StateLBL.Text = "";
+                    MessageBox.Show("Connection established!");
+                    StateLBL.Text = "Connected";
+
                 }
                 else
                 {
@@ -46,9 +49,12 @@ namespace Central_Management
             serialPort1.Close();
             if (serialPort1.IsOpen == false)
             {
-                MessageBox.Show("Connection closed!");
                 OPENbtn.Enabled = true;
                 CLOSEbtn.Enabled = false;
+                StateLBL.Text = "";
+                MessageBox.Show("Connection closed!");
+                StateLBL.Text = "Not connected";
+
             }
                 
         }
