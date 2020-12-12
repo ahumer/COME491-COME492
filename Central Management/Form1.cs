@@ -26,19 +26,31 @@ namespace Central_Management
                 MessageBox.Show("Enter the port name!");
             else
             {
-                SerialConnection();
+                if(SerialConnection()==true)
+                {
+                    MessageBox.Show("Connected!");
+                    OPENbtn.Enabled = false;
+                    CLOSEbtn.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("Can not connect!");
+                }
+                    
+
             }
-
-            if (serialPort1.IsOpen == true)
-                MessageBox.Show("Connected to COME4 port!");
-
         }
 
         private void CLOSEbtn_Click(object sender, EventArgs e)
         {
             serialPort1.Close();
             if (serialPort1.IsOpen == false)
+            {
                 MessageBox.Show("Connection closed!");
+                OPENbtn.Enabled = true;
+                CLOSEbtn.Enabled = false;
+            }
+                
         }
 
         private void ONbtn_Click(object sender, EventArgs e)
@@ -46,6 +58,8 @@ namespace Central_Management
             try
             {
                 serialPort1.Write("1");
+                ONbtn.Enabled = false;
+                OFFbtn.Enabled = true;
             }
             catch(Exception ex)
             {
@@ -60,6 +74,8 @@ namespace Central_Management
             try
             {
                 serialPort1.Write("0");
+                ONbtn.Enabled = true;
+                OFFbtn.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -68,18 +84,22 @@ namespace Central_Management
             
         }
 
-        private void SerialConnection ()
+        private bool SerialConnection ()
         {
+            bool state = false;
             try
             {
                 serialPort1.PortName = PortTB.Text;
                 serialPort1.BaudRate = 9600;
                 serialPort1.Open();
+                state = true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+
+            return state;
         }
     }
 }

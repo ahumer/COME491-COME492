@@ -36,18 +36,17 @@
             this.CLOSEbtn = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.PortTB = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.PortTB = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // ONbtn
             // 
-            this.ONbtn.Location = new System.Drawing.Point(14, 41);
-            this.ONbtn.Margin = new System.Windows.Forms.Padding(4);
+            this.ONbtn.Location = new System.Drawing.Point(10, 33);
             this.ONbtn.Name = "ONbtn";
-            this.ONbtn.Size = new System.Drawing.Size(100, 28);
+            this.ONbtn.Size = new System.Drawing.Size(75, 23);
             this.ONbtn.TabIndex = 0;
             this.ONbtn.Text = "ON";
             this.ONbtn.UseVisualStyleBackColor = true;
@@ -55,10 +54,10 @@
             // 
             // OFFbtn
             // 
-            this.OFFbtn.Location = new System.Drawing.Point(236, 41);
-            this.OFFbtn.Margin = new System.Windows.Forms.Padding(4);
+            this.OFFbtn.Enabled = false;
+            this.OFFbtn.Location = new System.Drawing.Point(175, 33);
             this.OFFbtn.Name = "OFFbtn";
-            this.OFFbtn.Size = new System.Drawing.Size(100, 28);
+            this.OFFbtn.Size = new System.Drawing.Size(75, 23);
             this.OFFbtn.TabIndex = 1;
             this.OFFbtn.Text = "OFF";
             this.OFFbtn.UseVisualStyleBackColor = true;
@@ -66,10 +65,9 @@
             // 
             // OPENbtn
             // 
-            this.OPENbtn.Location = new System.Drawing.Point(14, 150);
-            this.OPENbtn.Margin = new System.Windows.Forms.Padding(4);
+            this.OPENbtn.Location = new System.Drawing.Point(10, 122);
             this.OPENbtn.Name = "OPENbtn";
-            this.OPENbtn.Size = new System.Drawing.Size(100, 28);
+            this.OPENbtn.Size = new System.Drawing.Size(75, 23);
             this.OPENbtn.TabIndex = 2;
             this.OPENbtn.Text = "Open";
             this.OPENbtn.UseVisualStyleBackColor = true;
@@ -77,10 +75,10 @@
             // 
             // CLOSEbtn
             // 
-            this.CLOSEbtn.Location = new System.Drawing.Point(236, 150);
-            this.CLOSEbtn.Margin = new System.Windows.Forms.Padding(4);
+            this.CLOSEbtn.Enabled = false;
+            this.CLOSEbtn.Location = new System.Drawing.Point(175, 122);
             this.CLOSEbtn.Name = "CLOSEbtn";
-            this.CLOSEbtn.Size = new System.Drawing.Size(100, 28);
+            this.CLOSEbtn.Size = new System.Drawing.Size(75, 23);
             this.CLOSEbtn.TabIndex = 3;
             this.CLOSEbtn.Text = "Close";
             this.CLOSEbtn.UseVisualStyleBackColor = true;
@@ -92,8 +90,10 @@
             this.groupBox1.Controls.Add(this.OFFbtn);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(349, 100);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Size = new System.Drawing.Size(262, 81);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "LED CONTROL";
@@ -105,37 +105,40 @@
             this.groupBox2.Controls.Add(this.OPENbtn);
             this.groupBox2.Controls.Add(this.CLOSEbtn);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(0, 106);
+            this.groupBox2.Location = new System.Drawing.Point(0, 86);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(349, 212);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Size = new System.Drawing.Size(262, 172);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "SERIAL CONTROL";
             // 
-            // PortTB
-            // 
-            this.PortTB.Location = new System.Drawing.Point(14, 86);
-            this.PortTB.Name = "PortTB";
-            this.PortTB.Size = new System.Drawing.Size(100, 22);
-            this.PortTB.TabIndex = 4;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 45);
+            this.label1.Location = new System.Drawing.Point(8, 37);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 17);
+            this.label1.Size = new System.Drawing.Size(106, 13);
             this.label1.TabIndex = 5;
             this.label1.Text = "Enter the port name :";
             // 
+            // PortTB
+            // 
+            this.PortTB.Location = new System.Drawing.Point(10, 70);
+            this.PortTB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.PortTB.Name = "PortTB";
+            this.PortTB.Size = new System.Drawing.Size(76, 20);
+            this.PortTB.TabIndex = 4;
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(349, 318);
+            this.ClientSize = new System.Drawing.Size(262, 258);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);
