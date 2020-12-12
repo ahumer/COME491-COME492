@@ -36,6 +36,8 @@
             this.CLOSEbtn = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.PortTB = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -43,7 +45,7 @@
             // ONbtn
             // 
             this.ONbtn.Location = new System.Drawing.Point(14, 41);
-            this.ONbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ONbtn.Margin = new System.Windows.Forms.Padding(4);
             this.ONbtn.Name = "ONbtn";
             this.ONbtn.Size = new System.Drawing.Size(100, 28);
             this.ONbtn.TabIndex = 0;
@@ -54,7 +56,7 @@
             // OFFbtn
             // 
             this.OFFbtn.Location = new System.Drawing.Point(236, 41);
-            this.OFFbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.OFFbtn.Margin = new System.Windows.Forms.Padding(4);
             this.OFFbtn.Name = "OFFbtn";
             this.OFFbtn.Size = new System.Drawing.Size(100, 28);
             this.OFFbtn.TabIndex = 1;
@@ -64,8 +66,8 @@
             // 
             // OPENbtn
             // 
-            this.OPENbtn.Location = new System.Drawing.Point(14, 55);
-            this.OPENbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.OPENbtn.Location = new System.Drawing.Point(14, 150);
+            this.OPENbtn.Margin = new System.Windows.Forms.Padding(4);
             this.OPENbtn.Name = "OPENbtn";
             this.OPENbtn.Size = new System.Drawing.Size(100, 28);
             this.OPENbtn.TabIndex = 2;
@@ -75,8 +77,8 @@
             // 
             // CLOSEbtn
             // 
-            this.CLOSEbtn.Location = new System.Drawing.Point(236, 55);
-            this.CLOSEbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.CLOSEbtn.Location = new System.Drawing.Point(236, 150);
+            this.CLOSEbtn.Margin = new System.Windows.Forms.Padding(4);
             this.CLOSEbtn.Name = "CLOSEbtn";
             this.CLOSEbtn.Size = new System.Drawing.Size(100, 28);
             this.CLOSEbtn.TabIndex = 3;
@@ -98,28 +100,47 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.PortTB);
             this.groupBox2.Controls.Add(this.OPENbtn);
             this.groupBox2.Controls.Add(this.CLOSEbtn);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(0, 104);
+            this.groupBox2.Location = new System.Drawing.Point(0, 106);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(349, 114);
+            this.groupBox2.Size = new System.Drawing.Size(349, 212);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "SERIAL CONTROL";
+            // 
+            // PortTB
+            // 
+            this.PortTB.Location = new System.Drawing.Point(14, 86);
+            this.PortTB.Name = "PortTB";
+            this.PortTB.Size = new System.Drawing.Size(100, 22);
+            this.PortTB.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 45);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(142, 17);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Enter the port name :";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(349, 218);
+            this.ClientSize = new System.Drawing.Size(349, 318);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -133,6 +154,8 @@
         private System.Windows.Forms.Button CLOSEbtn;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox PortTB;
+        private System.Windows.Forms.Label label1;
     }
 }
 

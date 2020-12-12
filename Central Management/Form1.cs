@@ -24,7 +24,18 @@ namespace Central_Management
 
         private void OPENbtn_Click(object sender, EventArgs e)
         {
-            serialPort1.Open();
+            if (PortTB.Text == "")
+                MessageBox.Show("Enter the port name!");
+            else
+            {
+                serialPort1.PortName = PortTB.Text;
+                serialPort1.BaudRate = 9600;
+                serialPort1.Open();
+            }
+
+            if (serialPort1.IsOpen == true)
+                MessageBox.Show("Connected to COME4 port!");
+
         }
 
         private void CLOSEbtn_Click(object sender, EventArgs e)
