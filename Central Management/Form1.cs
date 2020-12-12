@@ -17,8 +17,6 @@ namespace Central_Management
         public Form1()
         {
             InitializeComponent();
-            serialPort1.PortName = "COM4";
-            serialPort1.BaudRate = 9600;
 
         }
 
