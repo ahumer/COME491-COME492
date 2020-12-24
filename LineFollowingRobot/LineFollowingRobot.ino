@@ -29,14 +29,29 @@ void loop() {
     moveForward();
   }
 
+   if(digitalRead(LS) == 1 && digitalRead(MS) == 1 && digitalRead(RS) == 1){  // When three of them see white, stop.
+    stopping();
+  }
+  
   if(digitalRead(LS) == 1 && digitalRead(MS) == 1 && digitalRead(RS) == 0){  // When the right sensor see black, turn right
     turnRight();
   }
 
+  if(digitalRead(LS) == 1 && digitalRead(MS) == 0 && digitalRead(RS) == 0){  // When the right sensor see black, turn right
+    turnRight();
+  }
+
+  if(digitalRead(LS) == 0 && digitalRead(MS) == 0 && digitalRead(RS) == 1){  // When the left sensor see black, turn left.
+    turnLeft();
+  }
+  
   if(digitalRead(LS) == 0 && digitalRead(MS) == 1 && digitalRead(RS) == 1){  // When the left sensor see black, turn left.
     turnLeft();
   }
   if(digitalRead(LS) == 0 && digitalRead(MS) == 0 && digitalRead(RS) == 0){  // When three of them see black, stop.
+    stopping();
+  }
+  if(digitalRead(LS) == 1 && digitalRead(MS) == 1 && digitalRead(RS) == 1){  // When three of them see white, stop.
     stopping();
   }
 
