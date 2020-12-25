@@ -13,8 +13,8 @@
 #define enR 10 //ENA
 #define enL 11 //ENB
 
-#define FORWARD_POWER 120
-#define TURNING_POWER 90
+#define FORWARD_POWER 140
+#define TURNING_POWER 110
 
 void setup() {
  
