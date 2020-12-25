@@ -101,7 +101,7 @@ void turnRight(){
 
   digitalWrite(LM1, HIGH); 
   digitalWrite(LM2, LOW); 
-  analogWrite(enL, TURNING_POWER); 
+  analogWrite(enL, TURNING_POWER);
      
 }
 
@@ -109,11 +109,12 @@ void turnLeft(){
 
   digitalWrite(RM1, HIGH);
   digitalWrite(RM2, LOW);
-  analogWrite(enR, 0);
-
-  digitalWrite(RM1, HIGH);
-  digitalWrite(RM2, LOW);
   analogWrite(enR, TURNING_POWER);
+
+  digitalWrite(LM1, HIGH);
+  digitalWrite(LM2, LOW);
+  analogWrite(enL,0 );
+
   
 }
 
