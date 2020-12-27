@@ -1,0 +1,5 @@
+beyaz-rst-9
+yeşil- miso-12
+sarı-mosi-11
+mor-sck-13
+mavi-sda(ss)-10
