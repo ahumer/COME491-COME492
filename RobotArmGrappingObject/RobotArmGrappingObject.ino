@@ -8,7 +8,7 @@ Servo servo04;
 Servo servo05;
 Servo servo06;
 
-char dataIn = 0;
+short dataIn = 0;
 int servo1Pos, servo2Pos, servo3Pos, servo4Pos, servo5Pos, servo6Pos; // current position
 int servo1PPos, servo2PPos, servo3PPos, servo4PPos, servo5PPos, servo6PPos; // previous position
 
@@ -82,21 +82,37 @@ void loop()
   {
     dataIn = Serial.read();
     Serial.println(char(dataIn));
-    if (dataIn == '1')
+    
+    if (dataIn == '251')
     {
       Serial.println("ahere");
-      Motion1();
+      MotionCarry();
     }
-  
-    if (dataIn == '0')
+
+        if (dataIn == '252')
     {
       Serial.println("bhere");
+      MotionRed();
+      InitialPosition();
+    }
+
+        if (dataIn == '253')
+    {
+      Serial.println("bhere");
+      MotionGreen();
+      InitialPosition();
+    }
+
+        if (dataIn == '254')
+    {
+      Serial.println("bhere");
+      MotionBlue();
       InitialPosition();
     }
   }
 }
 
-void Motion1 ()
+void MotionCarry ()
 {
   Serial.println("aahere");
   servo2PPos=servoMotion(100, 20, 2);
@@ -123,6 +139,15 @@ void InitialPosition()
   servo3PPos=servoMotion(115, 20, 3);
   servo4PPos=servoMotion(60, 20, 4);
   servo6PPos=servoMotion(50, 20, 6);
+}
+
+void MotionRed(){
+}
+
+void MotionGreen(){
+}
+
+void MotionBlue(){
 }
 
 int servoMotion(int posS, int dlyTime, int servoNbr )
