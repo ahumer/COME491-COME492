@@ -36,15 +36,16 @@
             this.CLOSEbtn = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.StateLBL = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.PortTB = new System.Windows.Forms.TextBox();
-            this.StateLBL = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // ONbtn
             // 
+            this.ONbtn.Enabled = false;
             this.ONbtn.Location = new System.Drawing.Point(10, 33);
             this.ONbtn.Name = "ONbtn";
             this.ONbtn.Size = new System.Drawing.Size(75, 23);
@@ -56,7 +57,7 @@
             // OFFbtn
             // 
             this.OFFbtn.Enabled = false;
-            this.OFFbtn.Location = new System.Drawing.Point(175, 33);
+            this.OFFbtn.Location = new System.Drawing.Point(25, 33);
             this.OFFbtn.Name = "OFFbtn";
             this.OFFbtn.Size = new System.Drawing.Size(75, 23);
             this.OFFbtn.TabIndex = 1;
@@ -77,7 +78,7 @@
             // CLOSEbtn
             // 
             this.CLOSEbtn.Enabled = false;
-            this.CLOSEbtn.Location = new System.Drawing.Point(175, 122);
+            this.CLOSEbtn.Location = new System.Drawing.Point(25, 122);
             this.CLOSEbtn.Name = "CLOSEbtn";
             this.CLOSEbtn.Size = new System.Drawing.Size(75, 23);
             this.CLOSEbtn.TabIndex = 3;
@@ -91,9 +92,9 @@
             this.groupBox1.Controls.Add(this.OFFbtn);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(262, 81);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
@@ -108,13 +109,22 @@
             this.groupBox2.Controls.Add(this.CLOSEbtn);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox2.Location = new System.Drawing.Point(0, 86);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(262, 172);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "SERIAL CONTROL";
+            // 
+            // StateLBL
+            // 
+            this.StateLBL.AutoSize = true;
+            this.StateLBL.Location = new System.Drawing.Point(161, 37);
+            this.StateLBL.Name = "StateLBL";
+            this.StateLBL.Size = new System.Drawing.Size(78, 13);
+            this.StateLBL.TabIndex = 6;
+            this.StateLBL.Text = "Not connected";
             // 
             // label1
             // 
@@ -129,19 +139,10 @@
             // PortTB
             // 
             this.PortTB.Location = new System.Drawing.Point(10, 70);
-            this.PortTB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.PortTB.Margin = new System.Windows.Forms.Padding(2);
             this.PortTB.Name = "PortTB";
             this.PortTB.Size = new System.Drawing.Size(76, 20);
             this.PortTB.TabIndex = 4;
-            // 
-            // StateLBL
-            // 
-            this.StateLBL.AutoSize = true;
-            this.StateLBL.Location = new System.Drawing.Point(161, 37);
-            this.StateLBL.Name = "StateLBL";
-            this.StateLBL.Size = new System.Drawing.Size(78, 13);
-            this.StateLBL.TabIndex = 6;
-            this.StateLBL.Text = "Not connected";
             // 
             // Form1
             // 

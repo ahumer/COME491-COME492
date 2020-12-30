@@ -33,6 +33,9 @@ namespace Central_Management
                     StateLBL.Text = "";
                     MessageBox.Show("Connection established!");
                     StateLBL.Text = "Connected";
+                    OPENbtn.Visible = false;
+                    CLOSEbtn.Visible = true;
+                    ONbtn.Enabled = true;
 
                 }
                 else
@@ -49,11 +52,20 @@ namespace Central_Management
             serialPort1.Close();
             if (serialPort1.IsOpen == false)
             {
+                if(OFFbtn.Visible==true)
+                {
+                    MessageBox.Show("System is on!");
+                    return;
+                }
                 OPENbtn.Enabled = true;
                 CLOSEbtn.Enabled = false;
                 StateLBL.Text = "";
                 MessageBox.Show("Connection closed!");
                 StateLBL.Text = "Not connected";
+                OPENbtn.Visible = true;
+                CLOSEbtn.Visible = false;
+                ONbtn.Enabled = false;
+
 
             }
                 
@@ -66,6 +78,8 @@ namespace Central_Management
                 serialPort1.Write("1");
                 ONbtn.Enabled = false;
                 OFFbtn.Enabled = true;
+                ONbtn.Visible = false;
+                OFFbtn.Visible = true;
             }
             catch(Exception ex)
             {
@@ -82,6 +96,8 @@ namespace Central_Management
                 serialPort1.Write("0");
                 ONbtn.Enabled = true;
                 OFFbtn.Enabled = false;
+                ONbtn.Visible = true;
+                OFFbtn.Visible = false;
             }
             catch (Exception ex)
             {
