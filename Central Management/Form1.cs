@@ -148,7 +148,7 @@ namespace Central_Management
             string inMessage = "";
             bool control = true;
             //Communication with sensors
-            inMessage = systemCommunication("202");
+            inMessage = systemCommunication("200");
             if (inMessage == "OK")
             {
                 lblSensor.Text = "connected";
@@ -245,7 +245,7 @@ namespace Central_Management
                     }
  
                 }
-                catch (TimeoutException { }
+                catch (TimeoutException) { }
             }
         }
     }
