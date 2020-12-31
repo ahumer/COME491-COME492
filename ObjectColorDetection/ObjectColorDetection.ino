@@ -1,3 +1,6 @@
+//bluetooth module
+#include <SoftwareSerial.h>
+SoftwareSerial BTSerial(10, 11);   // RX | TX
 
 //object detection
 int LED = 13;
@@ -5,7 +8,6 @@ int obstaclePin = 14;
 int hasObstacle = HIGH;
 String objectInfo="250";//I couldn't figure out if this number is necesary or not.
 String colorInfo="255"; //I couldn't figure out if this number is necesary or not.
-String message="";
 
 //color detection
 int redPin = 9;
@@ -20,6 +22,8 @@ int SensorLed = 4;
 int buttonPin = 2;
 short state = 0;
 short preState=0;
+short start = 2; 
+String message="";
 
 int RCS; //Red Color Strength
 int GCS; //Green Color Strength
@@ -32,7 +36,7 @@ void setup() {
   pinMode(LED, OUTPUT);
   pinMode(obstaclePin, INPUT);
 
-//color detection
+  //color detection
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
@@ -45,156 +49,199 @@ void setup() {
   pinMode(buttonPin,INPUT_PULLUP);
 
   Serial.begin(9600); //turn on serial port
+  BTSerial.begin(9600);
 
   Serial.println("OFF_STATE");
 }
 
 void loop() {
+  /************************************/
   //Button on/off switch
-    if(state==0){
-      if(digitalRead(buttonPin)==LOW){
-        state=1;
-        preState=0;
-      }
+  if(state==0){
+    if(digitalRead(buttonPin)==LOW){
+      state=1;
       preState=0;
     }
-    else{
-       if(digitalRead(buttonPin)==LOW){
-          state=0;
-          preState=1;
-       }
-       preState=1;
+    preState=0;
+  }
+  else if(state==1){
+    if(digitalRead(buttonPin)==LOW){
+      state=0;
+      preState=1;
     }
-
-    //off state
-    if(state==0){
-      digitalWrite(redPin,HIGH);
-      digitalWrite(greenPin,HIGH);
-      digitalWrite(bluePin,HIGH);
-      digitalWrite(SensorLed,LOW);
-      digitalWrite(LED,LOW);
-      
-      if(preState==1)
-         Serial.println("OFF_STATE");
-    }
-
-    //on state
-    if(state==1){
-      
-        if(preState==0)
-           Serial.println("ON_STATE");
-           
-      //object detection
-      hasObstacle = digitalRead(obstaclePin);
+    preState=1;
+  }
+  //Button on/off switch
+/***************************************/
+/***************************************/
+  //OFF STATE
+  if(state==0){
+    digitalWrite(redPin,HIGH);
+    digitalWrite(greenPin,HIGH);
+    digitalWrite(bluePin,HIGH);
+    digitalWrite(SensorLed,LOW);
+    digitalWrite(LED,LOW);
     
-      if (hasObstacle == LOW){
-        digitalWrite(LED, HIGH);
-        objectInfo = "251";
-      }
-      else{
-        digitalWrite(LED,LOW);
-        objectInfo = "250"; 
-      }
+    if(preState==1)
+      Serial.println("OFF_STATE");
+  }
+  //OFF STATE
+/***************************************/
+/***************************************/
+  //ON STATE
+  if(state==1){
+    
+    if(preState==0)
+      Serial.println("ON_STATE");
 
-        if(Serial.available()>0){
-          message = Serial.readString(); 
-            if(message=="204"){
-              Serial.println("***************************");
-              Serial.print("Object Info Message:  ");
-              serialWriting(objectInfo);
-              Serial.println("***************************");
-              delay(5000);
-            }
-          }
-      
-      //color detection
-      //Start by reading red component of the color
-      //S2 and S3 should be set LOW
-      digitalWrite(SensorLed,HIGH);
-      digitalWrite(S2,LOW);
-      digitalWrite(S3,LOW);
-      
-      pulseWidth = pulseIn(outPin,LOW);
-      
-      //Remaping the value of the frequency to the RGB Model of 0 to 255
-      pulseWidth = map(pulseWidth,13 ,67,255,0);
-      RCS=pulseWidth;
+    if(BTSerial.available())
+      message = BTSerial.read();
+    
+    if(message=="200")
+      start=1;
+    if(message=="201")
+      start=0;
 
-      Serial.print(" R ");
-      Serial.print(pulseWidth);
-      Serial.print(" , ");
-      
-      //Start by reading green component of the color
-      //S2 and S3 should be set LOW
-      
-      digitalWrite(S2,HIGH);
-      digitalWrite(S3,HIGH);
-      
-      pulseWidth = pulseIn(outPin,LOW);
-      
-      //Remaping the value of the frequency to the RGB Model of 0 to 255
-      pulseWidth = map(pulseWidth, 13,87,255,0);
-      GCS=pulseWidth;
-
-      Serial.print(" G ");
-      Serial.print(pulseWidth);
-      Serial.print(" , ");
-      
-      
-      
-      //Start by reading blue component of the color
-      //S2 and S3 should be set LOW
-      
-      digitalWrite(S2,LOW);
-      digitalWrite(S3,HIGH);
-      
-      pulseWidth = pulseIn(outPin,LOW);
-      
-      //Remaping the value of the frequency to the RGB Model of 0 to 255
-      pulseWidth = map(pulseWidth, 10,72,255,0);
-      BCS=pulseWidth;
-
-      Serial.print(" B ");
-      Serial.print(pulseWidth);
-      Serial.println("");
-
-      colorInfo="255";
-      if(RCS>BCS && RCS>GCS){
-      digitalWrite(redPin,LOW);
-      digitalWrite(greenPin,HIGH);
-      digitalWrite(bluePin,HIGH);
-      Serial.println("RedLed");
-      colorInfo=252;
-      }
-      
-      if(GCS>RCS && GCS>BCS){
-      digitalWrite(redPin,HIGH);
-      digitalWrite(greenPin,LOW);
-      digitalWrite(bluePin,HIGH);
-      Serial.println("GreenLed");
-      colorInfo=253;
-      }
-      
-      if(BCS>RCS && BCS>GCS){
-      digitalWrite(redPin,HIGH);
-      digitalWrite(greenPin,HIGH);
-      digitalWrite(bluePin,LOW);
-      Serial.println("BlueLed");
-      colorInfo=254;
-      }
-
-      Serial.print("Color Info Message:  ");
-      serialWriting(colorInfo);
-
-      Serial.println("-----------------------");
-    }
+      if(start==1){
+        objectDetection();
+    
+        while(Serial.available()==0){};
+        message = Serial.readString();
+    
+        if(message=="202"){
           
-  delay(250);
-  }
-
-  void serialWriting(String message){
-    for(short i=0; i<3;i++){
-      Serial.write(message.charAt(i));
+           colorDetection();
+           while(Serial.available()==0){};
+           message = Serial.readString();
+           if(message=="203"){
+             serialWriting(message);
+           }      
+      }      
     }
-    Serial.write("\n");
+
+    if(start=0){
+      state=0;
+      start=2;
+    }
+ }
+ //ON STATE
+ /***************************************/    
+ delay(250);
+}//End of loop
+/***************************************/
+
+void objectDetection(){
+  
+  hasObstacle = digitalRead(obstaclePin);
+  
+  if (hasObstacle == LOW){
+    digitalWrite(LED, HIGH);
+    objectInfo = "212";
   }
+  else{
+    digitalWrite(LED,LOW);
+    objectInfo = "211"; 
+  }
+  
+  Serial.println("***************************");
+  Serial.print("Object Info Message:  ");
+  serialWriting(objectInfo);
+  Serial.println("***************************");
+  delay(5000);
+}
+/***************************************/
+
+void colorDetection(){
+  //color detection
+  //Start by reading red component of the color
+  //S2 and S3 should be set LOW
+  digitalWrite(SensorLed,HIGH);
+  digitalWrite(S2,LOW);
+  digitalWrite(S3,LOW);
+  
+  pulseWidth = pulseIn(outPin,LOW);
+  
+  //Remaping the value of the frequency to the RGB Model of 0 to 255
+  pulseWidth = map(pulseWidth,13 ,67,255,0);
+  RCS=pulseWidth;
+  
+  Serial.print(" R ");
+  Serial.print(pulseWidth);
+  Serial.print(" , ");
+  
+  //Start by reading green component of the color
+  //S2 and S3 should be set LOW
+  
+  digitalWrite(S2,HIGH);
+  digitalWrite(S3,HIGH);
+  
+  pulseWidth = pulseIn(outPin,LOW);
+  
+  //Remaping the value of the frequency to the RGB Model of 0 to 255
+  pulseWidth = map(pulseWidth, 13,87,255,0);
+  GCS=pulseWidth;
+  
+  Serial.print(" G ");
+  Serial.print(pulseWidth);
+  Serial.print(" , ");
+  
+  
+  
+  //Start by reading blue component of the color
+  //S2 and S3 should be set LOW
+  
+  digitalWrite(S2,LOW);
+  digitalWrite(S3,HIGH);
+  
+  pulseWidth = pulseIn(outPin,LOW);
+  
+  //Remaping the value of the frequency to the RGB Model of 0 to 255
+  pulseWidth = map(pulseWidth, 10,72,255,0);
+  BCS=pulseWidth;
+  
+  Serial.print(" B ");
+  Serial.print(pulseWidth);
+  Serial.println("");
+
+  colorInfo="224";
+  
+  if(RCS>BCS && RCS>GCS){
+  digitalWrite(redPin,LOW);
+  digitalWrite(greenPin,HIGH);
+  digitalWrite(bluePin,HIGH);
+  Serial.println("RedLed");
+  colorInfo="221";
+  }
+  
+  if(GCS>RCS && GCS>BCS){
+  digitalWrite(redPin,HIGH);
+  digitalWrite(greenPin,LOW);
+  digitalWrite(bluePin,HIGH);
+  Serial.println("GreenLed");
+  colorInfo="222";
+  }
+  
+  if(BCS>RCS && BCS>GCS){
+  digitalWrite(redPin,HIGH);
+  digitalWrite(greenPin,HIGH);
+  digitalWrite(bluePin,LOW);
+  Serial.println("BlueLed");
+  colorInfo="223";
+  }
+  
+  Serial.print("Color Info Message:  ");
+  serialWriting(colorInfo);
+  
+  Serial.println("-----------------------"); 
+}
+/***************************************/
+
+void serialWriting(String message){
+  for(short i=0; i<3;i++){
+    Serial.write(message.charAt(i));
+    BTSerial.write(message.charAt(i));
+  }
+  Serial.write("\n");
+  BTSerial.write("\n");
+}
+/***************************************/
