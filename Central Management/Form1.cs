@@ -96,7 +96,7 @@ namespace Central_Management
         {
             try
             {
-                serialPort1.Write("0");
+                serialPort1.Write("201");
                 btnON.Enabled = true;
                 btnOFF.Enabled = false;
                 btnON.Visible = true;
@@ -113,7 +113,7 @@ namespace Central_Management
         {
             try
             {
-                serialPort1.Write("1");
+                serialPort1.Write("200");
                 btnON.Enabled = false;
                 btnOFF.Enabled = true;
                 btnON.Visible = false;
