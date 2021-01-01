@@ -1,6 +1,6 @@
 //bluetooth module
 #include <SoftwareSerial.h>
-SoftwareSerial BTSerial(10, 11);   // RX | TX
+SoftwareSerial BTSerial(15, 16);   // RX | TX
 
 //object detection
 int LED = 13;
@@ -94,30 +94,41 @@ void loop() {
     if(preState==0)
       Serial.println("ON_STATE");
 
-    if(BTSerial.available())
-      message = BTSerial.read();
-    
-    if(message=="200")
+
+    if(BTSerial.available()){
+      message = BTSerial.readString();
+      Serial.print("message: ");
+      Serial.println(message);
+    }
+  
+    if(message=="200" || message=="203"){
       start=1;
-    if(message=="201")
+      Serial.println("START");
+    }
+    
+    if(message=="201") {
       start=0;
+      Serial.println("STOP");
+    }
 
       if(start==1){
         objectDetection();
     
-        while(Serial.available()==0){};
-        message = Serial.readString();
+        if(Serial.available()){
+          message = Serial.readString();
     
-        if(message=="202"){
-          
-           colorDetection();
-           while(Serial.available()==0){};
-           message = Serial.readString();
-           if(message=="203"){
-             serialWriting(message);
-           }      
-      }      
-    }
+          if(message=="202"){
+            
+             colorDetection();
+             while(Serial.available()==0){};
+             message = Serial.readString();
+             if(message=="203"){
+               serialWriting(message);
+             }      
+          }      
+         }
+        
+      }
 
     if(start=0){
       state=0;
@@ -233,6 +244,7 @@ void colorDetection(){
   serialWriting(colorInfo);
   
   Serial.println("-----------------------"); 
+  digitalWrite(SensorLed,LOW);
 }
 /***************************************/
 
