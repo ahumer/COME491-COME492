@@ -101,14 +101,16 @@ void loop() {
       Serial.println(message);
     }
   
-    if(message=="200" || message=="203"){
+    if(message=="200"){
       start=1;
       Serial.println("START");
+      message="";
     }
     
     if(message=="201") {
       start=0;
       Serial.println("STOP");
+      message="";
     }
 
       if(start==1){
@@ -130,8 +132,7 @@ void loop() {
         
       }
 
-    if(start=0){
-      state=0;
+    if(start==0){
       start=2;
     }
  }
@@ -181,7 +182,7 @@ void colorDetection(){
   Serial.print(" , ");
   
   //Start by reading green component of the color
-  //S2 and S3 should be set LOW
+  //S2 and S3 should be set HIGH
   
   digitalWrite(S2,HIGH);
   digitalWrite(S3,HIGH);
@@ -199,7 +200,7 @@ void colorDetection(){
   
   
   //Start by reading blue component of the color
-  //S2 and S3 should be set LOW
+  //S2 and S3 should be set LOW, HIGH respectively
   
   digitalWrite(S2,LOW);
   digitalWrite(S3,HIGH);
@@ -214,7 +215,7 @@ void colorDetection(){
   Serial.print(pulseWidth);
   Serial.println("");
 
-  colorInfo="224";
+  colorInfo="224";//Color is not detected.
   
   if(RCS>BCS && RCS>GCS){
   digitalWrite(redPin,LOW);
