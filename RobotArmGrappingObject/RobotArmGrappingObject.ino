@@ -9,7 +9,7 @@ Servo servo05;
 Servo servo06;
 
 char dataArray[4]; //Initialized variable to store received data
-String dataIn="";
+String message = "";
 int servo1Pos, servo2Pos, servo3Pos, servo4Pos, servo5Pos, servo6Pos; // current position
 int servo1PPos, servo2PPos, servo3PPos, servo4PPos, servo5PPos, servo6PPos; // previous position
 
@@ -29,55 +29,94 @@ void setup() {
 }
 void loop()
 {
-  if (Serial.available()){
-
-    dataArray[3]=0;
-    Serial.readBytes(dataArray,3);
-    dataIn = String(dataArray);
+    message = serialReading();
+    if(message!="000")
+     Serial.println(message);
     
-    // dataIn = Serial.readString();//Has a "time out" parameter. Default value of "time out" is 1000ms.
-    //Serial.print(dataIn);
-    if (dataIn == "212"){
+    //dataArray[3]=0;
+    //Serial.readBytes(dataArray,3);
+    //message = String(dataArray);
+    //message = Serial.readString();//Has a "time out" parameter. Default value of "time out" is 1000ms.
+    //Serial.print(message);
+    
+    if (message == "212"){
       
       //Serial.println("ahere");
       MotionCarry();
+      Serial.write('#');
       serialWriting("202");
     }
 
-    if (dataIn == "221"){
+    if (message == "221"){
       
       //Serial.println("bhere");
       MotionRed();
+      Serial.write('#');
       serialWriting("203");
       InitialPosition();
     }
 
-    if (dataIn == "222")
+    if (message == "222")
     {
       Serial.println("bhere");
       MotionGreen();
+      Serial.write('#');
       serialWriting("203");
       InitialPosition();
     }
 
-    if (dataIn == "223"){
+    if (message == "223"){
         
       Serial.println("bhere");
       MotionBlue();
+      Serial.write('#');
       serialWriting("203");
       InitialPosition();
     }
 
-    if (dataIn == "0"){
+    if(message =="211"){
+      Serial.write('#');
+      serialWriting("000");//idle
+    }
+
+    
+    if (message == "0"){
       InitialPosition();
     }
-    if(dataIn =="211"){
-      Serial.println("$$idle");
-      serialWriting("idl");//idle
-    }
-  }
 }
 
+
+/***************************************/
+String serialReading(){
+  String messageIn;
+  char messageArray[3]="000";
+  int dataNum;
+  char data;
+  if(Serial.available()){
+    while(Serial.read()!='#'){}
+        Serial.readBytes(messageArray,3);            
+  }
+  messageIn = String(messageArray);
+  return messageIn;
+}
+/***************************************/
+void serialWriting(String message){
+  char messageArray[3];
+  for(short i=0; i<3;i++){    
+    messageArray[i] = message.charAt(i);
+  }
+  Serial.write(messageArray,3);
+  Serial.write("\n");
+}
+/*
+ * I couldn't use Serial.write() like this:
+ * String myString="abc";
+ * Serial.write(mystring);
+ * It didn't work.
+ * I can send string only like this:
+ * Serial.write("abc");
+*/
+/***************************************/
 void MotionCarry ()
 {
   //Serial.println("aahere");
@@ -198,23 +237,6 @@ int servoMotion(int posS, int dlyTime, int servoNbr )
 
   
 }
-
-void serialWriting(String message){
-  /*char messageArray[3];
-  for(short i=0; i<3;i++){    
-    messageArray[i] = message.charAt(i);
-  }
-  Serial.write(messageArray,3);*/
-  Serial.println(message);
-}
-/*
- * I couldn't use Serial.write() like this:
- * String myString="abc";
- * Serial.write(mystring);
- * It didn't work.
- * I can send string only like this:
- * Serial.write("abc");
-*/
 
 void setUpPosition(){
     //with the black tape in front
