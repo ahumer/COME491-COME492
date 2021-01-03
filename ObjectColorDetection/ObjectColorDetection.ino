@@ -6,8 +6,8 @@ SoftwareSerial BTSerial(15, 16);   // RX | TX
 int LED = 13;
 int obstaclePin = 14;
 int hasObstacle = HIGH;
-String objectInfo="250";//I couldn't figure out if this number is necesary or not.
-String colorInfo="255"; //I couldn't figure out if this number is necesary or not.
+String objectInfo="000";
+String colorInfo="000";
 
 //color detection
 int redPin = 9;
@@ -56,23 +56,9 @@ void setup() {
 
 void loop() {
   /************************************/
-  //Button on/off switch
-  if(state==0){
-    if(digitalRead(buttonPin)==LOW){
-      state=1;
-      preState=0;
-    }
-    preState=0;
-  }
-  else if(state==1){
-    if(digitalRead(buttonPin)==LOW){
-      state=0;
-      preState=1;
-    }
-    preState=1;
-  }
-  //Button on/off switch
-/***************************************/
+  //ON/OFF switch
+  //Set "state" and "preState" variables.
+  button();
 /***************************************/
   //OFF STATE
   if(state==0){
@@ -113,28 +99,9 @@ void loop() {
       message="";
     }
 
-      if(start==1){
-        objectDetection();
-    
-        if(Serial.available()){
-          message = Serial.readString();
-    
-          if(message=="202"){
-            
-             colorDetection();
-             while(Serial.available()==0){};
-             message = Serial.readString();
-             if(message=="203"){
-               serialWriting(message);
-             }      
-          }      
-         }
-        
-      }
-
-    if(start==0){
-      start=2;
-    }
+    if(start==1)
+     startLoop();
+      
  }
  //ON STATE
  /***************************************/    
@@ -258,3 +225,40 @@ void serialWriting(String message){
   BTSerial.write("\n");
 }
 /***************************************/
+//ON/OFF switch
+//Set "state" and "preState" variables.
+void button(){
+
+  if(state==0){
+    if(digitalRead(buttonPin)==LOW){
+      state=1;
+      preState=0;
+    }
+    preState=0;
+  }
+  else if(state==1){
+    if(digitalRead(buttonPin)==LOW){
+      state=0;
+      preState=1;
+    }
+    preState=1;
+  }
+}
+
+void startLoop(){
+
+  objectDetection();
+  
+  if(Serial.available()){
+    message = Serial.readString();
+  
+    if(message=="202"){
+      colorDetection();
+      while(Serial.available()==0){};
+      message = Serial.readString();
+      if(message=="203"){
+       serialWriting(message);
+      }      
+    }      
+   }
+}
