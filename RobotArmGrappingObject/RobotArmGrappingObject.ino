@@ -23,59 +23,9 @@ void setup() {
   servo06.attach(10);
   Serial.begin(9600);
   Serial.println("enter 212 for grab the object ( enter 0 for initial position)");
-  //with the black tape in front
-  //Waist-01
-  //250-200 135 degrees right of the tape
-  //150 90 degrees right of the tape
-  //100 45 degrees right of the tape
-  //50 tape alignment
-  //0-10 45 degrees left of the band
-  servo1PPos = 50;
-  servo01.write(servo1PPos);
-  delay(500);
-  //shoulder-02
-  //200 Parallel to the ground, leaning back
-  //150 45 degrees tilted back
-  //100 upright
-  //45 degrees forward leaning
-  //0-10 parallel to the floor, tilted forward
-  servo2PPos = 120;
-  servo02.write(servo2PPos);
-  delay(500);
-  //Elbow-03
-  //200-150 vertical down
-  //120 45 degrees downward
-  //90 parallel to the ground
-  //40 45 degrees upwards
-  //0 vertical up
-  servo3PPos = 115;
-  servo03.write(servo3PPos);
-  delay(500);
-  //wrist roll-04
-  //250-200 right up
-  //150 parallel to the ground
-  //100 45 degrees to the right
-  //60 perpendicular to the ground
-  //0 45 degrees towards left ground
-  servo4PPos = 60;
-  servo04.write(servo4PPos);
-  delay(500);
-  //Bilek pitch-05(Shoulder is vertical when elbow is parallel to floor)
-  //250-200 vertical up
-  //120 up 45 degrees
-  //80 parallel to the ground
-  //40 down 45 degrees
-  //0 vertical down
-  servo5PPos = 80;
-  servo05.write(servo5PPos);
-  delay(500);
-  //gripper-06
-  //250-200-150-100 fully open
-  //50 half open
-  //0-10 fully closed
-  servo6PPos = 50;
-  servo06.write(servo6PPos);
-  delay(500);
+
+  setUpPosition();
+
 }
 void loop()
 {
@@ -265,3 +215,59 @@ void serialWriting(String message){
  * I can send string only like this:
  * Serial.write("abc");
 */
+
+void setUpPosition(){
+    //with the black tape in front
+  //Waist-01
+  //250-200 135 degrees right of the tape
+  //150 90 degrees right of the tape
+  //100 45 degrees right of the tape
+  //50 tape alignment
+  //0-10 45 degrees left of the band
+  servo1PPos = 50;
+  servo01.write(servo1PPos);
+  delay(500);
+  //shoulder-02
+  //200 Parallel to the ground, leaning back
+  //150 45 degrees tilted back
+  //100 upright
+  //45 degrees forward leaning
+  //0-10 parallel to the floor, tilted forward
+  servo2PPos = 120;
+  servo02.write(servo2PPos);
+  delay(500);
+  //Elbow-03
+  //200-150 vertical down
+  //120 45 degrees downward
+  //90 parallel to the ground
+  //40 45 degrees upwards
+  //0 vertical up
+  servo3PPos = 115;
+  servo03.write(servo3PPos);
+  delay(500);
+  //wrist roll-04
+  //250-200 right up
+  //150 parallel to the ground
+  //100 45 degrees to the right
+  //60 perpendicular to the ground
+  //0 45 degrees towards left ground
+  servo4PPos = 60;
+  servo04.write(servo4PPos);
+  delay(500);
+  //Bilek pitch-05(Shoulder is vertical when elbow is parallel to floor)
+  //250-200 vertical up
+  //120 up 45 degrees
+  //80 parallel to the ground
+  //40 down 45 degrees
+  //0 vertical down
+  servo5PPos = 80;
+  servo05.write(servo5PPos);
+  delay(500);
+  //gripper-06
+  //250-200-150-100 fully open
+  //50 half open
+  //0-10 fully closed
+  servo6PPos = 50;
+  servo06.write(servo6PPos);
+  delay(500);
+}
