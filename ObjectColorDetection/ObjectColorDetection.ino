@@ -6,8 +6,8 @@ SoftwareSerial BTSerial(15, 16);   // RX | TX
 int LED = 13;
 int obstaclePin = 14;
 int hasObstacle = HIGH;
-String objectInfo="000";
-String colorInfo="000";
+String objInf;
+String clrInf;
 
 //color detection
 int redPin = 9;
@@ -58,7 +58,7 @@ void loop() {
   /************************************/
   //ON/OFF switch
   //Set "state" and "preState" variables.
-  button();
+  ButtonSwitch();
 /***************************************/
   //OFF STATE
   if(state==0){
@@ -104,130 +104,14 @@ void loop() {
       
  }
  //ON STATE
- /***************************************/    
+    
  delay(250);
 }//End of loop
 /***************************************/
 
-void objectDetection(){
-  
-  hasObstacle = digitalRead(obstaclePin);
-  
-  if (hasObstacle == LOW){
-    digitalWrite(LED, HIGH);
-    objectInfo = "212";
-  }
-  else{
-    digitalWrite(LED,LOW);
-    objectInfo = "211"; 
-  }
-  
-  Serial.println("***************************");
-  Serial.print("Object Info Message:  ");
-  serialWriting(objectInfo);
-  Serial.println("***************************");
-  delay(5000);
-}
-/***************************************/
-
-void colorDetection(){
-  //color detection
-  //Start by reading red component of the color
-  //S2 and S3 should be set LOW
-  digitalWrite(SensorLed,HIGH);
-  digitalWrite(S2,LOW);
-  digitalWrite(S3,LOW);
-  
-  pulseWidth = pulseIn(outPin,LOW);
-  
-  //Remaping the value of the frequency to the RGB Model of 0 to 255
-  pulseWidth = map(pulseWidth,13 ,67,255,0);
-  RCS=pulseWidth;
-  
-  Serial.print(" R ");
-  Serial.print(pulseWidth);
-  Serial.print(" , ");
-  
-  //Start by reading green component of the color
-  //S2 and S3 should be set HIGH
-  
-  digitalWrite(S2,HIGH);
-  digitalWrite(S3,HIGH);
-  
-  pulseWidth = pulseIn(outPin,LOW);
-  
-  //Remaping the value of the frequency to the RGB Model of 0 to 255
-  pulseWidth = map(pulseWidth, 13,87,255,0);
-  GCS=pulseWidth;
-  
-  Serial.print(" G ");
-  Serial.print(pulseWidth);
-  Serial.print(" , ");
-  
-  
-  
-  //Start by reading blue component of the color
-  //S2 and S3 should be set LOW, HIGH respectively
-  
-  digitalWrite(S2,LOW);
-  digitalWrite(S3,HIGH);
-  
-  pulseWidth = pulseIn(outPin,LOW);
-  
-  //Remaping the value of the frequency to the RGB Model of 0 to 255
-  pulseWidth = map(pulseWidth, 10,72,255,0);
-  BCS=pulseWidth;
-  
-  Serial.print(" B ");
-  Serial.print(pulseWidth);
-  Serial.println("");
-
-  colorInfo="224";//Color is not detected.
-  
-  if(RCS>BCS && RCS>GCS){
-  digitalWrite(redPin,LOW);
-  digitalWrite(greenPin,HIGH);
-  digitalWrite(bluePin,HIGH);
-  Serial.println("RedLed");
-  colorInfo="221";
-  }
-  
-  if(GCS>RCS && GCS>BCS){
-  digitalWrite(redPin,HIGH);
-  digitalWrite(greenPin,LOW);
-  digitalWrite(bluePin,HIGH);
-  Serial.println("GreenLed");
-  colorInfo="222";
-  }
-  
-  if(BCS>RCS && BCS>GCS){
-  digitalWrite(redPin,HIGH);
-  digitalWrite(greenPin,HIGH);
-  digitalWrite(bluePin,LOW);
-  Serial.println("BlueLed");
-  colorInfo="223";
-  }
-  
-  Serial.print("Color Info Message:  ");
-  serialWriting(colorInfo);
-  
-  Serial.println("-----------------------"); 
-  digitalWrite(SensorLed,LOW);
-}
-/***************************************/
-
-void serialWriting(String message){
-  for(short i=0; i<3;i++){
-    Serial.write(message.charAt(i));
-    BTSerial.write(message.charAt(i));
-  }
-  Serial.write("\n");
-  BTSerial.write("\n");
-}
-/***************************************/
 //ON/OFF switch
 //Set "state" and "preState" variables.
-void button(){
+void ButtonSwitch(){
 
   if(state==0){
     if(digitalRead(buttonPin)==LOW){
@@ -247,18 +131,163 @@ void button(){
 
 void startLoop(){
 
-  objectDetection();
-  
-  if(Serial.available()){
-    message = Serial.readString();
-  
+  message = objectDetection(); 
+     
     if(message=="202"){
+      serialBTWriting(message);
       colorDetection();
       while(Serial.available()==0){};
-      message = Serial.readString();
+      message = serialReading();
       if(message=="203"){
-       serialWriting(message);
+       serialBTWriting(message);
+       Serial.println(message);
+       message="";
       }      
-    }      
-   }
+    }       
+}
+
+String objectDetection(){
+  String messageIn="000";
+  hasObstacle = digitalRead(obstaclePin);
+  
+  if (hasObstacle == LOW){
+    digitalWrite(LED, HIGH);
+    objInf = "212";
+  }
+  else{
+    digitalWrite(LED,LOW);
+    objInf = "211"; 
+  }
+  
+  //Serial.println("***************************");
+  //Serial.print("Object Info Message:  ");
+  if(objInf=="211"){
+  serialBTWriting(objInf);
+  }
+    if(objInf=="212"){
+      Serial.write('#');
+      serialWriting(objInf);
+      serialBTWriting(objInf);
+      while(messageIn!="202"){
+      messageIn = serialReading();
+      } 
+      Serial.println(messageIn);     
+  }
+  //Serial.println("***************************");
+  //delay(5000);
+  
+  return messageIn;
+}
+/***************************************/
+void colorDetection(){
+  //color detection
+  //Start by reading red component of the color
+  //S2 and S3 should be set LOW
+  digitalWrite(SensorLed,HIGH);
+  digitalWrite(S2,LOW);
+  digitalWrite(S3,LOW);
+  
+  pulseWidth = pulseIn(outPin,LOW);
+  
+  //Remaping the value of the frequency to the RGB Model of 0 to 255
+  pulseWidth = map(pulseWidth,13 ,67,255,0);
+  RCS=pulseWidth;
+  
+  //Serial.print(" R ");
+  //Serial.print(pulseWidth);
+  //Serial.print(" , ");
+  
+  //Start by reading green component of the color
+  //S2 and S3 should be set HIGH
+  
+  digitalWrite(S2,HIGH);
+  digitalWrite(S3,HIGH);
+  
+  pulseWidth = pulseIn(outPin,LOW);
+  
+  //Remaping the value of the frequency to the RGB Model of 0 to 255
+  pulseWidth = map(pulseWidth, 13,87,255,0);
+  GCS=pulseWidth;
+  
+  //Serial.print(" G ");
+  //Serial.print(pulseWidth);
+  //Serial.print(" , ");
+  
+  
+  
+  //Start by reading blue component of the color
+  //S2 and S3 should be set LOW, HIGH respectively
+  
+  digitalWrite(S2,LOW);
+  digitalWrite(S3,HIGH);
+  
+  pulseWidth = pulseIn(outPin,LOW);
+  
+  //Remaping the value of the frequency to the RGB Model of 0 to 255
+  pulseWidth = map(pulseWidth, 10,72,255,0);
+  BCS=pulseWidth;
+  
+  //Serial.print(" B ");
+  //Serial.print(pulseWidth);
+  //Serial.println("");
+
+  clrInf="224";//Color is not detected.
+  
+  if(RCS>BCS && RCS>GCS){
+  digitalWrite(redPin,LOW);
+  digitalWrite(greenPin,HIGH);
+  digitalWrite(bluePin,HIGH);
+  //Serial.println("RedLed");
+  clrInf = "221";
+  }
+  
+  if(GCS>RCS && GCS>BCS){
+  digitalWrite(redPin,HIGH);
+  digitalWrite(greenPin,LOW);
+  digitalWrite(bluePin,HIGH);
+  //Serial.println("GreenLed");
+  clrInf = "222";
+  }
+  
+  if(BCS>RCS && BCS>GCS){
+  digitalWrite(redPin,HIGH);
+  digitalWrite(greenPin,HIGH);
+  digitalWrite(bluePin,LOW);
+  //Serial.println("BlueLed");
+  clrInf = "223";
+  }
+  
+  //Serial.print("Color Info Message:  ");
+  Serial.write('#');
+  serialWriting(clrInf);
+  serialBTWriting(clrInf);
+  
+  //Serial.println("-----------------------"); 
+  digitalWrite(SensorLed,LOW);
+}
+/***************************************/
+void serialWriting(String message){
+  for(short i=0; i<3;i++){
+    Serial.write(message.charAt(i));
+  }
+  Serial.write("\n");
+}
+/***************************************/
+void serialBTWriting(String message){
+  for(short i=0; i<3;i++){
+    BTSerial.write(message.charAt(i));
+  }
+  BTSerial.write("\n");
+}
+/***************************************/
+String serialReading(){
+  String messageIn;
+  char messageArray[3]="111";
+  if(Serial.available()){
+    while(Serial.read()!='#'){}
+        Serial.readBytes(messageArray,3);            
+  }
+  messageIn = String(messageArray);
+  messageIn.remove(3,2);
+  return messageIn;
 }

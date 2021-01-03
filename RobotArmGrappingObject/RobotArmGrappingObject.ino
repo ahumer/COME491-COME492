@@ -40,16 +40,12 @@ void loop()
     //Serial.print(message);
     
     if (message == "212"){
-      
-      //Serial.println("ahere");
       MotionCarry();
       Serial.write('#');
       serialWriting("202");
     }
 
     if (message == "221"){
-      
-      //Serial.println("bhere");
       MotionRed();
       Serial.write('#');
       serialWriting("203");
@@ -58,7 +54,6 @@ void loop()
 
     if (message == "222")
     {
-      Serial.println("bhere");
       MotionGreen();
       Serial.write('#');
       serialWriting("203");
@@ -67,17 +62,17 @@ void loop()
 
     if (message == "223"){
         
-      Serial.println("bhere");
+      //Serial.println("bhere");
       MotionBlue();
       Serial.write('#');
       serialWriting("203");
       InitialPosition();
     }
 
-    if(message =="211"){
+    /*if(message =="211"){
       Serial.write('#');
       serialWriting("000");//idle
-    }
+    }*/
 
     
     if (message == "0"){
@@ -90,8 +85,6 @@ void loop()
 String serialReading(){
   String messageIn;
   char messageArray[3]="000";
-  int dataNum;
-  char data;
   if(Serial.available()){
     while(Serial.read()!='#'){}
         Serial.readBytes(messageArray,3);            
@@ -101,11 +94,9 @@ String serialReading(){
 }
 /***************************************/
 void serialWriting(String message){
-  char messageArray[3];
-  for(short i=0; i<3;i++){    
-    messageArray[i] = message.charAt(i);
+  for(short i=0; i<3;i++){
+    Serial.write(message.charAt(i));
   }
-  Serial.write(messageArray,3);
   Serial.write("\n");
 }
 /*
