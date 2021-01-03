@@ -8,7 +8,8 @@ Servo servo04;
 Servo servo05;
 Servo servo06;
 
-short dataIn = 0;
+char dataArray[4]; //Initialized variable to store received data
+String dataIn="";
 int servo1Pos, servo2Pos, servo3Pos, servo4Pos, servo5Pos, servo6Pos; // current position
 int servo1PPos, servo2PPos, servo3PPos, servo4PPos, servo5PPos, servo6PPos; // previous position
 
@@ -21,7 +22,7 @@ void setup() {
   servo05.attach(9);
   servo06.attach(10);
   Serial.begin(9600);
-  Serial.println("enter 1 for grab the object (for initial position enter 0)");
+  Serial.println("enter 212 for grab the object ( enter 0 for initial position)");
   //with the black tape in front
   //Waist-01
   //250-200 135 degrees right of the tape
@@ -29,7 +30,7 @@ void setup() {
   //100 45 degrees right of the tape
   //50 tape alignment
   //0-10 45 degrees left of the band
-  servo1PPos = 100;
+  servo1PPos = 50;
   servo01.write(servo1PPos);
   delay(500);
   //shoulder-02
@@ -78,43 +79,58 @@ void setup() {
 }
 void loop()
 {
-  if (Serial.available())
-  {
-    dataIn = Serial.read();
-    Serial.println(char(dataIn));
+  if (Serial.available()){
+
+    dataArray[3]=0;
+    Serial.readBytes(dataArray,3);
+    dataIn = String(dataArray);
     
-    if (dataIn == '251')
-    {
-      Serial.println("ahere");
+    // dataIn = Serial.readString();//Has a "time out" parameter. Default value of "time out" is 1000ms.
+    //Serial.print(dataIn);
+    if (dataIn == "212"){
+      
+      //Serial.println("ahere");
       MotionCarry();
+      serialWriting("202");
     }
 
-        if (dataIn == '252')
-    {
-      Serial.println("bhere");
+    if (dataIn == "221"){
+      
+      //Serial.println("bhere");
       MotionRed();
+      serialWriting("203");
       InitialPosition();
     }
 
-        if (dataIn == '253')
+    if (dataIn == "222")
     {
       Serial.println("bhere");
       MotionGreen();
+      serialWriting("203");
       InitialPosition();
     }
 
-        if (dataIn == '254')
-    {
+    if (dataIn == "223"){
+        
       Serial.println("bhere");
       MotionBlue();
+      serialWriting("203");
       InitialPosition();
+    }
+
+    if (dataIn == "0"){
+      InitialPosition();
+    }
+    if(dataIn =="211"){
+      Serial.println("$$idle");
+      serialWriting("idl");//idle
     }
   }
 }
 
 void MotionCarry ()
 {
-  Serial.println("aahere");
+  //Serial.println("aahere");
   servo2PPos=servoMotion(100, 20, 2);
   servo3PPos=servoMotion(120, 20, 3);
   servo6PPos=servoMotion(70, 20, 6);
@@ -122,19 +138,20 @@ void MotionCarry ()
   servo6PPos=servoMotion(20, 40, 6);
   servo5PPos=servoMotion(80, 40, 5);
   servo3PPos=servoMotion(90, 40, 3);
-  servo1PPos=servoMotion(170, 40, 1);
+  servo1PPos=servoMotion(10, 40, 1);
   servo3PPos=servoMotion(120, 20, 3);
   servo5PPos=servoMotion(10, 20, 5);
   servo6PPos=servoMotion(50, 20, 6);
+  servo3PPos=servoMotion(90,40,3);
 }
 
 
 
 void InitialPosition()
 {
-  Serial.println("bbhere");
+  //Serial.println("bbhere");
   servo5PPos=servoMotion(80, 20, 5);
-  servo1PPos=servoMotion(100, 20, 1);
+  servo1PPos=servoMotion(50, 20, 1);
   servo2PPos=servoMotion(120, 20, 2);
   servo3PPos=servoMotion(115, 20, 3);
   servo4PPos=servoMotion(60, 20, 4);
@@ -142,12 +159,40 @@ void InitialPosition()
 }
 
 void MotionRed(){
+  servo3PPos=servoMotion(120, 20, 3);
+  servo6PPos=servoMotion(70, 20, 6);
+  servo5PPos=servoMotion(20, 20, 5);
+  servo6PPos=servoMotion(20, 40, 6);
+  servo5PPos=servoMotion(80, 40, 5);
+  servo3PPos=servoMotion(90, 40, 3);
+  servo1PPos=servoMotion(100, 40, 1);
+  servo5PPos=servoMotion(10, 20, 5);
+  servo6PPos=servoMotion(50, 20, 6);
+
 }
 
 void MotionGreen(){
+  servo3PPos=servoMotion(120, 20, 3);
+  servo6PPos=servoMotion(70, 20, 6);
+  servo5PPos=servoMotion(20, 20, 5);
+  servo6PPos=servoMotion(20, 40, 6);
+  servo5PPos=servoMotion(80, 40, 5);
+  servo3PPos=servoMotion(90, 40, 3);
+  servo1PPos=servoMotion(160, 40, 1);
+  servo5PPos=servoMotion(10, 20, 5);
+  servo6PPos=servoMotion(50, 20, 6);
 }
 
 void MotionBlue(){
+  servo3PPos=servoMotion(120, 20, 3);
+  servo6PPos=servoMotion(70, 20, 6);
+  servo5PPos=servoMotion(20, 20, 5);
+  servo6PPos=servoMotion(20, 40, 6);
+  servo5PPos=servoMotion(80, 40, 5);
+  servo3PPos=servoMotion(90, 40, 3);
+  servo1PPos=servoMotion(250, 40, 1);
+  servo5PPos=servoMotion(10, 20, 5);
+  servo6PPos=servoMotion(50, 20, 6);
 }
 
 int servoMotion(int posS, int dlyTime, int servoNbr )
@@ -184,22 +229,39 @@ int servoMotion(int posS, int dlyTime, int servoNbr )
     prevPos = servo6PPos;
     servo00 = servo06;
   }
-
+   // If previous position is greater then current position
    if (prevPos > posS) {
         for ( int i = prevPos; i >= posS; i--) {   // Run servo down
           servo00.write(i);
           delay(dlyTime);    // defines the speed at which the servo rotates
         }
-      }
-      // If previous position is smaller then current position
-      if (prevPos < posS) {
+   }
+   // If previous position is smaller then current position
+   if (prevPos < posS) {
         for ( int i = prevPos; i <= posS; i++) {   // Run servo up
           servo00.write(i);
           delay(dlyTime);
-        }
-      }
-      prevPos=posS;   // set current position as previous position
-      return prevPos;
+      }   
+   }
+  prevPos=posS;   // set current position as previous position
+  return prevPos;
 
   
 }
+
+void serialWriting(String message){
+  /*char messageArray[3];
+  for(short i=0; i<3;i++){    
+    messageArray[i] = message.charAt(i);
+  }
+  Serial.write(messageArray,3);*/
+  Serial.println(message);
+}
+/*
+ * I couldn't use Serial.write() like this:
+ * String myString="abc";
+ * Serial.write(mystring);
+ * It didn't work.
+ * I can send string only like this:
+ * Serial.write("abc");
+*/
