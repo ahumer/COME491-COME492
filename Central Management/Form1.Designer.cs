@@ -171,6 +171,7 @@
             this.btnSysInf.TabIndex = 7;
             this.btnSysInf.Text = "System Info";
             this.btnSysInf.UseVisualStyleBackColor = true;
+            this.btnSysInf.Click += new System.EventHandler(this.btnSysInf_Click);
             // 
             // groupBox2
             // 

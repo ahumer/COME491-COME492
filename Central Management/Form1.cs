@@ -126,7 +126,11 @@ namespace Central_Management
 
         }
 
-        
+        private void btnSysInf_Click(object sender, EventArgs e)
+        {
+            systemInfo systemInfoInstance = new systemInfo();
+            systemInfoInstance.Show();
+        }
     }
 }
 
