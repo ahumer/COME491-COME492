@@ -38,17 +38,22 @@ void loop()
     //message = String(dataArray);
     //message = Serial.readString();//Has a "time out" parameter. Default value of "time out" is 1000ms.
     //Serial.print(message);
+
+    if (message == "200"){
+      Serial.write('#');
+      serialWriting("202");
+    }
     
     if (message == "212"){
       MotionCarry();
       Serial.write('#');
-      serialWriting("202");
+      serialWriting("203");
     }
 
     if (message == "221"){
       MotionRed();
       Serial.write('#');
-      serialWriting("203");
+      serialWriting("204");
       InitialPosition();
     }
 
@@ -56,7 +61,7 @@ void loop()
     {
       MotionGreen();
       Serial.write('#');
-      serialWriting("203");
+      serialWriting("204");
       InitialPosition();
     }
 
@@ -65,7 +70,13 @@ void loop()
       //Serial.println("bhere");
       MotionBlue();
       Serial.write('#');
-      serialWriting("203");
+      serialWriting("204");
+      InitialPosition();
+    }
+
+    if (message == "224"){
+      Serial.write('#');
+      serialWriting("204");
       InitialPosition();
     }
 
@@ -110,68 +121,68 @@ void serialWriting(String message){
 /***************************************/
 void MotionCarry ()
 {
-  //Serial.println("aahere");
-  servo2PPos=servoMotion(100, 20, 2);
+  servo2PPos=servoMotion(80, 20, 2);
   servo3PPos=servoMotion(120, 20, 3);
   servo6PPos=servoMotion(70, 20, 6);
-  servo5PPos=servoMotion(20, 20, 5);
-  servo6PPos=servoMotion(20, 40, 6);
-  servo5PPos=servoMotion(80, 40, 5);
+  servo5PPos=servoMotion(50, 20, 5);
+  servo6PPos=servoMotion(25, 40, 6);
+  servo5PPos=servoMotion(60, 40, 5);
+  servo2PPos=servoMotion(110, 40, 3);
   servo3PPos=servoMotion(90, 40, 3);
   servo1PPos=servoMotion(10, 40, 1);
-  servo3PPos=servoMotion(120, 20, 3);
-  servo5PPos=servoMotion(10, 20, 5);
-  servo6PPos=servoMotion(50, 20, 6);
-  servo3PPos=servoMotion(90,40,3);
+  servo2PPos=servoMotion(80, 20, 2);
+
 }
 
 
 
 void InitialPosition()
 {
-  //Serial.println("bbhere");
-  servo5PPos=servoMotion(80, 20, 5);
-  servo1PPos=servoMotion(50, 20, 1);
-  servo2PPos=servoMotion(120, 20, 2);
-  servo3PPos=servoMotion(115, 20, 3);
+  servo1PPos=servoMotion(60, 20, 1);
+  servo3PPos=servoMotion(120, 20, 3);
+  servo2PPos=servoMotion(130, 40, 2);
   servo4PPos=servoMotion(60, 20, 4);
+  servo5PPos=servoMotion(80, 20, 5);
   servo6PPos=servoMotion(50, 20, 6);
 }
 
 void MotionRed(){
+   servo2PPos=servoMotion(80, 20, 2);
   servo3PPos=servoMotion(120, 20, 3);
   servo6PPos=servoMotion(70, 20, 6);
-  servo5PPos=servoMotion(20, 20, 5);
-  servo6PPos=servoMotion(20, 40, 6);
-  servo5PPos=servoMotion(80, 40, 5);
-  servo3PPos=servoMotion(90, 40, 3);
-  servo1PPos=servoMotion(100, 40, 1);
-  servo5PPos=servoMotion(10, 20, 5);
+  servo5PPos=servoMotion(50, 20, 5);
+  servo6PPos=servoMotion(25, 40, 6);
+  servo5PPos=servoMotion(60, 40, 5);
+  servo2PPos=servoMotion(110, 40, 3);
+  servo3PPos=servoMotion(120, 40, 3);
+  servo1PPos=servoMotion(110, 40, 1);
   servo6PPos=servoMotion(50, 20, 6);
 
 }
 
 void MotionGreen(){
+  servo2PPos=servoMotion(80, 20, 2);
   servo3PPos=servoMotion(120, 20, 3);
   servo6PPos=servoMotion(70, 20, 6);
-  servo5PPos=servoMotion(20, 20, 5);
-  servo6PPos=servoMotion(20, 40, 6);
-  servo5PPos=servoMotion(80, 40, 5);
-  servo3PPos=servoMotion(90, 40, 3);
-  servo1PPos=servoMotion(160, 40, 1);
-  servo5PPos=servoMotion(10, 20, 5);
+  servo5PPos=servoMotion(50, 20, 5);
+  servo6PPos=servoMotion(25, 40, 6);
+  servo5PPos=servoMotion(60, 40, 5);
+  servo2PPos=servoMotion(110, 40, 3);
+  servo3PPos=servoMotion(120, 40, 3);
+  servo1PPos=servoMotion(140, 40, 1);
   servo6PPos=servoMotion(50, 20, 6);
 }
 
 void MotionBlue(){
+  servo2PPos=servoMotion(80, 20, 2);
   servo3PPos=servoMotion(120, 20, 3);
   servo6PPos=servoMotion(70, 20, 6);
-  servo5PPos=servoMotion(20, 20, 5);
-  servo6PPos=servoMotion(20, 40, 6);
-  servo5PPos=servoMotion(80, 40, 5);
-  servo3PPos=servoMotion(90, 40, 3);
-  servo1PPos=servoMotion(250, 40, 1);
-  servo5PPos=servoMotion(10, 20, 5);
+  servo5PPos=servoMotion(50, 20, 5);
+  servo6PPos=servoMotion(25, 40, 6);
+  servo5PPos=servoMotion(60, 40, 5);
+  servo2PPos=servoMotion(110, 40, 3);
+  servo3PPos=servoMotion(120, 40, 3);
+  servo1PPos=servoMotion(220, 40, 1);
   servo6PPos=servoMotion(50, 20, 6);
 }
 
@@ -237,7 +248,7 @@ void setUpPosition(){
   //100 45 degrees right of the tape
   //50 tape alignment
   //0-10 45 degrees left of the band
-  servo1PPos = 50;
+  servo1PPos = 60;
   servo01.write(servo1PPos);
   delay(500);
   //shoulder-02
