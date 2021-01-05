@@ -32,12 +32,6 @@ void loop()
     message = serialReading();
     if(message!="000")
      Serial.println(message);
-    
-    //dataArray[3]=0;
-    //Serial.readBytes(dataArray,3);
-    //message = String(dataArray);
-    //message = Serial.readString();//Has a "time out" parameter. Default value of "time out" is 1000ms.
-    //Serial.print(message);
 
     if (message == "200"){
       Serial.write('#');
@@ -79,13 +73,7 @@ void loop()
       serialWriting("204");
       InitialPosition();
     }
-
-    /*if(message =="211"){
-      Serial.write('#');
-      serialWriting("000");//idle
-    }*/
-
-    
+   
     if (message == "0"){
       InitialPosition();
     }
@@ -126,11 +114,8 @@ void MotionCarry ()
   servo6PPos=servoMotion(70, 20, 6);
   servo5PPos=servoMotion(50, 20, 5);
   servo6PPos=servoMotion(25, 40, 6);
-  servo5PPos=servoMotion(60, 40, 5);
-  servo2PPos=servoMotion(110, 40, 3);
   servo3PPos=servoMotion(90, 40, 3);
   servo1PPos=servoMotion(10, 40, 1);
-  servo2PPos=servoMotion(80, 20, 2);
 
 }
 
@@ -139,49 +124,31 @@ void MotionCarry ()
 void InitialPosition()
 {
   servo1PPos=servoMotion(60, 20, 1);
-  servo3PPos=servoMotion(120, 20, 3);
   servo2PPos=servoMotion(130, 40, 2);
+  servo3PPos=servoMotion(120, 20, 3);
   servo4PPos=servoMotion(60, 20, 4);
   servo5PPos=servoMotion(80, 20, 5);
   servo6PPos=servoMotion(50, 20, 6);
 }
 
 void MotionRed(){
-   servo2PPos=servoMotion(80, 20, 2);
-  servo3PPos=servoMotion(120, 20, 3);
-  servo6PPos=servoMotion(70, 20, 6);
-  servo5PPos=servoMotion(50, 20, 5);
-  servo6PPos=servoMotion(25, 40, 6);
-  servo5PPos=servoMotion(60, 40, 5);
-  servo2PPos=servoMotion(110, 40, 3);
-  servo3PPos=servoMotion(120, 40, 3);
+  servo1PPos=servoMotion(60, 40, 1);
+  servo3PPos=servoMotion(70, 40, 3);
   servo1PPos=servoMotion(110, 40, 1);
   servo6PPos=servoMotion(50, 20, 6);
 
 }
 
 void MotionGreen(){
-  servo2PPos=servoMotion(80, 20, 2);
-  servo3PPos=servoMotion(120, 20, 3);
-  servo6PPos=servoMotion(70, 20, 6);
-  servo5PPos=servoMotion(50, 20, 5);
-  servo6PPos=servoMotion(25, 40, 6);
-  servo5PPos=servoMotion(60, 40, 5);
-  servo2PPos=servoMotion(110, 40, 3);
-  servo3PPos=servoMotion(120, 40, 3);
+  servo1PPos=servoMotion(60, 40, 1);
+  servo3PPos=servoMotion(70, 40, 3);
   servo1PPos=servoMotion(140, 40, 1);
   servo6PPos=servoMotion(50, 20, 6);
 }
 
 void MotionBlue(){
-  servo2PPos=servoMotion(80, 20, 2);
-  servo3PPos=servoMotion(120, 20, 3);
-  servo6PPos=servoMotion(70, 20, 6);
-  servo5PPos=servoMotion(50, 20, 5);
-  servo6PPos=servoMotion(25, 40, 6);
-  servo5PPos=servoMotion(60, 40, 5);
-  servo2PPos=servoMotion(110, 40, 3);
-  servo3PPos=servoMotion(120, 40, 3);
+  servo1PPos=servoMotion(60, 40, 1);
+  servo3PPos=servoMotion(70, 40, 3);
   servo1PPos=servoMotion(220, 40, 1);
   servo6PPos=servoMotion(50, 20, 6);
 }
@@ -241,56 +208,26 @@ int servoMotion(int posS, int dlyTime, int servoNbr )
 }
 
 void setUpPosition(){
-    //with the black tape in front
-  //Waist-01
-  //250-200 135 degrees right of the tape
-  //150 90 degrees right of the tape
-  //100 45 degrees right of the tape
-  //50 tape alignment
-  //0-10 45 degrees left of the band
   servo1PPos = 60;
   servo01.write(servo1PPos);
   delay(500);
-  //shoulder-02
-  //200 Parallel to the ground, leaning back
-  //150 45 degrees tilted back
-  //100 upright
-  //45 degrees forward leaning
-  //0-10 parallel to the floor, tilted forward
-  servo2PPos = 120;
+
+  servo2PPos = 130;
   servo02.write(servo2PPos);
   delay(500);
-  //Elbow-03
-  //200-150 vertical down
-  //120 45 degrees downward
-  //90 parallel to the ground
-  //40 45 degrees upwards
-  //0 vertical up
-  servo3PPos = 115;
+
+  servo3PPos = 120;
   servo03.write(servo3PPos);
   delay(500);
-  //wrist roll-04
-  //250-200 right up
-  //150 parallel to the ground
-  //100 45 degrees to the right
-  //60 perpendicular to the ground
-  //0 45 degrees towards left ground
+
   servo4PPos = 60;
   servo04.write(servo4PPos);
   delay(500);
-  //Bilek pitch-05(Shoulder is vertical when elbow is parallel to floor)
-  //250-200 vertical up
-  //120 up 45 degrees
-  //80 parallel to the ground
-  //40 down 45 degrees
-  //0 vertical down
+
   servo5PPos = 80;
   servo05.write(servo5PPos);
   delay(500);
-  //gripper-06
-  //250-200-150-100 fully open
-  //50 half open
-  //0-10 fully closed
+
   servo6PPos = 50;
   servo06.write(servo6PPos);
   delay(500);
