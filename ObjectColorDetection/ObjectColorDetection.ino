@@ -3,16 +3,18 @@
 SoftwareSerial BTSerial(15, 16);   // RX | TX
 
 //object detection
-int LED = 13;
+int yellowLED = 13;
+int redLED = 12;
+int greenLED = 11;
 int obstaclePin = 14;
 int hasObstacle = HIGH;
 String objInf;
 String clrInf;
 
 //color detection
-int redPin = 9;
-int greenPin = 10;
-int bluePin = 11;
+int redPin = 8;
+int greenPin = 9;
+int bluePin = 10;
 
 int outPin = 7; //Color Sensor OUT to Arduino pin 4
 int S2 = 6; //Color sensor pin S2 to Arduino pin 7
@@ -33,7 +35,9 @@ int pulseWidth=0;
 
 void setup() {
   //object detection
-  pinMode(LED, OUTPUT);
+  pinMode(yellowLED, OUTPUT);
+  pinMode(greenLED, OUTPUT);
+  pinMode(redLED, OUTPUT);
   pinMode(obstaclePin, INPUT);
 
   //color detection
@@ -66,7 +70,9 @@ void loop() {
     digitalWrite(greenPin,HIGH);
     digitalWrite(bluePin,HIGH);
     digitalWrite(SensorLed,LOW);
-    digitalWrite(LED,LOW);
+    digitalWrite(greenLED,LOW);
+    digitalWrite(redLED,LOW);
+    digitalWrite(yellowLED,LOW);
     
     if(preState==1)
       Serial.println("OFF_STATE");
@@ -77,25 +83,60 @@ void loop() {
   //ON STATE
   if(state==1){
     
-    if(preState==0)
+    if(preState==0){
       Serial.println("ON_STATE");
-
+      digitalWrite(greenLED,LOW);
+      digitalWrite(redLED,LOW);
+      digitalWrite(yellowLED,HIGH);
+    }
 
     if(BTSerial.available()){
       message = BTSerial.readString();
-      Serial.print("message: ");
+      Serial.print("message from central: ");
       Serial.println(message);
     }
-  
+
+    //If start message is came from computer.
     if(message=="200"){
-      start=1;
-      Serial.println("START");
-      message="";
+      //Communicating with robot arm.
+      short counter=0;
+      Serial.write('#');
+      serialWriting("200");
+      while(Serial.available()==0 && counter<5){
+        delay(1000);
+        counter++;
+        }
+      message = serialReading();
+
+      //Establishing communication
+      if(message == "202"){
+        Serial.println("START");
+        digitalWrite(greenLED,HIGH);
+        digitalWrite(redLED,LOW);
+        digitalWrite(yellowLED,LOW);
+        serialBTWriting(message);
+        start=1;
+        message="";
+      }
+      //Inability to communicate 
+      else{
+        serialBTWriting("205");
+        start=0;
+        digitalWrite(redLED,HIGH);
+        digitalWrite(yellowLED,LOW);
+        digitalWrite(greenLED,LOW);
+        Serial.println("Fail to start.");
+        message="";
+      }
     }
-    
+
+    //If stop message is came from computer.
     if(message=="201") {
       start=0;
       Serial.println("STOP");
+      digitalWrite(redLED,HIGH);
+      digitalWrite(yellowLED,LOW);
+      digitalWrite(greenLED,LOW);
       message="";
     }
 
@@ -105,7 +146,7 @@ void loop() {
  }
  //ON STATE
     
- delay(250);
+ delay(350);
 }//End of loop
 /***************************************/
 
@@ -133,14 +174,17 @@ void startLoop(){
 
   message = objectDetection(); 
      
-    if(message=="202"){
+    if(message=="203"){
       serialBTWriting(message);
       colorDetection();
       while(Serial.available()==0){};
       message = serialReading();
-      if(message=="203"){
+      if(message=="204"){
        serialBTWriting(message);
        Serial.println(message);
+       digitalWrite(redPin,HIGH);
+       digitalWrite(greenPin,HIGH);
+       digitalWrite(bluePin,HIGH);
        message="";
       }      
     }       
@@ -151,11 +195,11 @@ String objectDetection(){
   hasObstacle = digitalRead(obstaclePin);
   
   if (hasObstacle == LOW){
-    digitalWrite(LED, HIGH);
+    digitalWrite(yellowLED, HIGH);
     objInf = "212";
   }
   else{
-    digitalWrite(LED,LOW);
+    digitalWrite(yellowLED,LOW);
     objInf = "211"; 
   }
   
@@ -168,7 +212,7 @@ String objectDetection(){
       Serial.write('#');
       serialWriting(objInf);
       serialBTWriting(objInf);
-      while(messageIn!="202"){
+      while(messageIn!="203"){
       messageIn = serialReading();
       } 
       Serial.println(messageIn);     
@@ -186,7 +230,7 @@ void colorDetection(){
   digitalWrite(SensorLed,HIGH);
   digitalWrite(S2,LOW);
   digitalWrite(S3,LOW);
-  
+  delay(1000);
   pulseWidth = pulseIn(outPin,LOW);
   
   //Remaping the value of the frequency to the RGB Model of 0 to 255
@@ -280,6 +324,8 @@ void serialBTWriting(String message){
   BTSerial.write("\n");
 }
 /***************************************/
+//If Serial is available, then read, and send incoming data.
+//If Serial is not available, then send, "111" string.
 String serialReading(){
   String messageIn;
   char messageArray[3]="111";
@@ -288,6 +334,7 @@ String serialReading(){
         Serial.readBytes(messageArray,3);            
   }
   messageIn = String(messageArray);
-  messageIn.remove(3,2);
+  Serial.println(messageIn);//For controlling of the working of above line.
+  messageIn.remove(3);
   return messageIn;
 }
