@@ -1,6 +1,6 @@
 ﻿namespace Central_Management
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         ///Gerekli tasarımcı değişkeni.
@@ -42,6 +42,7 @@
             this.btnLctConf = new System.Windows.Forms.Button();
             this.btnSysInf = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.lblCntHeader = new System.Windows.Forms.Label();
             this.lblState = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -73,13 +74,17 @@
             this.btnOFF.Visible = false;
             this.btnOFF.Click += new System.EventHandler(this.btnOFF_Click);
             // 
+            // serialPort1
+            // 
+            this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
+            // 
             // btnOpen
             // 
             this.btnOpen.Location = new System.Drawing.Point(10, 86);
             this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(75, 23);
+            this.btnOpen.Size = new System.Drawing.Size(104, 23);
             this.btnOpen.TabIndex = 2;
-            this.btnOpen.Text = "Open";
+            this.btnOpen.Text = "Open connection";
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
@@ -88,9 +93,9 @@
             this.btnClose.Enabled = false;
             this.btnClose.Location = new System.Drawing.Point(11, 96);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.Size = new System.Drawing.Size(103, 23);
             this.btnClose.TabIndex = 3;
-            this.btnClose.Text = "Close";
+            this.btnClose.Text = "Close connection";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Visible = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -175,6 +180,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.lblCntHeader);
             this.groupBox2.Controls.Add(this.lblState);
             this.groupBox2.Controls.Add(this.label1);
@@ -190,6 +196,16 @@
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "CONNECTION CONTROL";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(268, 105);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "label2";
+            this.label2.Visible = false;
             // 
             // lblCntHeader
             // 
@@ -228,16 +244,16 @@
             this.PortTB.Size = new System.Drawing.Size(76, 20);
             this.PortTB.TabIndex = 4;
             // 
-            // Form1
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(403, 287);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.sysGrBx);
-            this.Name = "Form1";
+            this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Main";
             this.sysGrBx.ResumeLayout(false);
             this.sysGrBx.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -265,6 +281,7 @@
         private System.Windows.Forms.Label lblRbt;
         private System.Windows.Forms.Label lblCntHeader;
         private System.Windows.Forms.Label lblSensor;
+        private System.Windows.Forms.Label label2;
     }
 }
 
