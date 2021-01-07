@@ -4,6 +4,8 @@ int LED = 13;
 int obstaclePin = 14;
 int hasObstacle = HIGH;
 
+
+
 //color detection
 int redPin = 9;
 int greenPin = 10;
@@ -15,7 +17,7 @@ int S3 = 5; //Color sensor pin S3 to Arduino pin 8
 int SensorLed = 4;
 
 int buttonPin = 2;
-int state = 0;
+
 
 int RCS; //Red Color Strength
 int GCS; //Green Color Strength
@@ -39,6 +41,7 @@ void setup() {
   pinMode(SensorLed,OUTPUT);
 
   pinMode(buttonPin,INPUT_PULLUP);
+
 
   Serial.begin(115200); //turn on serial port
 
@@ -85,6 +88,7 @@ void loop() {
 
   if(state==1)
   {
+
       //Start by reading red component of the color
       //S2 and S3 should be set LOW
       digitalWrite(SensorLed,HIGH);
@@ -96,7 +100,7 @@ void loop() {
       //Remaping the value of the frequency to the RGB Model of 0 to 255
       pulseWidth = map(pulseWidth,13 ,67,255,0);
       RCS=pulseWidth;
-      
+
       Serial.print(" R ");
       Serial.print(pulseWidth);
       Serial.print(" , ");
@@ -113,9 +117,7 @@ void loop() {
       pulseWidth = map(pulseWidth, 13,87,255,0);
       GCS=pulseWidth;
       
-      Serial.print(" G ");
-      Serial.print(pulseWidth);
-      Serial.print(" , ");
+
       
       
       
@@ -130,6 +132,7 @@ void loop() {
       //Remaping the value of the frequency to the RGB Model of 0 to 255
       pulseWidth = map(pulseWidth, 10,72,255,0);
       BCS=pulseWidth;
+
       
       Serial.print(" B ");
       Serial.print(pulseWidth);
@@ -137,29 +140,36 @@ void loop() {
       Serial.println("");
       
       if(RCS>BCS && RCS>GCS)
-      {
+
       digitalWrite(redPin,LOW);
       digitalWrite(greenPin,HIGH);
       digitalWrite(bluePin,HIGH);
       Serial.println("RedLed");
+
       }
       
       if(GCS>RCS && GCS>BCS)
       {
+
       digitalWrite(redPin,HIGH);
       digitalWrite(greenPin,LOW);
       digitalWrite(bluePin,HIGH);
       Serial.println("GreenLed");
+
       }
       
       if(BCS>RCS && BCS>GCS)
       {
+
       digitalWrite(redPin,HIGH);
       digitalWrite(greenPin,HIGH);
       digitalWrite(bluePin,LOW);
       Serial.println("BlueLed");
+
       }
   }
       
  delay(250);
 }
+
+    

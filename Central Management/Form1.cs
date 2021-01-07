@@ -20,77 +20,61 @@ namespace Central_Management
 
         }
 
-        private void OPENbtn_Click(object sender, EventArgs e)
+        private void btnOpen_Click(object sender, EventArgs e)
         {
             if (PortTB.Text == "")
                 MessageBox.Show("Enter the port name!");
             else
             {
-                if(SerialConnection()==true)
+                if (SerialConnection() == true)
                 {
-                    OPENbtn.Enabled = false;
-                    CLOSEbtn.Enabled = true;
-                    StateLBL.Text = "";
+                    btnOpen.Enabled = false;
+                    btnClose.Enabled = true;
+                    lblState.Text = "";
                     MessageBox.Show("Connection established!");
-                    StateLBL.Text = "Connected";
+                    lblState.Text = "Connected";
+                    btnOpen.Visible = false;
+                    btnClose.Visible = true;
+                    btnON.Enabled = true;
+                    btnSysInf.Enabled = true;
+                    btnLctConf.Enabled = true;
 
                 }
                 else
                 {
                     MessageBox.Show("Can not connect!");
                 }
-                    
-
             }
         }
 
-        private void CLOSEbtn_Click(object sender, EventArgs e)
+        private void btnClose_Click(object sender, EventArgs e)
         {
+            if (btnOFF.Visible == true)
+            {
+                MessageBox.Show("System is on!");
+                return;
+            }
+
             serialPort1.Close();
             if (serialPort1.IsOpen == false)
             {
-                OPENbtn.Enabled = true;
-                CLOSEbtn.Enabled = false;
-                StateLBL.Text = "";
+                btnOpen.Enabled = true;
+                btnClose.Enabled = false;
+                lblState.Text = "";
                 MessageBox.Show("Connection closed!");
-                StateLBL.Text = "Not connected";
+                lblState.Text = "Not connected";
+                btnOpen.Visible = true;
+                btnClose.Visible = false;
+                btnON.Enabled = false;
+                btnON.Enabled = false;
+                btnSysInf.Enabled = false;
+                btnLctConf.Enabled = false;
+
 
             }
-                
         }
 
-        private void ONbtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                serialPort1.Write("1");
-                ONbtn.Enabled = false;
-                OFFbtn.Enabled = true;
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            
-            
-        }
-
-        private void OFFbtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                serialPort1.Write("0");
-                ONbtn.Enabled = true;
-                OFFbtn.Enabled = false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            
-        }
-
-        private bool SerialConnection ()
+        private bool SerialConnection()
         {
             bool state = false;
             try
@@ -107,5 +91,42 @@ namespace Central_Management
 
             return state;
         }
+
+        private void btnOFF_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                serialPort1.Write("0");
+                btnON.Enabled = true;
+                btnOFF.Enabled = false;
+                btnON.Visible = true;
+                btnOFF.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        private void btnON_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                serialPort1.Write("1");
+                btnON.Enabled = false;
+                btnOFF.Enabled = true;
+                btnON.Visible = false;
+                btnOFF.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        
     }
 }
+
