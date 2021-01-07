@@ -3,9 +3,8 @@
 int LED = 13;
 int obstaclePin = 14;
 int hasObstacle = HIGH;
-String objectInfo="250";//I couldn't figure out if this number is necesary or not.
-String colorInfo="255"; //I couldn't figure out if this number is necesary or not.
-String message="";
+
+
 
 //color detection
 int redPin = 9;
@@ -18,8 +17,7 @@ int S3 = 5; //Color sensor pin S3 to Arduino pin 8
 int SensorLed = 4;
 
 int buttonPin = 2;
-short state = 0;
-short preState=0;
+
 
 int RCS; //Red Color Strength
 int GCS; //Green Color Strength
@@ -44,70 +42,53 @@ void setup() {
 
   pinMode(buttonPin,INPUT_PULLUP);
 
-  Serial.begin(9600); //turn on serial port
 
-  Serial.println("OFF_STATE");
+  Serial.begin(115200); //turn on serial port
+
 }
 
 void loop() {
-  //Button on/off switch
-    if(state==0){
-      if(digitalRead(buttonPin)==LOW){
-        state=1;
-        preState=0;
-      }
-      preState=0;
-    }
-    else{
-       if(digitalRead(buttonPin)==LOW){
-          state=0;
-          preState=1;
-       }
-       preState=1;
-    }
 
-    //off state
-    if(state==0){
-      digitalWrite(redPin,HIGH);
-      digitalWrite(greenPin,HIGH);
-      digitalWrite(bluePin,HIGH);
-      digitalWrite(SensorLed,LOW);
+//object detection
+  hasObstacle = digitalRead(obstaclePin);
+  
+    if (hasObstacle == LOW)
+    {
+      digitalWrite(LED, HIGH);
+    }
+    else
+    {
       digitalWrite(LED,LOW);
-      
-      if(preState==1)
-         Serial.println("OFF_STATE");
     }
 
-    //on state
-    if(state==1){
-      
-        if(preState==0)
-           Serial.println("ON_STATE");
-           
-      //object detection
-      hasObstacle = digitalRead(obstaclePin);
-    
-      if (hasObstacle == LOW){
-        digitalWrite(LED, HIGH);
-        objectInfo = "251";
-      }
-      else{
-        digitalWrite(LED,LOW);
-        objectInfo = "250"; 
-      }
 
-        if(Serial.available()>0){
-          message = Serial.readString(); 
-            if(message=="204"){
-              Serial.println("***************************");
-              Serial.print("Object Info Message:  ");
-              serialWriting(objectInfo);
-              Serial.println("***************************");
-              delay(5000);
-            }
-          }
-      
-      //color detection
+//color detection
+  if(state==0)
+  {
+    Serial.println("here1");
+    if(digitalRead(buttonPin)==LOW)
+    {
+      state=1;
+    }
+  }
+  else
+  {
+    Serial.println("here2");
+    if(digitalRead(buttonPin)==LOW)
+    state=0;
+  }
+
+  if(state==0)
+  {
+    digitalWrite(redPin,HIGH);
+    digitalWrite(greenPin,HIGH);
+    digitalWrite(bluePin,HIGH);
+    digitalWrite(SensorLed,LOW);
+  }
+
+  if(state==1)
+  {
+
       //Start by reading red component of the color
       //S2 and S3 should be set LOW
       digitalWrite(SensorLed,HIGH);
@@ -135,10 +116,8 @@ void loop() {
       //Remaping the value of the frequency to the RGB Model of 0 to 255
       pulseWidth = map(pulseWidth, 13,87,255,0);
       GCS=pulseWidth;
+      
 
-      Serial.print(" G ");
-      Serial.print(pulseWidth);
-      Serial.print(" , ");
       
       
       
@@ -154,47 +133,43 @@ void loop() {
       pulseWidth = map(pulseWidth, 10,72,255,0);
       BCS=pulseWidth;
 
+      
       Serial.print(" B ");
       Serial.print(pulseWidth);
+      Serial.print(" , ");
       Serial.println("");
+      
+      if(RCS>BCS && RCS>GCS)
 
-      colorInfo="255";
-      if(RCS>BCS && RCS>GCS){
       digitalWrite(redPin,LOW);
       digitalWrite(greenPin,HIGH);
       digitalWrite(bluePin,HIGH);
       Serial.println("RedLed");
-      colorInfo=252;
+
       }
       
-      if(GCS>RCS && GCS>BCS){
+      if(GCS>RCS && GCS>BCS)
+      {
+
       digitalWrite(redPin,HIGH);
       digitalWrite(greenPin,LOW);
       digitalWrite(bluePin,HIGH);
       Serial.println("GreenLed");
-      colorInfo=253;
+
       }
       
-      if(BCS>RCS && BCS>GCS){
+      if(BCS>RCS && BCS>GCS)
+      {
+
       digitalWrite(redPin,HIGH);
       digitalWrite(greenPin,HIGH);
       digitalWrite(bluePin,LOW);
       Serial.println("BlueLed");
-      colorInfo=254;
+
       }
-
-      Serial.print("Color Info Message:  ");
-      serialWriting(colorInfo);
-
-      Serial.println("-----------------------");
-    }
-          
-  delay(250);
   }
+      
+ delay(250);
+}
 
-  void serialWriting(String message){
-    for(short i=0; i<3;i++){
-      Serial.write(message.charAt(i));
-    }
-    Serial.write("\n");
-  }
+    
