@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.btnON = new System.Windows.Forms.Button();
             this.btnOFF = new System.Windows.Forms.Button();
-            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.sysGrBx = new System.Windows.Forms.GroupBox();
@@ -44,8 +42,11 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblCntHeader = new System.Windows.Forms.Label();
             this.lblState = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.PortTB = new System.Windows.Forms.TextBox();
+            this.tbRPort = new System.Windows.Forms.Label();
+            this.tbSPort = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.lblRP = new System.Windows.Forms.Label();
+            this.lblSP = new System.Windows.Forms.Label();
             this.sysGrBx.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -75,7 +76,7 @@
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(10, 86);
+            this.btnOpen.Location = new System.Drawing.Point(262, 88);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 2;
@@ -86,7 +87,7 @@
             // btnClose
             // 
             this.btnClose.Enabled = false;
-            this.btnClose.Location = new System.Drawing.Point(11, 96);
+            this.btnClose.Location = new System.Drawing.Point(263, 98);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 3;
@@ -174,10 +175,13 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblSP);
+            this.groupBox2.Controls.Add(this.lblRP);
+            this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Controls.Add(this.lblCntHeader);
             this.groupBox2.Controls.Add(this.lblState);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.PortTB);
+            this.groupBox2.Controls.Add(this.tbRPort);
+            this.groupBox2.Controls.Add(this.tbSPort);
             this.groupBox2.Controls.Add(this.btnOpen);
             this.groupBox2.Controls.Add(this.btnClose);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -203,29 +207,55 @@
             // lblState
             // 
             this.lblState.AutoSize = true;
-            this.lblState.Location = new System.Drawing.Point(232, 73);
+            this.lblState.Location = new System.Drawing.Point(232, 61);
             this.lblState.Name = "lblState";
             this.lblState.Size = new System.Drawing.Size(78, 13);
             this.lblState.TabIndex = 6;
             this.lblState.Text = "Not connected";
             // 
-            // label1
+            // tbRPort
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 37);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(106, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Enter the port name :";
+            this.tbRPort.AutoSize = true;
+            this.tbRPort.Location = new System.Drawing.Point(11, 35);
+            this.tbRPort.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.tbRPort.Name = "tbRPort";
+            this.tbRPort.Size = new System.Drawing.Size(106, 13);
+            this.tbRPort.TabIndex = 5;
+            this.tbRPort.Text = "Enter the port name :";
             // 
-            // PortTB
+            // tbSPort
             // 
-            this.PortTB.Location = new System.Drawing.Point(10, 52);
-            this.PortTB.Margin = new System.Windows.Forms.Padding(2);
-            this.PortTB.Name = "PortTB";
-            this.PortTB.Size = new System.Drawing.Size(76, 20);
-            this.PortTB.TabIndex = 4;
+            this.tbSPort.Location = new System.Drawing.Point(10, 88);
+            this.tbSPort.Margin = new System.Windows.Forms.Padding(2);
+            this.tbSPort.Name = "tbSPort";
+            this.tbSPort.Size = new System.Drawing.Size(76, 20);
+            this.tbSPort.TabIndex = 4;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(105, 88);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(76, 20);
+            this.textBox1.TabIndex = 8;
+            // 
+            // lblRP
+            // 
+            this.lblRP.AutoSize = true;
+            this.lblRP.Location = new System.Drawing.Point(12, 61);
+            this.lblRP.Name = "lblRP";
+            this.lblRP.Size = new System.Drawing.Size(57, 13);
+            this.lblRP.TabIndex = 9;
+            this.lblRP.Text = "Robot Arm";
+            // 
+            // lblSP
+            // 
+            this.lblSP.AutoSize = true;
+            this.lblSP.Location = new System.Drawing.Point(102, 61);
+            this.lblSP.Name = "lblSP";
+            this.lblSP.Size = new System.Drawing.Size(45, 13);
+            this.lblSP.TabIndex = 10;
+            this.lblSP.Text = "Sensors";
             // 
             // Form1
             // 
@@ -248,13 +278,12 @@
 
         private System.Windows.Forms.Button btnON;
         private System.Windows.Forms.Button btnOFF;
-        private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.GroupBox sysGrBx;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox PortTB;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbSPort;
+        private System.Windows.Forms.Label tbRPort;
         private System.Windows.Forms.Label lblState;
         private System.Windows.Forms.Label lblSysHeader;
         private System.Windows.Forms.Button btnLctConf;
@@ -263,6 +292,9 @@
         private System.Windows.Forms.Label lblRbt;
         private System.Windows.Forms.Label lblCntHeader;
         private System.Windows.Forms.Label lblSensor;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label lblSP;
+        private System.Windows.Forms.Label lblRP;
     }
 }
 
