@@ -16,5 +16,11 @@ namespace Central_Management
         {
             InitializeComponent();
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            var frm = this.FindForm();
+            frm.Close();
+        }
     }
 }

@@ -166,6 +166,7 @@
             this.btnLctConf.TabIndex = 8;
             this.btnLctConf.Text = "Location Configuration";
             this.btnLctConf.UseVisualStyleBackColor = true;
+            this.btnLctConf.Click += new System.EventHandler(this.btnLctConf_Click);
             // 
             // btnSysInf
             // 

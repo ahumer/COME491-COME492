@@ -198,6 +198,11 @@ namespace Central_Management
             }
         }
 
+        private void btnLctConf_Click(object sender, EventArgs e)
+        {
+            Configuration conf = new Configuration();
+            conf.Show();
+        }
     }
 
     public class systemData
