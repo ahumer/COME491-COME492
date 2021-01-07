@@ -78,9 +78,9 @@
             this.groupBox2.Controls.Add(this.gbLocation);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.groupBox2.Location = new System.Drawing.Point(247, 0);
+            this.groupBox2.Location = new System.Drawing.Point(248, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(320, 284);
+            this.groupBox2.Size = new System.Drawing.Size(297, 284);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             // 
@@ -98,7 +98,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(21, 20);
+            this.label1.Location = new System.Drawing.Point(11, 20);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(240, 22);
             this.label1.TabIndex = 0;
@@ -109,7 +109,7 @@
             this.gbLocation.Controls.Add(this.lbLctn3);
             this.gbLocation.Controls.Add(this.lbLctn2);
             this.gbLocation.Controls.Add(this.rbLctn1);
-            this.gbLocation.Location = new System.Drawing.Point(6, 61);
+            this.gbLocation.Location = new System.Drawing.Point(15, 61);
             this.gbLocation.Name = "gbLocation";
             this.gbLocation.Size = new System.Drawing.Size(127, 158);
             this.gbLocation.TabIndex = 1;
@@ -180,7 +180,7 @@
             this.gbProduct.Controls.Add(this.rbB);
             this.gbProduct.Controls.Add(this.rbG);
             this.gbProduct.Controls.Add(this.rbR);
-            this.gbProduct.Location = new System.Drawing.Point(180, 61);
+            this.gbProduct.Location = new System.Drawing.Point(160, 61);
             this.gbProduct.Name = "gbProduct";
             this.gbProduct.Size = new System.Drawing.Size(129, 158);
             this.gbProduct.TabIndex = 2;
@@ -254,7 +254,7 @@
             // 
             // btnMatch
             // 
-            this.btnMatch.Location = new System.Drawing.Point(233, 235);
+            this.btnMatch.Location = new System.Drawing.Point(214, 235);
             this.btnMatch.Name = "btnMatch";
             this.btnMatch.Size = new System.Drawing.Size(75, 23);
             this.btnMatch.TabIndex = 3;
@@ -274,7 +274,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(567, 284);
+            this.ClientSize = new System.Drawing.Size(545, 284);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.gbConfLsit);
             this.Name = "Configuration";
