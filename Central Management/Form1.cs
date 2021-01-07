@@ -106,6 +106,8 @@ namespace Central_Management
         {
             try
             {
+
+
                 btnOFF.Enabled = false;
                 btnON.Enabled = true;
                 btnOFF.Visible = false;
@@ -125,8 +127,10 @@ namespace Central_Management
             bool state = false;
             try
             {
+
                 
                 state=systemInit();
+
                 btnON.Enabled = false;
                 btnOFF.Enabled = true;
                 btnON.Visible = false;

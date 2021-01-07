@@ -265,6 +265,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.sysGrBx);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.sysGrBx.ResumeLayout(false);
             this.sysGrBx.PerformLayout();
