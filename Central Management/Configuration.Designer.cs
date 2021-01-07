@@ -48,6 +48,7 @@
             this.rbB = new System.Windows.Forms.RadioButton();
             this.btnMatch = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.gbConfLsit.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.gbLocation.SuspendLayout();
@@ -56,7 +57,7 @@
             // 
             // gbConfLsit
             // 
-            this.gbConfLsit.Controls.Add(this.btnClose);
+            this.gbConfLsit.Controls.Add(this.btnSave);
             this.gbConfLsit.Controls.Add(this.lblBLctn);
             this.gbConfLsit.Controls.Add(this.lblGLctn);
             this.gbConfLsit.Controls.Add(this.lblRLctn);
@@ -73,6 +74,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnClose);
             this.groupBox2.Controls.Add(this.btnMatch);
             this.groupBox2.Controls.Add(this.gbProduct);
             this.groupBox2.Controls.Add(this.gbLocation);
@@ -109,7 +111,7 @@
             this.gbLocation.Controls.Add(this.lbLctn3);
             this.gbLocation.Controls.Add(this.lbLctn2);
             this.gbLocation.Controls.Add(this.rbLctn1);
-            this.gbLocation.Location = new System.Drawing.Point(15, 61);
+            this.gbLocation.Location = new System.Drawing.Point(158, 58);
             this.gbLocation.Name = "gbLocation";
             this.gbLocation.Size = new System.Drawing.Size(127, 158);
             this.gbLocation.TabIndex = 1;
@@ -180,7 +182,7 @@
             this.gbProduct.Controls.Add(this.rbB);
             this.gbProduct.Controls.Add(this.rbG);
             this.gbProduct.Controls.Add(this.rbR);
-            this.gbProduct.Location = new System.Drawing.Point(160, 61);
+            this.gbProduct.Location = new System.Drawing.Point(15, 58);
             this.gbProduct.Name = "gbProduct";
             this.gbProduct.Size = new System.Drawing.Size(129, 158);
             this.gbProduct.TabIndex = 2;
@@ -254,7 +256,7 @@
             // 
             // btnMatch
             // 
-            this.btnMatch.Location = new System.Drawing.Point(214, 235);
+            this.btnMatch.Location = new System.Drawing.Point(15, 235);
             this.btnMatch.Name = "btnMatch";
             this.btnMatch.Size = new System.Drawing.Size(75, 23);
             this.btnMatch.TabIndex = 3;
@@ -263,13 +265,22 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(142, 235);
+            this.btnClose.Location = new System.Drawing.Point(210, 235);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 4;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(12, 235);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 7;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
             // 
             // Configuration
             // 
@@ -316,5 +327,6 @@
         private System.Windows.Forms.RadioButton rbLctn1;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnMatch;
+        private System.Windows.Forms.Button btnSave;
     }
 }
