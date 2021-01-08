@@ -10,6 +10,9 @@ int obstaclePin = 14;
 int hasObstacle = HIGH;
 String objInf;
 String clrInf;
+String mtnInf;
+String configData;
+char configArray[3];
 
 //color detection
 int redPin = 8;
@@ -90,7 +93,40 @@ void loop() {
       digitalWrite(yellowLED,HIGH);
     }
 
-    if(BTSerial.available()){
+   Initialization();
+
+    if(start==1)
+     startLoop();
+      
+ }
+ //ON STATE
+    
+ delay(350);
+}//End of loop
+/****************************************************/
+
+//ON/OFF switch
+//Set "state" and "preState" variables.
+void ButtonSwitch(){
+
+  if(state==0){
+    if(digitalRead(buttonPin)==LOW){
+      state=1;
+      preState=0;
+    }
+    preState=0;
+  }
+  else if(state==1){
+    if(digitalRead(buttonPin)==LOW){
+      state=0;
+      preState=1;
+    }
+    preState=1;
+  }
+}
+/******************************************************/
+void Initialization(){
+   if(BTSerial.available()){
       message = BTSerial.readString();
       Serial.print("message from central: ");
       Serial.println(message);
@@ -105,18 +141,47 @@ void loop() {
       while(Serial.available()==0 && counter<5){
         delay(1000);
         counter++;
-        }
+      }
       message = serialReading();
 
       //Establishing communication
       if(message == "202"){
-        Serial.println("START");
-        digitalWrite(greenLED,HIGH);
-        digitalWrite(redLED,LOW);
-        digitalWrite(yellowLED,LOW);
         serialBTWriting(message);
-        start=1;
-        message="";
+        Serial.println("Waiting for configuration data.");
+      
+
+      while(BTSerial.available()==0 && counter<8){
+        delay(1000);
+        counter++;
+      }
+     //The config data is identified by @ character at the beginning of it.
+      if(BTSerial.read()=='@'){
+          message=BTSerial.readString();
+          configData=message;
+          configData.toCharArray(configArray,4);
+          Serial.print("Configuration :");
+          Serial.println(configData); 
+          Serial.println(configArray[0]);
+          Serial.println(configArray[1]);
+          Serial.println(configArray[2]);     
+          Serial.println("START");
+          digitalWrite(greenLED,HIGH);
+          digitalWrite(redLED,LOW);
+          digitalWrite(yellowLED,LOW);
+          serialBTWriting("206");
+          start=1;
+          message="";
+        }
+        else{
+          serialBTWriting("207");
+          start=0;
+          digitalWrite(redLED,HIGH);
+          digitalWrite(yellowLED,LOW);
+          digitalWrite(greenLED,LOW);
+          Serial.println("Couldn't get configuration data.");
+          message="";
+        }
+
       }
       //Inability to communicate 
       else{
@@ -139,37 +204,8 @@ void loop() {
       digitalWrite(greenLED,LOW);
       message="";
     }
-
-    if(start==1)
-     startLoop();
-      
- }
- //ON STATE
-    
- delay(350);
-}//End of loop
-/***************************************/
-
-//ON/OFF switch
-//Set "state" and "preState" variables.
-void ButtonSwitch(){
-
-  if(state==0){
-    if(digitalRead(buttonPin)==LOW){
-      state=1;
-      preState=0;
-    }
-    preState=0;
-  }
-  else if(state==1){
-    if(digitalRead(buttonPin)==LOW){
-      state=0;
-      preState=1;
-    }
-    preState=1;
-  }
 }
-
+/*****************************************************/
 void startLoop(){
 
   message = objectDetection(); 
@@ -189,7 +225,7 @@ void startLoop(){
       }      
     }       
 }
-
+/****************************************************/
 String objectDetection(){
   String messageIn="000";
   hasObstacle = digitalRead(obstaclePin);
@@ -203,8 +239,6 @@ String objectDetection(){
     objInf = "211"; 
   }
   
-  //Serial.println("***************************");
-  //Serial.print("Object Info Message:  ");
   if(objInf=="211"){
   serialBTWriting(objInf);
   }
@@ -217,8 +251,6 @@ String objectDetection(){
       } 
       Serial.println(messageIn);     
   }
-  //Serial.println("***************************");
-  //delay(5000);
   
   return messageIn;
 }
@@ -275,7 +307,8 @@ void colorDetection(){
   //Serial.print(pulseWidth);
   //Serial.println("");
 
-  clrInf="224";//Color is not detected.
+  clrInf = "224";//Color is not detected.
+  mtnInf = "224";
   
   if(RCS>BCS && RCS>GCS){
   digitalWrite(redPin,LOW);
@@ -303,7 +336,7 @@ void colorDetection(){
   
   //Serial.print("Color Info Message:  ");
   Serial.write('#');
-  serialWriting(clrInf);
+  serialWriting(decodeConfigData(clrInf));
   serialBTWriting(clrInf);
   
   //Serial.println("-----------------------"); 
@@ -337,4 +370,40 @@ String serialReading(){
   Serial.println(messageIn);//For controlling of the working of above line.
   messageIn.remove(3);
   return messageIn;
+}
+
+String decodeConfigData (String clr){
+  
+  String motion="224";
+  char r = configArray[0];
+  char g = configArray[1];
+  char b = configArray[2];
+
+  if(clr == "221"){
+    switch (r){
+    case '1' : motion = "251";break;
+    case '2' : motion = "252";break;
+    case '3' : motion = "253";break;
+    default : motion = "224";break;
+    
+    }
+  }
+    if(clr == "222"){
+    switch (g){
+    case '1' : motion = "251";break;
+    case '2' : motion = "252";break;
+    case '3' : motion = "253";break;
+    default : motion = "224"; break;
+    }
+  }
+    if(clr == "223"){
+    switch (b){
+    case '1' : motion = "251";break;
+    case '2' : motion = "252";break;
+    case '3' : motion = "253";break;
+    default : motion = "224"; break;
+    }
+  }
+  Serial.println(motion);
+  return motion;
 }
