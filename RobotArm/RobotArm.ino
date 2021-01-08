@@ -44,25 +44,24 @@ void loop()
       serialWriting("203");
     }
 
-    if (message == "221"){
-      MotionRed();
+    if (message == "251"){
+      Motion1();
       Serial.write('#');
       serialWriting("204");
       InitialPosition();
     }
 
-    if (message == "222")
+    if (message == "252")
     {
-      MotionGreen();
+      Motion2();
       Serial.write('#');
       serialWriting("204");
       InitialPosition();
     }
 
-    if (message == "223"){
+    if (message == "253"){
         
-      //Serial.println("bhere");
-      MotionBlue();
+      Motion3();
       Serial.write('#');
       serialWriting("204");
       InitialPosition();
@@ -131,7 +130,7 @@ void InitialPosition()
   servo6PPos=servoMotion(50, 20, 6);
 }
 
-void MotionRed(){
+void Motion1(){
   servo1PPos=servoMotion(60, 40, 1);
   servo3PPos=servoMotion(70, 40, 3);
   servo1PPos=servoMotion(110, 40, 1);
@@ -139,14 +138,14 @@ void MotionRed(){
 
 }
 
-void MotionGreen(){
+void Motion2(){
   servo1PPos=servoMotion(60, 40, 1);
   servo3PPos=servoMotion(70, 40, 3);
   servo1PPos=servoMotion(140, 40, 1);
   servo6PPos=servoMotion(50, 20, 6);
 }
 
-void MotionBlue(){
+void Motion3(){
   servo1PPos=servoMotion(60, 40, 1);
   servo3PPos=servoMotion(70, 40, 3);
   servo1PPos=servoMotion(220, 40, 1);
