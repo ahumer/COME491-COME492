@@ -16,6 +16,9 @@ namespace Central_Management
     public partial class Main : Form
     {
         systemData dataInfo = new systemData();
+        char[] configData = {'1','2','3' };
+        
+        
  
         public Main()
         {
@@ -40,7 +43,7 @@ namespace Central_Management
                     btnClose.Visible = true;
                     btnON.Enabled = true;
                     btnSysInf.Enabled = true;
-                    btnLctConf.Enabled = true;
+                    
 
                 }
                 else
@@ -81,7 +84,7 @@ namespace Central_Management
                 btnON.Enabled = false;
                 btnON.Enabled = false;
                 btnSysInf.Enabled = false;
-                btnLctConf.Enabled = false;
+                
 
 
             }
@@ -123,6 +126,7 @@ namespace Central_Management
                 btnOFF.Enabled = false;
                 btnON.Visible = true;
                 btnOFF.Visible = false;
+                btnLctConf.Enabled = true;
                 lblSys.Text = "OFF";
                 lblRbt.Text = "Not connected";
                 lblSensor.Text = "Not connected";
@@ -139,28 +143,49 @@ namespace Central_Management
             try
             {
                 serialPort1.Write("200");
-                lblSys.Text = "Waiting";
+                lblSys.Text = "Waiting for connection";
                 short counter = 0;
                 while (dataInfo.start == false && counter < 8)
                 {
                     Thread.Sleep(1000);
                     counter++;
                 }
+
                 if (dataInfo.fail == true)
                 {
-                    lblSys.Text = "Fail";
+                    lblSys.Text = "OFF";
                     lblRbt.Text = "Fail";
                     lblSensor.Text = "Connected";
                 }
+
                 else if (dataInfo.start == true)
                 {
-                    lblSys.Text = "ON";
+                    lblSys.Text = "Waiting for configuration";
                     lblRbt.Text = "Connected";
                     lblSensor.Text = "Connected";
-                    btnON.Enabled = false;
-                    btnOFF.Enabled = true;
-                    btnON.Visible = false;
-                    btnOFF.Visible = true;
+                    serialPort1.Write("@");
+                    serialPort1.Write(configData, 0, 3);
+                    while (dataInfo.confError == true && counter < 8)
+                    {
+                        Thread.Sleep(1000);
+                        counter++;
+                    }
+                    if (dataInfo.confError == false)
+                    {
+                        lblSys.Text = "ON";
+                        lblRbt.Text = "Connected";
+                        lblSensor.Text = "Connected";
+                        btnON.Enabled = false;
+                        btnOFF.Enabled = true;
+                        btnON.Visible = false;
+                        btnOFF.Visible = true;
+                        btnLctConf.Enabled = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Fail to send configuration data!");
+                        lblSys.Text = "Error";
+                    }
                 }
                 else
                 {
@@ -201,7 +226,37 @@ namespace Central_Management
         private void btnLctConf_Click(object sender, EventArgs e)
         {
             Configuration conf = new Configuration();
+            conf.preConfig = configData;
             conf.Show();
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var confirmResult = MessageBox.Show("Do you want to exit?",
+                                     "Confirm Exit!!",
+                                     MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.No)
+            {
+                e.Cancel = true;
+
+            }
+
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+            string filePath = @"configLocation.txt";
+
+            string configText;
+            configText = File.ReadAllText(filePath);
+
+            for(int i=0; i<3; i++)
+            {
+                configData[i] = configText.ElementAt(i);
+            }
+
+
+
         }
     }
 
@@ -213,6 +268,7 @@ namespace Central_Management
         public short process;
         public short color;
         public short lastProduct;
+        public bool confError;
         public systemData()
         {
             start = false; //successful start
@@ -221,6 +277,7 @@ namespace Central_Management
             process = -1;  //-1->none ; 0->waiting ; 1->reading ; 2->placing
             color = -1;    //-1->none ; 0->not detected ; 1->red ; 2->green ; 3->blue
             lastProduct = -1;
+            confError = true;
         }
         public void keepData(string data)
         {
@@ -234,6 +291,7 @@ namespace Central_Management
             {
                 start = false;
                 fail = true;
+                confError = false;
                 process = -1;  //none
             }
             if(data=="212")
@@ -281,6 +339,21 @@ namespace Central_Management
                 product = -1;
                 start = false;
                 fail = false;
+                confError = false;
+            }
+            if(data=="206")
+            {
+                start = true;
+                confError = false;
+                fail = false;
+
+            }
+            if (data == "207")
+            {
+                start = false;
+                confError = true;
+                fail = false;
+
             }
         }
     }
