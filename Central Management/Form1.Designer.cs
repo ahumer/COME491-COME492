@@ -159,7 +159,6 @@
             // 
             // btnLctConf
             // 
-            this.btnLctConf.Enabled = false;
             this.btnLctConf.Location = new System.Drawing.Point(10, 98);
             this.btnLctConf.Name = "btnLctConf";
             this.btnLctConf.Size = new System.Drawing.Size(90, 35);
@@ -255,6 +254,8 @@
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
+            this.Load += new System.EventHandler(this.Main_Load);
             this.sysGrBx.ResumeLayout(false);
             this.sysGrBx.PerformLayout();
             this.groupBox2.ResumeLayout(false);
