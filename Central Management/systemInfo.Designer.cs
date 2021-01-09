@@ -138,7 +138,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(240, 213);
+            this.btnClose.Location = new System.Drawing.Point(240, 219);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 18;
@@ -314,6 +314,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.gbInfo);
             this.Controls.Add(this.gbHeader);
+            this.Enabled = false;
             this.Name = "systemInfo";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
