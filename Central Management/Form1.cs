@@ -79,6 +79,9 @@ namespace Central_Management
                 lblState.Text = "";
                 MessageBox.Show("Connection closed!");
                 lblState.Text = "Not connected";
+                lblSys.Text = "OFF";
+                lblRbt.Text = "";
+                lblSensor.Text = "";
                 btnOpen.Visible = true;
                 btnClose.Visible = false;
                 btnON.Enabled = false;
@@ -106,7 +109,12 @@ namespace Central_Management
                 serialPort1.BaudRate = 9600;
                 serialPort1.Open();
                 serialPort1.ReceivedBytesThreshold = 4;
-                state = true;
+                serialPort1.WriteTimeout = 5000;
+                serialPort1.ReadTimeout = 5000;
+                if(serialPort1.IsOpen)
+                {
+                    state = true;
+                }           
             }
             catch (Exception ex)
             {
@@ -114,6 +122,93 @@ namespace Central_Management
             }
 
             return state;
+        }
+        private void btnON_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                
+                if (!serialPort1.IsOpen)
+                {
+                    btnOpen.Enabled = true;
+                    btnClose.Enabled = false;
+                    lblState.Text = "";
+                    MessageBox.Show("Bluetooth connection is broken!)");
+                    lblState.Text = "Not connected";
+                    btnOpen.Visible = true;
+                    btnClose.Visible = false;
+                    btnON.Enabled = false;
+                    btnON.Enabled = false;
+                    btnSysInf.Enabled = false;
+
+                }
+                else
+                {
+                    lblSys.Text = "Waiting";
+                    serialPort1.Write("200");
+                    short counter = 0;
+                    while (dataInfo.start == false && counter < 8)
+                    {
+                        Thread.Sleep(1000);
+                        counter++;
+                    }
+
+                    if (dataInfo.fail == true)
+                    {
+                        lblSys.Text = "OFF";
+                        lblRbt.Text = "Robot arm : Fail";
+                        lblSensor.Text = "Sensors : Success";
+                    }
+
+                    else if (dataInfo.start == true)
+                    {
+                        lblRbt.Text = "Robot arm : Success";
+                        lblSensor.Text = "Sensors : Success";
+                        serialPort1.Write("@");
+                        serialPort1.Write(configData, 0, 3);
+                        while (dataInfo.confError == true && counter < 8)
+                        {
+                            Thread.Sleep(1000);
+                            counter++;
+                        }
+                        if (dataInfo.confError == false)
+                        {
+                            lblSys.Text = "ON";
+                            lblRbt.Text = "Robot arm : Success";
+                            lblSensor.Text = "Sensors : Success";
+                            btnON.Enabled = false;
+                            btnOFF.Enabled = true;
+                            btnON.Visible = false;
+                            btnOFF.Visible = true;
+                            btnLctConf.Enabled = false;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Fail to send configuration data!");
+                            lblSys.Text = "Error";
+                        }
+                    }
+                    else
+                    {
+                        serialPort1.DiscardOutBuffer();
+                        MessageBox.Show("Fail to communicate with sensors!");
+                        lblSys.Text = "OFF";
+                        lblRbt.Text = "";
+                        lblSensor.Text = "";
+                    }
+                }    
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                dataInfo.start = false;
+                dataInfo.confError = false;
+                dataInfo.fail = false;
+                MessageBox.Show("Reopen the connection!");
+                lblSys.Text = "Exception!";
+            }
+
         }
 
         private void btnOFF_Click(object sender, EventArgs e)
@@ -128,85 +223,33 @@ namespace Central_Management
                 btnOFF.Visible = false;
                 btnLctConf.Enabled = true;
                 lblSys.Text = "OFF";
-                lblRbt.Text = "Not connected";
-                lblSensor.Text = "Not connected";
+                lblRbt.Text = "";
+                lblSensor.Text = "";
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                dataInfo.start = false;
+                dataInfo.confError = false;
+                dataInfo.fail = false;
+                MessageBox.Show("Reopen the connection!");
+                lblSys.Text = "Exception!";
             }
 
         }
 
-        private void btnON_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                serialPort1.Write("200");
-                lblSys.Text = "Waiting for connection";
-                short counter = 0;
-                while (dataInfo.start == false && counter < 8)
-                {
-                    Thread.Sleep(1000);
-                    counter++;
-                }
+        
 
-                if (dataInfo.fail == true)
-                {
-                    lblSys.Text = "OFF";
-                    lblRbt.Text = "Fail";
-                    lblSensor.Text = "Connected";
-                }
-
-                else if (dataInfo.start == true)
-                {
-                    lblSys.Text = "Waiting for configuration";
-                    lblRbt.Text = "Connected";
-                    lblSensor.Text = "Connected";
-                    serialPort1.Write("@");
-                    serialPort1.Write(configData, 0, 3);
-                    while (dataInfo.confError == true && counter < 8)
-                    {
-                        Thread.Sleep(1000);
-                        counter++;
-                    }
-                    if (dataInfo.confError == false)
-                    {
-                        lblSys.Text = "ON";
-                        lblRbt.Text = "Connected";
-                        lblSensor.Text = "Connected";
-                        btnON.Enabled = false;
-                        btnOFF.Enabled = true;
-                        btnON.Visible = false;
-                        btnOFF.Visible = true;
-                        btnLctConf.Enabled = false;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Fail to send configuration data!");
-                        lblSys.Text = "Error";
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Fail to communicate with sensors!");
-                    lblSys.Text = "OFF";
-                }
-                    
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-        }
 
         private void btnSysInf_Click(object sender, EventArgs e)
         {
             systemInfo sysInf = new systemInfo();
             sysInf.sysDataInf = dataInfo;
+            Form frm = this.FindForm();
+            sysInf.parent = frm;
+            frm.Enabled = false;
             sysInf.Show();
-
+            
             ////Test
             //if (sysInf.Visible)
             //    label2.Text = "Visible";
@@ -227,6 +270,9 @@ namespace Central_Management
         {
             Configuration conf = new Configuration();
             conf.preConfig = configData;
+            Form frm = this.FindForm();
+            conf.parent = frm;
+            frm.Enabled = false;
             conf.Show();
         }
 
@@ -245,6 +291,10 @@ namespace Central_Management
 
         private void Main_Load(object sender, EventArgs e)
         {
+            this.btnOpen.Location = new System.Drawing.Point(10, 96);
+            this.btnON.Location = new System.Drawing.Point(12, 21);
+            lblRbt.Text = "";
+            lblSensor.Text = "";
             string filePath = @"configLocation.txt";
 
             string configText;

@@ -199,8 +199,8 @@ void Initialization(){
     if(message=="201") {
       start=0;
       Serial.println("STOP");
-      digitalWrite(redLED,HIGH);
-      digitalWrite(yellowLED,LOW);
+      digitalWrite(redLED,LOW);
+      digitalWrite(yellowLED,HIGH);
       digitalWrite(greenLED,LOW);
       message="";
     }
@@ -367,8 +367,9 @@ String serialReading(){
         Serial.readBytes(messageArray,3);            
   }
   messageIn = String(messageArray);
-  Serial.println(messageIn);//For controlling of the working of above line.
+  //For controlling of the working of above line.
   messageIn.remove(3);
+  Serial.println(messageIn);
   return messageIn;
 }
 

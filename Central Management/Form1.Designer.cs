@@ -35,6 +35,7 @@
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.sysGrBx = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.lblSensor = new System.Windows.Forms.Label();
             this.lblRbt = new System.Windows.Forms.Label();
             this.lblSys = new System.Windows.Forms.Label();
@@ -42,7 +43,6 @@
             this.btnLctConf = new System.Windows.Forms.Button();
             this.btnSysInf = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.lblCntHeader = new System.Windows.Forms.Label();
             this.lblState = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -54,7 +54,7 @@
             // btnON
             // 
             this.btnON.Enabled = false;
-            this.btnON.Location = new System.Drawing.Point(10, 28);
+            this.btnON.Location = new System.Drawing.Point(80, 21);
             this.btnON.Name = "btnON";
             this.btnON.Size = new System.Drawing.Size(90, 23);
             this.btnON.TabIndex = 0;
@@ -65,7 +65,7 @@
             // btnOFF
             // 
             this.btnOFF.Enabled = false;
-            this.btnOFF.Location = new System.Drawing.Point(10, 12);
+            this.btnOFF.Location = new System.Drawing.Point(12, 21);
             this.btnOFF.Name = "btnOFF";
             this.btnOFF.Size = new System.Drawing.Size(90, 23);
             this.btnOFF.TabIndex = 1;
@@ -80,7 +80,7 @@
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(10, 86);
+            this.btnOpen.Location = new System.Drawing.Point(66, 96);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(104, 23);
             this.btnOpen.TabIndex = 2;
@@ -91,7 +91,7 @@
             // btnClose
             // 
             this.btnClose.Enabled = false;
-            this.btnClose.Location = new System.Drawing.Point(11, 96);
+            this.btnClose.Location = new System.Drawing.Point(10, 96);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(103, 23);
             this.btnClose.TabIndex = 3;
@@ -102,6 +102,7 @@
             // 
             // sysGrBx
             // 
+            this.sysGrBx.Controls.Add(this.label2);
             this.sysGrBx.Controls.Add(this.lblSensor);
             this.sysGrBx.Controls.Add(this.lblRbt);
             this.sysGrBx.Controls.Add(this.lblSys);
@@ -120,28 +121,37 @@
             this.sysGrBx.TabStop = false;
             this.sysGrBx.Text = "SYSTEM CONTROL";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(225, 78);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(82, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Communication:";
+            // 
             // lblSensor
             // 
             this.lblSensor.AutoSize = true;
-            this.lblSensor.Location = new System.Drawing.Point(232, 109);
+            this.lblSensor.Location = new System.Drawing.Point(225, 135);
             this.lblSensor.Name = "lblSensor";
-            this.lblSensor.Size = new System.Drawing.Size(120, 13);
+            this.lblSensor.Size = new System.Drawing.Size(50, 13);
             this.lblSensor.TabIndex = 12;
-            this.lblSensor.Text = "Sensors: not connected";
+            this.lblSensor.Text = "lblSensor";
             // 
             // lblRbt
             // 
             this.lblRbt.AutoSize = true;
-            this.lblRbt.Location = new System.Drawing.Point(232, 83);
+            this.lblRbt.Location = new System.Drawing.Point(225, 109);
             this.lblRbt.Name = "lblRbt";
-            this.lblRbt.Size = new System.Drawing.Size(131, 13);
+            this.lblRbt.Size = new System.Drawing.Size(34, 13);
             this.lblRbt.TabIndex = 11;
-            this.lblRbt.Text = "Robot arm: not connected";
+            this.lblRbt.Text = "lblRbt";
             // 
             // lblSys
             // 
             this.lblSys.AutoSize = true;
-            this.lblSys.Location = new System.Drawing.Point(232, 57);
+            this.lblSys.Location = new System.Drawing.Point(225, 47);
             this.lblSys.Name = "lblSys";
             this.lblSys.Size = new System.Drawing.Size(27, 13);
             this.lblSys.TabIndex = 10;
@@ -169,7 +179,6 @@
             // 
             // btnSysInf
             // 
-            this.btnSysInf.Enabled = false;
             this.btnSysInf.Location = new System.Drawing.Point(10, 57);
             this.btnSysInf.Name = "btnSysInf";
             this.btnSysInf.Size = new System.Drawing.Size(90, 23);
@@ -180,7 +189,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.lblCntHeader);
             this.groupBox2.Controls.Add(this.lblState);
             this.groupBox2.Controls.Add(this.label1);
@@ -196,16 +204,6 @@
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "CONNECTION CONTROL";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(268, 105);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "label2";
-            this.label2.Visible = false;
             // 
             // lblCntHeader
             // 
@@ -252,6 +250,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.sysGrBx);
             this.Name = "Main";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);

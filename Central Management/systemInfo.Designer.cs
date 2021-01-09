@@ -35,6 +35,7 @@
             this.lblLastProduct = new System.Windows.Forms.Label();
             this.gbHeader = new System.Windows.Forms.GroupBox();
             this.gbInfo = new System.Windows.Forms.GroupBox();
+            this.btnClose = new System.Windows.Forms.Button();
             this.lblClolorInfo = new System.Windows.Forms.Label();
             this.lblPlacing = new System.Windows.Forms.Label();
             this.lblPReading = new System.Windows.Forms.Label();
@@ -51,7 +52,6 @@
             this.lblCNot = new System.Windows.Forms.Label();
             this.lblDtc = new System.Windows.Forms.Label();
             this.lblNot = new System.Windows.Forms.Label();
-            this.btnClose = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.gbHeader.SuspendLayout();
             this.gbInfo.SuspendLayout();
@@ -60,37 +60,40 @@
             // lblProduct
             // 
             this.lblProduct.AutoSize = true;
+            this.lblProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblProduct.Location = new System.Drawing.Point(12, 32);
             this.lblProduct.Name = "lblProduct";
-            this.lblProduct.Size = new System.Drawing.Size(66, 13);
+            this.lblProduct.Size = new System.Drawing.Size(75, 13);
             this.lblProduct.TabIndex = 0;
             this.lblProduct.Text = "PRODUCT: ";
             // 
             // lblColor
             // 
             this.lblColor.AutoSize = true;
-            this.lblColor.Location = new System.Drawing.Point(12, 84);
+            this.lblColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblColor.Location = new System.Drawing.Point(12, 86);
             this.lblColor.Name = "lblColor";
-            this.lblColor.Size = new System.Drawing.Size(50, 13);
+            this.lblColor.Size = new System.Drawing.Size(57, 13);
             this.lblColor.TabIndex = 1;
             this.lblColor.Text = "COLOR: ";
             // 
             // lblProcess
             // 
             this.lblProcess.AutoSize = true;
+            this.lblProcess.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblProcess.Location = new System.Drawing.Point(12, 151);
             this.lblProcess.Name = "lblProcess";
-            this.lblProcess.Size = new System.Drawing.Size(64, 13);
+            this.lblProcess.Size = new System.Drawing.Size(73, 13);
             this.lblProcess.TabIndex = 2;
             this.lblProcess.Text = "PROCESS: ";
             // 
             // lblLastProduct
             // 
             this.lblLastProduct.AutoSize = true;
-            this.lblLastProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLastProduct.Location = new System.Drawing.Point(12, 222);
+            this.lblLastProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+            this.lblLastProduct.Location = new System.Drawing.Point(12, 219);
             this.lblLastProduct.Name = "lblLastProduct";
-            this.lblLastProduct.Size = new System.Drawing.Size(96, 17);
+            this.lblLastProduct.Size = new System.Drawing.Size(110, 17);
             this.lblLastProduct.TabIndex = 3;
             this.lblLastProduct.Text = "Last Product: ";
             // 
@@ -103,7 +106,7 @@
             this.gbHeader.Dock = System.Windows.Forms.DockStyle.Left;
             this.gbHeader.Location = new System.Drawing.Point(0, 0);
             this.gbHeader.Name = "gbHeader";
-            this.gbHeader.Size = new System.Drawing.Size(115, 286);
+            this.gbHeader.Size = new System.Drawing.Size(115, 276);
             this.gbHeader.TabIndex = 4;
             this.gbHeader.TabStop = false;
             // 
@@ -129,77 +132,94 @@
             this.gbInfo.Dock = System.Windows.Forms.DockStyle.Right;
             this.gbInfo.Location = new System.Drawing.Point(121, 0);
             this.gbInfo.Name = "gbInfo";
-            this.gbInfo.Size = new System.Drawing.Size(333, 286);
+            this.gbInfo.Size = new System.Drawing.Size(333, 276);
             this.gbInfo.TabIndex = 5;
             this.gbInfo.TabStop = false;
+            // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(240, 213);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 18;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // lblClolorInfo
             // 
             this.lblClolorInfo.AutoSize = true;
-            this.lblClolorInfo.Location = new System.Drawing.Point(25, 226);
+            this.lblClolorInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+            this.lblClolorInfo.Location = new System.Drawing.Point(6, 219);
             this.lblClolorInfo.Name = "lblClolorInfo";
-            this.lblClolorInfo.Size = new System.Drawing.Size(52, 13);
+            this.lblClolorInfo.Size = new System.Drawing.Size(78, 17);
             this.lblClolorInfo.TabIndex = 17;
             this.lblClolorInfo.Text = "Color Info";
             // 
             // lblPlacing
             // 
             this.lblPlacing.AutoSize = true;
-            this.lblPlacing.Location = new System.Drawing.Point(195, 151);
+            this.lblPlacing.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblPlacing.Location = new System.Drawing.Point(237, 149);
             this.lblPlacing.Name = "lblPlacing";
-            this.lblPlacing.Size = new System.Drawing.Size(42, 13);
+            this.lblPlacing.Size = new System.Drawing.Size(54, 17);
             this.lblPlacing.TabIndex = 16;
             this.lblPlacing.Text = "Placing";
             // 
             // lblPReading
             // 
             this.lblPReading.AutoSize = true;
-            this.lblPReading.Location = new System.Drawing.Point(94, 151);
+            this.lblPReading.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblPReading.Location = new System.Drawing.Point(131, 148);
             this.lblPReading.Name = "lblPReading";
-            this.lblPReading.Size = new System.Drawing.Size(47, 13);
+            this.lblPReading.Size = new System.Drawing.Size(61, 17);
             this.lblPReading.TabIndex = 15;
             this.lblPReading.Text = "Reading";
             // 
             // lblPWaiting
             // 
             this.lblPWaiting.AutoSize = true;
-            this.lblPWaiting.Location = new System.Drawing.Point(6, 151);
+            this.lblPWaiting.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblPWaiting.Location = new System.Drawing.Point(36, 148);
             this.lblPWaiting.Name = "lblPWaiting";
-            this.lblPWaiting.Size = new System.Drawing.Size(43, 13);
+            this.lblPWaiting.Size = new System.Drawing.Size(55, 17);
             this.lblPWaiting.TabIndex = 14;
             this.lblPWaiting.Text = "Waiting";
             // 
             // lblBlue
             // 
             this.lblBlue.AutoSize = true;
-            this.lblBlue.Location = new System.Drawing.Point(277, 84);
+            this.lblBlue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblBlue.Location = new System.Drawing.Point(281, 84);
             this.lblBlue.Name = "lblBlue";
-            this.lblBlue.Size = new System.Drawing.Size(28, 13);
+            this.lblBlue.Size = new System.Drawing.Size(36, 17);
             this.lblBlue.TabIndex = 13;
             this.lblBlue.Text = "Blue";
             // 
             // lblGreen
             // 
             this.lblGreen.AutoSize = true;
-            this.lblGreen.Location = new System.Drawing.Point(195, 84);
+            this.lblGreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblGreen.Location = new System.Drawing.Point(202, 84);
             this.lblGreen.Name = "lblGreen";
-            this.lblGreen.Size = new System.Drawing.Size(36, 13);
+            this.lblGreen.Size = new System.Drawing.Size(48, 17);
             this.lblGreen.TabIndex = 12;
             this.lblGreen.Text = "Green";
             // 
             // lblRed
             // 
             this.lblRed.AutoSize = true;
-            this.lblRed.Location = new System.Drawing.Point(114, 84);
+            this.lblRed.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblRed.Location = new System.Drawing.Point(121, 84);
             this.lblRed.Name = "lblRed";
-            this.lblRed.Size = new System.Drawing.Size(27, 13);
+            this.lblRed.Size = new System.Drawing.Size(34, 17);
             this.lblRed.TabIndex = 11;
             this.lblRed.Text = "Red";
             // 
             // lblSlash
             // 
             this.lblSlash.AutoSize = true;
-            this.lblSlash.Location = new System.Drawing.Point(121, 32);
+            this.lblSlash.Location = new System.Drawing.Point(153, 32);
             this.lblSlash.Name = "lblSlash";
             this.lblSlash.Size = new System.Drawing.Size(18, 13);
             this.lblSlash.TabIndex = 10;
@@ -208,7 +228,7 @@
             // lblSlash3
             // 
             this.lblSlash3.AutoSize = true;
-            this.lblSlash3.Location = new System.Drawing.Point(90, 84);
+            this.lblSlash3.Location = new System.Drawing.Point(96, 86);
             this.lblSlash3.Name = "lblSlash3";
             this.lblSlash3.Size = new System.Drawing.Size(18, 13);
             this.lblSlash3.TabIndex = 9;
@@ -217,7 +237,7 @@
             // lblSlash4
             // 
             this.lblSlash4.AutoSize = true;
-            this.lblSlash4.Location = new System.Drawing.Point(164, 84);
+            this.lblSlash4.Location = new System.Drawing.Point(164, 86);
             this.lblSlash4.Name = "lblSlash4";
             this.lblSlash4.Size = new System.Drawing.Size(18, 13);
             this.lblSlash4.TabIndex = 8;
@@ -226,7 +246,7 @@
             // lblSlash5
             // 
             this.lblSlash5.AutoSize = true;
-            this.lblSlash5.Location = new System.Drawing.Point(237, 84);
+            this.lblSlash5.Location = new System.Drawing.Point(253, 86);
             this.lblSlash5.Name = "lblSlash5";
             this.lblSlash5.Size = new System.Drawing.Size(18, 13);
             this.lblSlash5.TabIndex = 7;
@@ -235,7 +255,7 @@
             // lblSlash6
             // 
             this.lblSlash6.AutoSize = true;
-            this.lblSlash6.Location = new System.Drawing.Point(59, 151);
+            this.lblSlash6.Location = new System.Drawing.Point(103, 150);
             this.lblSlash6.Name = "lblSlash6";
             this.lblSlash6.Size = new System.Drawing.Size(18, 13);
             this.lblSlash6.TabIndex = 6;
@@ -244,7 +264,7 @@
             // lblSlash1
             // 
             this.lblSlash1.AutoSize = true;
-            this.lblSlash1.Location = new System.Drawing.Point(164, 151);
+            this.lblSlash1.Location = new System.Drawing.Point(210, 150);
             this.lblSlash1.Name = "lblSlash1";
             this.lblSlash1.Size = new System.Drawing.Size(18, 13);
             this.lblSlash1.TabIndex = 5;
@@ -252,18 +272,20 @@
             // 
             // lblCNot
             // 
-            this.lblCNot.Location = new System.Drawing.Point(14, 84);
+            this.lblCNot.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblCNot.Location = new System.Drawing.Point(6, 84);
             this.lblCNot.Name = "lblCNot";
-            this.lblCNot.Size = new System.Drawing.Size(70, 13);
+            this.lblCNot.Size = new System.Drawing.Size(89, 19);
             this.lblCNot.TabIndex = 0;
             this.lblCNot.Text = "Not detected";
             // 
             // lblDtc
             // 
             this.lblDtc.AutoSize = true;
-            this.lblDtc.Location = new System.Drawing.Point(164, 32);
+            this.lblDtc.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblDtc.Location = new System.Drawing.Point(194, 30);
             this.lblDtc.Name = "lblDtc";
-            this.lblDtc.Size = new System.Drawing.Size(51, 13);
+            this.lblDtc.Size = new System.Drawing.Size(65, 17);
             this.lblDtc.TabIndex = 2;
             this.lblDtc.Text = "Detected";
             // 
@@ -271,36 +293,29 @@
             // 
             this.lblNot.AutoSize = true;
             this.lblNot.BackColor = System.Drawing.SystemColors.Control;
-            this.lblNot.Location = new System.Drawing.Point(25, 32);
+            this.lblNot.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblNot.Location = new System.Drawing.Point(51, 30);
             this.lblNot.Name = "lblNot";
-            this.lblNot.Size = new System.Drawing.Size(69, 13);
+            this.lblNot.Size = new System.Drawing.Size(89, 17);
             this.lblNot.TabIndex = 0;
             this.lblNot.Text = "Not detected";
             // 
-            // btnClose
-            // 
-            this.btnClose.Location = new System.Drawing.Point(198, 219);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 18;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
             // timer1
             // 
-            this.timer1.Interval = 5000;
+            this.timer1.Interval = 3000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // systemInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(454, 286);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(454, 276);
             this.ControlBox = false;
             this.Controls.Add(this.gbInfo);
             this.Controls.Add(this.gbHeader);
             this.Name = "systemInfo";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "System Info";
             this.Load += new System.EventHandler(this.systemInfo_Load);

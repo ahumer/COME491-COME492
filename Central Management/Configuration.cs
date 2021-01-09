@@ -14,6 +14,7 @@ namespace Central_Management
     public partial class Configuration : Form
     {
         public char[] preConfig;
+        public Form parent;
         char r, g, b;
         public Configuration()
         {
@@ -23,6 +24,7 @@ namespace Central_Management
         private void btnClose_Click(object sender, EventArgs e)
         {
             var frm = this.FindForm();
+            parent.Enabled = true;
             frm.Close();
         }
 
