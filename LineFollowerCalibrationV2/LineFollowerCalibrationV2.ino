@@ -16,8 +16,8 @@
 #define enR 5 //ENA (PWM)
 #define enL 6 //ENB (PWM)
 
-#define FORWARD_POWER 160
-#define TURNING_POWER 140
+#define FORWARD_POWER 120
+#define TURNING_POWER 90
 
 #define SENSOR_DEBUG_
 #define FUNC_DEBUG_
@@ -67,28 +67,32 @@ void loop() {
   #endif
   
   if((digitalValue[0]==1 || digitalValue[1]==1) && digitalValue[3]==0 && digitalValue[4] ==0){
-    control=0;
+    if(control==2){
+     control=0; 
+    }
     moveLeft();
     return;
   }
   
   if((digitalValue[3]==1 || digitalValue[4]==1) && digitalValue[0]==0 && digitalValue[1] ==0) {
-    control=0;
+    if(control==2){
+     control=0; 
+    }
     moveRight();
     return;
   }
 
  if((digitalValue[0]==1 || digitalValue[1]==1) && (digitalValue[3]==1 || digitalValue[4]==1)){
 
-  if(control==0){
+  while(control<2){
     moveForward();
     delay(5);
     stopping();
     delay(50);
-    control++;;
+    control++;
     return;
   }
-  else if (control==2){
+  if (control==2){
     stopping();
     control=0;
     return;
@@ -121,6 +125,8 @@ void loop() {
        Serial.println("Authorized card");
        writeToScreen();
        stopping();
+       delay(5000);
+       return;
   }
   else{
        Serial.println("Unauthorized card");
