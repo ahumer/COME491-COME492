@@ -15,26 +15,22 @@ namespace Central_Management
 {
     public partial class Form1 : Form
     {
-        static SerialPort _serialPortS;
-        static SerialPort _serialPortR;
+        static SerialPort _serialPortV = new SerialPort();
         public Form1()
         {
             InitializeComponent();
 
         }
 
-        Thread loopThread = new Thread(systemLoop);
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            if (tbSPort.Text == "" || tbRPort.Text=="")
+            if (tbVPort.Text == "")
                 MessageBox.Show("Enter the port name!");
             else
             {
                 if (SerialConnection() == true)
                 {
-                    btnOpen.Enabled = false;
-                    btnClose.Enabled = true;
                     lblState.Text = "";
                     MessageBox.Show("Connection established!");
                     lblState.Text = "Connected";
@@ -43,6 +39,7 @@ namespace Central_Management
                     btnON.Enabled = true;
                     btnSysInf.Enabled = true;
                     btnLctConf.Enabled = true;
+                    rtbSerial.Enabled = true;
 
                 }
                 else
@@ -62,21 +59,19 @@ namespace Central_Management
 
 
             //Investigate if exception handling is required here
-            _serialPortS.Close();
-            _serialPortR.Close();
-            if (_serialPortS.IsOpen == false && _serialPortR.IsOpen == false)
+            
+            _serialPortV.Close();
+            if (_serialPortV.IsOpen == false)
             {
-                btnOpen.Enabled = true;
-                btnClose.Enabled = false;
                 lblState.Text = "";
                 MessageBox.Show("Connection closed!");
                 lblState.Text = "Not connected";
                 btnOpen.Visible = true;
                 btnClose.Visible = false;
                 btnON.Enabled = false;
-                btnON.Enabled = false;
                 btnSysInf.Enabled = false;
                 btnLctConf.Enabled = false;
+                rtbSerial.Enabled = false;
             }
         }
 
@@ -85,12 +80,11 @@ namespace Central_Management
             bool state = false;
             try
             {
-                _serialPortS.PortName = tbSPort.Text;
-                _serialPortS.BaudRate = 9600;
-                _serialPortS.Open();
-                _serialPortR.PortName = tbRPort.Text;
-                _serialPortR.BaudRate = 9600;
-                _serialPortR.Open();
+                _serialPortV.PortName = tbVPort.Text;
+                _serialPortV.BaudRate = 9600;
+                _serialPortV.Open();
+                _serialPortV.ReadTimeout = 5000;
+                _serialPortV.WriteTimeout = 5000;
 
                 state = true;
             }
@@ -102,39 +96,14 @@ namespace Central_Management
             return state;
         }
 
-        private void btnOFF_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-
-                btnOFF.Enabled = false;
-                btnON.Enabled = true;
-                btnOFF.Visible = false;
-                btnON.Visible = true;
-                
-                systemCommunication("201"); //Indicate turning of the system
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-        }
-
         private void btnON_Click(object sender, EventArgs e)
         {
+            _serialPortV.DiscardInBuffer();
+            _serialPortV.DiscardOutBuffer();
             bool state = false;
             try
             {
-
-                
-                state=systemInit();
-
-                btnON.Enabled = false;
-                btnOFF.Enabled = true;
-                btnON.Visible = false;
-                btnOFF.Visible = true;
+                state = systemInit();
             }
             catch (Exception ex)
             {
@@ -142,118 +111,162 @@ namespace Central_Management
             }
 
             if (state)
+            {
+                btnON.Visible = false;
+                btnOFF.Visible = true;
+                btnOFF.Enabled = true;
+                timer1.Enabled = true;
+                gbCon.Visible = false;
                 MessageBox.Show("The system is initialized succesfully.");
+            }
+
             else
+            {
                 MessageBox.Show("The system couldn't be initialized.");
+            }
+                
         }
+
+
+        private void btnOFF_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                timer1.Enabled = false;
+                gbCon.Visible = true;
+                btnOFF.Enabled = false;
+                systemCommunication("201");
+                timer2.Enabled = true;              
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        
 
         private bool systemInit()
         {
             string inMessage = "";
-            bool control = true;
-            //Communication with sensors
-            inMessage = systemCommunication("200");
+            bool control = false;
+            
+            inMessage = systemCommunication("200",false);
             if (inMessage == "OK")
             {
                 lblSensor.Text = "connected";
+                rtbSerial.Text += "\n" + inMessage;
+                control = true;
             }
             else
             {
-                control = false;
-                MessageBox.Show("couldn't communicate with sensor station");
+                MessageBox.Show("couldn't communicate with the vehicle");
                 
             }
-
-            //communicate with robot arm
-            inMessage = "";
-            inMessage = systemCommunication("203");
-            if (inMessage == "OK")
-            {
-                lblSensor.Text = "connected";
-            }
-            else
-            {
-                control = false;
-                MessageBox.Show("couldn't communicate with robot arm");
-            }
             return control;
+        }
+        private string systemCommunication(string message = "null", bool onlyWrite = true)
+        {
+            string buffer = "";
+            short counter = 0;
+            if (message != "null")
+            { 
+                try
+                {
+                    _serialPortV.Write(message);
+                }
+                catch(TimeoutException)
+                {
+                    MessageBox.Show("Serial port writing time out");
+                }
+            
+                
+            }
+            if (onlyWrite == false)
+            {
+                while (counter < 10)
+                {
+                    if (_serialPortV.BytesToRead == 0)
+                    {
+                        Thread.Sleep(1000);
+                        counter++;
 
+                    }
+
+                    if (_serialPortV.BytesToRead > 2)
+                    {
+                        try
+                        {
+                            buffer = _serialPortV.ReadLine();
+                            //tbSerial.Text += "sysCom"+ buffer;
+                            counter = 11;
+                        }
+                        catch (TimeoutException)
+                        {
+                            MessageBox.Show("Serial port reading time out");
+                        }
+
+                    }
+                    else
+                    {
+                        Thread.Sleep(1000);
+                        counter++;
+                    }
+                }
+
+                if (buffer == "OK")
+                {
+                    try
+                    {
+                        _serialPortV.Write("002");
+                    }
+                    catch (TimeoutException)
+                    {
+                        MessageBox.Show("Serial port writing time out (start)");
+                    }
+                }
+            }
+
+            
+           
+            return buffer;
 
         }
-        private string systemCommunication(string message)
-        {
-      
-            string buffer = "";
 
-            if (_serialPortS.BytesToRead==0)
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            string preText = rtbSerial.Text;
+            string buffer;
+            if (_serialPortV.BytesToRead != 0)
             {
-                Thread.Sleep(1000);
+                try
+                {
+                    buffer = _serialPortV.ReadLine();
+                    buffer += "\n" + preText;
+                    rtbSerial.Text = buffer;
                    
-            }
-
-            if(_serialPortS.BytesToRead!=0)
-            {
-                try
-                {
-                    _serialPortS.Write(message);
-                    buffer = _serialPortS.ReadLine();
                 }
-                catch (TimeoutException) { }
-
+                catch (TimeoutException) 
+                {
+                    MessageBox.Show("Serial port reading time out");
+                }
             }
+        }
 
-            return buffer;
-        } 
-        
-        private static void systemLoop()
+        private void btnClear_Click(object sender, EventArgs e)
         {
-            while (true)
-            {
-                try
-                {
-                    string message = "";
+            rtbSerial.Clear();
+        }
 
-                    _serialPortS.WriteLine("204");
-
-                    while (_serialPortS.BytesToRead == 0) { }
-
-                    message = _serialPortS.ReadLine();
-
-                    if (message == "251")
-                    {
-                        _serialPortR.WriteLine("251");
-                    }
-
-                    while (_serialPortS.BytesToRead == 0) { }
-
-                    message = _serialPortS.ReadLine();
-
-                    if (message == "252")
-                    {
-                        _serialPortR.WriteLine("252");
-                    }
-                    if (message == "253")
-                    {
-                        _serialPortR.WriteLine("253");
-                    }
-                    if (message == "254")
-                    {
-                        _serialPortR.WriteLine("254");
-                    }
-
-                    while (message == "255")
-                    {
-                        while (_serialPortR.BytesToRead == 0) { }
-
-                        message = _serialPortR.ReadLine();
-                    }
- 
-                }
-                catch (TimeoutException) { }
-            }
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            Thread.Sleep(6500);
+            btnOFF.Visible = false;
+            btnON.Visible = true;
+            timer2.Enabled = false;
         }
     }
+    
 }
 
-
-//Sistem döngü içinde bir yerde takılırsa ne kadar süre için time out verebilirim ve time out'da ne yapabilirim? Şu an bunla uğraşmalıyım?

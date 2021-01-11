@@ -28,27 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnON = new System.Windows.Forms.Button();
             this.btnOFF = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.sysGrBx = new System.Windows.Forms.GroupBox();
+            this.gbSys = new System.Windows.Forms.GroupBox();
+            this.btnClear = new System.Windows.Forms.Button();
             this.lblSensor = new System.Windows.Forms.Label();
-            this.lblRbt = new System.Windows.Forms.Label();
             this.lblSys = new System.Windows.Forms.Label();
             this.lblSysHeader = new System.Windows.Forms.Label();
             this.btnLctConf = new System.Windows.Forms.Button();
             this.btnSysInf = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.gbCon = new System.Windows.Forms.GroupBox();
+            this.lblV = new System.Windows.Forms.Label();
             this.lblCntHeader = new System.Windows.Forms.Label();
             this.lblState = new System.Windows.Forms.Label();
-            this.tbRPort = new System.Windows.Forms.Label();
-            this.tbSPort = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.lblRP = new System.Windows.Forms.Label();
-            this.lblSP = new System.Windows.Forms.Label();
-            this.sysGrBx.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.tbVPort = new System.Windows.Forms.TextBox();
+            this.rtbSerial = new System.Windows.Forms.RichTextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.gbSerial = new System.Windows.Forms.GroupBox();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.gbSys.SuspendLayout();
+            this.gbCon.SuspendLayout();
+            this.gbSerial.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnON
@@ -76,7 +79,7 @@
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(262, 88);
+            this.btnOpen.Location = new System.Drawing.Point(16, 79);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 2;
@@ -86,8 +89,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Enabled = false;
-            this.btnClose.Location = new System.Drawing.Point(263, 98);
+            this.btnClose.Location = new System.Drawing.Point(16, 89);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 3;
@@ -96,48 +98,49 @@
             this.btnClose.Visible = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // sysGrBx
+            // gbSys
             // 
-            this.sysGrBx.Controls.Add(this.lblSensor);
-            this.sysGrBx.Controls.Add(this.lblRbt);
-            this.sysGrBx.Controls.Add(this.lblSys);
-            this.sysGrBx.Controls.Add(this.lblSysHeader);
-            this.sysGrBx.Controls.Add(this.btnLctConf);
-            this.sysGrBx.Controls.Add(this.btnSysInf);
-            this.sysGrBx.Controls.Add(this.btnON);
-            this.sysGrBx.Controls.Add(this.btnOFF);
-            this.sysGrBx.Dock = System.Windows.Forms.DockStyle.Top;
-            this.sysGrBx.Location = new System.Drawing.Point(0, 0);
-            this.sysGrBx.Margin = new System.Windows.Forms.Padding(2);
-            this.sysGrBx.Name = "sysGrBx";
-            this.sysGrBx.Padding = new System.Windows.Forms.Padding(2);
-            this.sysGrBx.Size = new System.Drawing.Size(403, 150);
-            this.sysGrBx.TabIndex = 8;
-            this.sysGrBx.TabStop = false;
-            this.sysGrBx.Text = "SYSTEM CONTROL";
+            this.gbSys.Controls.Add(this.btnClear);
+            this.gbSys.Controls.Add(this.lblSensor);
+            this.gbSys.Controls.Add(this.lblSys);
+            this.gbSys.Controls.Add(this.lblSysHeader);
+            this.gbSys.Controls.Add(this.btnLctConf);
+            this.gbSys.Controls.Add(this.btnSysInf);
+            this.gbSys.Controls.Add(this.btnON);
+            this.gbSys.Controls.Add(this.btnOFF);
+            this.gbSys.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gbSys.Location = new System.Drawing.Point(0, 0);
+            this.gbSys.Margin = new System.Windows.Forms.Padding(2);
+            this.gbSys.Name = "gbSys";
+            this.gbSys.Padding = new System.Windows.Forms.Padding(2);
+            this.gbSys.Size = new System.Drawing.Size(403, 150);
+            this.gbSys.TabIndex = 8;
+            this.gbSys.TabStop = false;
+            this.gbSys.Text = "SYSTEM CONTROL";
+            // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(313, 122);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(78, 23);
+            this.btnClear.TabIndex = 10;
+            this.btnClear.Text = "Clear text";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // lblSensor
             // 
             this.lblSensor.AutoSize = true;
-            this.lblSensor.Location = new System.Drawing.Point(232, 109);
+            this.lblSensor.Location = new System.Drawing.Point(232, 67);
             this.lblSensor.Name = "lblSensor";
-            this.lblSensor.Size = new System.Drawing.Size(120, 13);
+            this.lblSensor.Size = new System.Drawing.Size(79, 13);
             this.lblSensor.TabIndex = 12;
-            this.lblSensor.Text = "Sensors: not connected";
-            // 
-            // lblRbt
-            // 
-            this.lblRbt.AutoSize = true;
-            this.lblRbt.Location = new System.Drawing.Point(232, 83);
-            this.lblRbt.Name = "lblRbt";
-            this.lblRbt.Size = new System.Drawing.Size(131, 13);
-            this.lblRbt.TabIndex = 11;
-            this.lblRbt.Text = "Robot arm: not connected";
+            this.lblSensor.Text = " not connected";
             // 
             // lblSys
             // 
             this.lblSys.AutoSize = true;
-            this.lblSys.Location = new System.Drawing.Point(232, 57);
+            this.lblSys.Location = new System.Drawing.Point(232, 47);
             this.lblSys.Name = "lblSys";
             this.lblSys.Size = new System.Drawing.Size(27, 13);
             this.lblSys.TabIndex = 10;
@@ -173,26 +176,32 @@
             this.btnSysInf.Text = "System Info";
             this.btnSysInf.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
+            // gbCon
             // 
-            this.groupBox2.Controls.Add(this.lblSP);
-            this.groupBox2.Controls.Add(this.lblRP);
-            this.groupBox2.Controls.Add(this.textBox1);
-            this.groupBox2.Controls.Add(this.lblCntHeader);
-            this.groupBox2.Controls.Add(this.lblState);
-            this.groupBox2.Controls.Add(this.tbRPort);
-            this.groupBox2.Controls.Add(this.tbSPort);
-            this.groupBox2.Controls.Add(this.btnOpen);
-            this.groupBox2.Controls.Add(this.btnClose);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(0, 151);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(403, 136);
-            this.groupBox2.TabIndex = 9;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "CONNECTION CONTROL";
+            this.gbCon.Controls.Add(this.lblV);
+            this.gbCon.Controls.Add(this.lblCntHeader);
+            this.gbCon.Controls.Add(this.lblState);
+            this.gbCon.Controls.Add(this.tbVPort);
+            this.gbCon.Controls.Add(this.btnOpen);
+            this.gbCon.Controls.Add(this.btnClose);
+            this.gbCon.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.gbCon.Location = new System.Drawing.Point(0, 564);
+            this.gbCon.Margin = new System.Windows.Forms.Padding(2);
+            this.gbCon.Name = "gbCon";
+            this.gbCon.Padding = new System.Windows.Forms.Padding(2);
+            this.gbCon.Size = new System.Drawing.Size(403, 139);
+            this.gbCon.TabIndex = 9;
+            this.gbCon.TabStop = false;
+            this.gbCon.Text = "CONNECTION CONTROL";
+            // 
+            // lblV
+            // 
+            this.lblV.AutoSize = true;
+            this.lblV.Location = new System.Drawing.Point(12, 31);
+            this.lblV.Name = "lblV";
+            this.lblV.Size = new System.Drawing.Size(63, 13);
+            this.lblV.TabIndex = 9;
+            this.lblV.Text = "The vehicle";
             // 
             // lblCntHeader
             // 
@@ -213,64 +222,60 @@
             this.lblState.TabIndex = 6;
             this.lblState.Text = "Not connected";
             // 
-            // tbRPort
+            // tbVPort
             // 
-            this.tbRPort.AutoSize = true;
-            this.tbRPort.Location = new System.Drawing.Point(11, 35);
-            this.tbRPort.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.tbRPort.Name = "tbRPort";
-            this.tbRPort.Size = new System.Drawing.Size(106, 13);
-            this.tbRPort.TabIndex = 5;
-            this.tbRPort.Text = "Enter the port name :";
+            this.tbVPort.Location = new System.Drawing.Point(15, 54);
+            this.tbVPort.Margin = new System.Windows.Forms.Padding(2);
+            this.tbVPort.Name = "tbVPort";
+            this.tbVPort.Size = new System.Drawing.Size(76, 20);
+            this.tbVPort.TabIndex = 4;
             // 
-            // tbSPort
+            // rtbSerial
             // 
-            this.tbSPort.Location = new System.Drawing.Point(10, 88);
-            this.tbSPort.Margin = new System.Windows.Forms.Padding(2);
-            this.tbSPort.Name = "tbSPort";
-            this.tbSPort.Size = new System.Drawing.Size(76, 20);
-            this.tbSPort.TabIndex = 4;
+            this.rtbSerial.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbSerial.Enabled = false;
+            this.rtbSerial.Location = new System.Drawing.Point(3, 16);
+            this.rtbSerial.Name = "rtbSerial";
+            this.rtbSerial.ReadOnly = true;
+            this.rtbSerial.Size = new System.Drawing.Size(397, 395);
+            this.rtbSerial.TabIndex = 0;
+            this.rtbSerial.Text = "";
             // 
-            // textBox1
+            // timer1
             // 
-            this.textBox1.Location = new System.Drawing.Point(105, 88);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(76, 20);
-            this.textBox1.TabIndex = 8;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // lblRP
+            // gbSerial
             // 
-            this.lblRP.AutoSize = true;
-            this.lblRP.Location = new System.Drawing.Point(12, 61);
-            this.lblRP.Name = "lblRP";
-            this.lblRP.Size = new System.Drawing.Size(57, 13);
-            this.lblRP.TabIndex = 9;
-            this.lblRP.Text = "Robot Arm";
+            this.gbSerial.Controls.Add(this.rtbSerial);
+            this.gbSerial.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbSerial.Location = new System.Drawing.Point(0, 150);
+            this.gbSerial.Name = "gbSerial";
+            this.gbSerial.Size = new System.Drawing.Size(403, 414);
+            this.gbSerial.TabIndex = 10;
+            this.gbSerial.TabStop = false;
+            this.gbSerial.Text = "SERIAL VEHICLE";
             // 
-            // lblSP
+            // timer2
             // 
-            this.lblSP.AutoSize = true;
-            this.lblSP.Location = new System.Drawing.Point(102, 61);
-            this.lblSP.Name = "lblSP";
-            this.lblSP.Size = new System.Drawing.Size(45, 13);
-            this.lblSP.TabIndex = 10;
-            this.lblSP.Text = "Sensors";
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(403, 287);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.sysGrBx);
+            this.ClientSize = new System.Drawing.Size(403, 703);
+            this.Controls.Add(this.gbSerial);
+            this.Controls.Add(this.gbCon);
+            this.Controls.Add(this.gbSys);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
-            this.sysGrBx.ResumeLayout(false);
-            this.sysGrBx.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.gbSys.ResumeLayout(false);
+            this.gbSys.PerformLayout();
+            this.gbCon.ResumeLayout(false);
+            this.gbCon.PerformLayout();
+            this.gbSerial.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -281,21 +286,22 @@
         private System.Windows.Forms.Button btnOFF;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.GroupBox sysGrBx;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox tbSPort;
-        private System.Windows.Forms.Label tbRPort;
+        private System.Windows.Forms.GroupBox gbSys;
+        private System.Windows.Forms.GroupBox gbCon;
+        private System.Windows.Forms.TextBox tbVPort;
         private System.Windows.Forms.Label lblState;
         private System.Windows.Forms.Label lblSysHeader;
         private System.Windows.Forms.Button btnLctConf;
         private System.Windows.Forms.Button btnSysInf;
         private System.Windows.Forms.Label lblSys;
-        private System.Windows.Forms.Label lblRbt;
         private System.Windows.Forms.Label lblCntHeader;
         private System.Windows.Forms.Label lblSensor;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label lblSP;
-        private System.Windows.Forms.Label lblRP;
+        private System.Windows.Forms.Label lblV;
+        private System.Windows.Forms.RichTextBox rtbSerial;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.GroupBox gbSerial;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 
