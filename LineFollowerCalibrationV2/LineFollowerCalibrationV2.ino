@@ -19,8 +19,8 @@
 #define FORWARD_POWER 120
 #define TURNING_POWER 90
 
-#define SENSOR_DEBUG_
-#define FUNC_DEBUG_
+#define SENSOR_DEBUG
+#define FUNC_DEBUG
 int counter = 0;
 
 int RST_PIN = 9;
@@ -34,7 +34,9 @@ int sensorPins[] = {LMS , LS , MS , RS , RMS};
 float sensorValue[5];
 boolean digitalValue[5];
 
+bool start=false;
 short control=0;
+String message="none";
 
 void setup() {
  
@@ -50,28 +52,52 @@ void setup() {
   pinMode(enR, OUTPUT); //Left motor enable
   pinMode(enL, OUTPUT); //Right motor enable
 
-  Serial.begin(115200);
+  Serial.begin(9600);
+  Serial.setTimeout(5000);
   SPI.begin();  //for Arduino and RFID reader being able to communicate
   reader.PCD_Init(); //Initialization of RFID reader
 }
 
 void loop() {
+  while(Serial.available()){
+    message = Serial.readString();
+    if(message=="200"){
+      Serial.write("OK\n");  
+    }
+    if(message=="002"){
+      start=true;
+      Serial.println();
+      Serial.println("START");
+      Serial.println();
+    }
+    if(message=="201"){
+      start=false;
+      Serial.println("STOP");
+      Serial.println(); 
+    }
+  }
+  if(start==true){
+    Start(); 
+  }
+}
 
-  convertDigital();
+void Start (){
   
   #ifdef SENSOR_DEBUG
   counter++;
   delay(1000);
-  Serial.print("loop : ");
-  Serial.println(counter);
+  Serial.write("loop : ");
+  Serial.print(counter);
+  Serial.write("\n");
   #endif
+
+  convertDigital();
   
   if((digitalValue[0]==1 || digitalValue[1]==1) && digitalValue[3]==0 && digitalValue[4] ==0){
     if(control==2){
      control=0; 
     }
     moveLeft();
-    return;
   }
   
   if((digitalValue[3]==1 || digitalValue[4]==1) && digitalValue[0]==0 && digitalValue[1] ==0) {
@@ -79,7 +105,6 @@ void loop() {
      control=0; 
     }
     moveRight();
-    return;
   }
 
  if((digitalValue[0]==1 || digitalValue[1]==1) && (digitalValue[3]==1 || digitalValue[4]==1)){
@@ -90,21 +115,22 @@ void loop() {
     stopping();
     delay(50);
     control++;
-    return;
   }
   if (control==2){
     stopping();
-    control=0;
-    return;
-  }
-  
+  } 
  }
 
  if(digitalValue[2]==1){
+  if(control==2){
+     control=0; 
+    }
   moveForward();
-  return;
  }
  else{
+  if(control==2){
+     control=0; 
+    }
   turn();
  }
  
@@ -122,21 +148,52 @@ void loop() {
   
   if(reader.uid.uidByte[0] == cardID[0] && reader.uid.uidByte[1] == cardID[1] && 
      reader.uid.uidByte[2] == cardID[2] && reader.uid.uidByte[3] == cardID[3]){
-       Serial.println("Authorized card");
+       Serial.write("Authorized card\n");
        writeToScreen();
        stopping();
        delay(5000);
        return;
   }
   else{
-       Serial.println("Unauthorized card");
+       Serial.write("Unauthorized card\n");
        writeToScreen();  
   }
 
   reader.PICC_HaltA();
 
-}
+}//end of start
 
+void convertDigital() {
+  
+  int sum =0; 
+    for(short i=0; i<5; i++){
+      sensorValue[i] = analogRead(sensorPins[i]);
+      sum+=sensorValue[i];
+      
+    }
+    int avg = (sum) / 5;
+    int threshold = ( avg *6 ) / 5;  // 120% of avg
+
+    #ifdef FUNC_DEBUG
+        Serial.write(" avg :");
+        Serial.print(avg);
+        Serial.write(" threshold :");
+        Serial.print(threshold);
+        Serial.write("\n");
+    #endif
+    for(short i = 0; i < 5; i++){
+        digitalValue[i] = sensorValue[i] > threshold || sensorValue[i] > 250;
+
+        #ifdef FUNC_DEBUG
+        Serial.print(sensorPins[i]);
+        Serial.write(" : Analaog : ");
+        Serial.print(sensorValue[i]);
+        Serial.write(" : Digital : ");
+        Serial.print(digitalValue[i]);
+        Serial.write("\n");
+        #endif
+    }
+}
 void moveForward(){
   
   digitalWrite(RM1, HIGH);// For right motor, moving forward is on
@@ -148,9 +205,8 @@ void moveForward(){
   analogWrite(enL, FORWARD_POWER);    //Right motor, motor speed
        
   #ifdef FUNC_DEBUG
-  Serial.println("F");
-  #endif
-    
+  Serial.write("F\n");
+  #endif    
 }
 
 void moveRight(){ 
@@ -164,9 +220,8 @@ void moveRight(){
   analogWrite(enL, TURNING_POWER); 
        
   #ifdef FUNC_DEBUG
-  Serial.println("R");
-  #endif
-     
+  Serial.write("R\n");
+  #endif    
 }
 
 void moveLeft(){
@@ -180,9 +235,8 @@ void moveLeft(){
   analogWrite(enL, 0);
      
   #ifdef FUNC_DEBUG
-  Serial.println("L");
-  #endif
-  
+  Serial.write("L\n");
+  #endif 
 }
 
 void stopping(){
@@ -197,10 +251,10 @@ void stopping(){
 
        
   #ifdef FUNC_DEBUG
-  Serial.println("S");
-  #endif
-  
+  Serial.write("S\n");
+  #endif 
 }
+
 void turn(){
   
   digitalWrite(RM1, HIGH);
@@ -212,7 +266,7 @@ void turn(){
   digitalWrite(enL, LOW);
   
   #ifdef FUNC_DEBUG
-  Serial.println("T");
+  Serial.write("T\n");
   #endif
 }
 
@@ -223,39 +277,5 @@ void writeToScreen(){
       Serial.print(reader.uid.uidByte[counter]);
       Serial.print(" ");
     }
-    Serial.println();
-}
-
-void convertDigital() {
-  
-  #ifdef FUNC_DEBUG
-  Serial.println("Sensors :");
-  #endif
-  
-  int sum =0; 
-    for(short i=0; i<5; i++){
-      sensorValue[i] = analogRead(sensorPins[i]);
-      sum+=sensorValue[i];
-      
-    }
-    int avg = (sum) / 5;
-    int threshold = ( avg *6 ) / 5;  // 120% of avg
-
-    #ifdef FUNC_DEBUG
-        Serial.print(" avg :");
-        Serial.print(avg);
-        Serial.print(" threshold :");
-        Serial.println(threshold);
-    #endif
-    for(short i = 0; i < 5; i++){
-        digitalValue[i] = sensorValue[i] > threshold || sensorValue[i] > 250;
-
-        #ifdef FUNC_DEBUG
-        Serial.print(sensorPins[i]);
-        Serial.print(" : Analaog : ");
-        Serial.print(sensorValue[i]);
-        Serial.print(" : Digital : ");
-        Serial.println(digitalValue[i]);
-        #endif
-    }
+    Serial.write("\n");
 }
