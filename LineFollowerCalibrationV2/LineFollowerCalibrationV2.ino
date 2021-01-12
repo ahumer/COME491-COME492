@@ -16,18 +16,21 @@
 #define enR 5 //ENA (PWM)
 #define enL 6 //ENB (PWM)
 
-#define FORWARD_POWER 100
-#define TURNING_POWER 80
+#define FORWARD_POWER 80
+#define TURNING_POWER 60
 
 #define SENSOR_DEBUG_
 #define FUNC_DEBUG_
+#define RFID_DEBUG
 int counter = 0;
 
 int RST_PIN = 9;
 int SS_PIN = 10;
 
 MFRC522 reader(SS_PIN ,RST_PIN);
-byte cardID[4] = {80,21,12,163};
+byte cardID[4] = {4,23,59,46};
+byte preCardID[4] = {0,0,0,0};
+byte readCardID[4] = {0,0,0,0};
 
 int sensorPins[] = {LMS , LS , MS , RS , RMS};
 
@@ -137,30 +140,7 @@ void Start (){
     moveForward();
  }
  
-  //RFID
-  //wait until a new card is read
-  if(!reader.PICC_IsNewCardPresent()){
-    return;
-  }
-     
-  if(!reader.PICC_ReadCardSerial()){
-    return;
-  }
-  
-  if(reader.uid.uidByte[0] == cardID[0] && reader.uid.uidByte[1] == cardID[1] && 
-     reader.uid.uidByte[2] == cardID[2] && reader.uid.uidByte[3] == cardID[3]){
-       Serial.write("Authorized card\n");
-       writeToScreen();
-       stopping();
-       delay(5000);
-       return;
-  }
-  else{
-       Serial.write("Unauthorized card\n");
-       writeToScreen();  
-  }
-
-  reader.PICC_HaltA();
+  RFIDreading();
 
 }//end of start
 
@@ -175,7 +155,7 @@ void convertDigital() {
     int avg = (sum) / 5;
     int threshold = ( avg *6 ) / 5;  // 120% of avg
 
-    #ifdef FUNC_DEBUG
+    #ifdef SENSOR_DEBUG
         Serial.write(" avg :");
         Serial.print(avg);
         Serial.write(" threshold :");
@@ -185,7 +165,7 @@ void convertDigital() {
     for(short i = 0; i < 5; i++){
         digitalValue[i] = sensorValue[i] > threshold || sensorValue[i] > 250;
 
-        #ifdef FUNC_DEBUG
+        #ifdef SENSOR_DEBUG
         Serial.print(sensorPins[i]);
         Serial.write(" : Analaog : ");
         Serial.print(sensorValue[i]);
@@ -271,11 +251,59 @@ void turn(){
   #endif
 }
 
+  //RFID
+  //wait until a new card is read
+void RFIDreading(){
+  if(!reader.PICC_IsNewCardPresent()){
+    return;
+  }
+     
+  if(!reader.PICC_ReadCardSerial()){
+    return;
+  }
+
+  
+  for(short i = 0; i<4; i++){
+    readCardID[i] = reader.uid.uidByte[i];
+  }
+
+  Serial.print("Read card ID : ");
+  writeToScreen(readCardID);
+  Serial.print("Previous card ID : ");
+  writeToScreen(preCardID);
+  
+  if(reader.uid.uidByte[0] == cardID[0] && reader.uid.uidByte[1] == cardID[1] && 
+     reader.uid.uidByte[2] == cardID[2] && reader.uid.uidByte[3] == cardID[3]){
+      
+      #ifdef RFID_DEBUG
+       Serial.write("Authorized card\n");
+       //writeToScreen(readCardID);
+       #endif
+       
+       stopping();
+       delay(5000);
+       return;
+  }
+  else{
+      #ifdef RFID_DEBUG
+       Serial.write("Unauthorized card\n");
+       //writeToScreen(readCardID);
+       #endif  
+  }
+
+    for(short i = 0; i<4; i++){
+    preCardID[i] = readCardID[i];
+    readCardID[i] = 0;
+  }
+
+  reader.PICC_HaltA();
+}
+
 //for RFID reader
-void writeToScreen(){
+void writeToScreen(byte writeCardID[4]){
     Serial.print("ID No: ");
     for(int counter = 0; counter<4; counter++){
-      Serial.print(reader.uid.uidByte[counter]);
+      Serial.print(writeCardID[counter]);
       Serial.print(" ");
     }
     Serial.write("\n");
