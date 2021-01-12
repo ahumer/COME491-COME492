@@ -16,11 +16,11 @@
 #define enR 5 //ENA (PWM)
 #define enL 6 //ENB (PWM)
 
-#define FORWARD_POWER 120
-#define TURNING_POWER 90
+#define FORWARD_POWER 100
+#define TURNING_POWER 80
 
-#define SENSOR_DEBUG
-#define FUNC_DEBUG
+#define SENSOR_DEBUG_
+#define FUNC_DEBUG_
 int counter = 0;
 
 int RST_PIN = 9;
@@ -79,6 +79,8 @@ void loop() {
   if(start==true){
     Start(); 
   }
+  
+  Start(); 
 }
 
 void Start (){
@@ -106,6 +108,13 @@ void Start (){
     }
     moveRight();
   }
+  if(digitalValue[0]==0 && digitalValue[1]==0 && digitalValue[2]==0 && digitalValue[3]==0 && digitalValue[4]==0){
+    if(control==2){
+       control=0; 
+      }
+     //turn();
+     stopping();
+ }
 
  if((digitalValue[0]==1 || digitalValue[1]==1) && (digitalValue[3]==1 || digitalValue[4]==1)){
 
@@ -121,21 +130,13 @@ void Start (){
   } 
  }
 
- if(digitalValue[2]==1){
-  if(control==2){
-     control=0; 
-    }
-  moveForward();
- }
- else{
-  if(control==2){
-     control=0; 
-    }
-  turn();
+ if(digitalValue[0]==0 && digitalValue[1]==0 && digitalValue[2]==1 && digitalValue[3]==0 && digitalValue[4]==0){
+    if(control==2){
+       control=0; 
+      }
+    moveForward();
  }
  
-
-
   //RFID
   //wait until a new card is read
   if(!reader.PICC_IsNewCardPresent()){
@@ -211,7 +212,7 @@ void moveForward(){
 
 void moveRight(){ 
 
-  digitalWrite(RM1, HIGH); 
+  digitalWrite(RM1, LOW); 
   digitalWrite(RM2, LOW); 
   analogWrite(enR, 0); 
 
@@ -230,7 +231,7 @@ void moveLeft(){
   digitalWrite(RM2, LOW);
   analogWrite(enR, TURNING_POWER);
 
-  digitalWrite(LM1, HIGH);
+  digitalWrite(LM1, LOW);
   digitalWrite(LM2, LOW);
   analogWrite(enL, 0);
      
