@@ -18,6 +18,9 @@
 
 #define FORWARD_POWER 80
 #define TURNING_POWER 60
+#define PUSHING_POWER 110
+
+#define PUSHING_DELAY 20
 
 #define SENSOR_DEBUG_
 #define FUNC_DEBUG_
@@ -38,8 +41,9 @@ float sensorValue[5];
 boolean digitalValue[5];
 
 bool start=false;
-short control=0;
-String message="none";
+short controlExtra = 0;
+short controlStop = 1;
+String message = "none";
 
 void setup() {
  
@@ -99,21 +103,21 @@ void Start (){
   convertDigital();
   
   if((digitalValue[0]==1 || digitalValue[1]==1) && digitalValue[3]==0 && digitalValue[4] ==0){
-    if(control==2){
-     control=0; 
+    if(controlExtra==2){
+     controlExtra=0; 
     }
     moveLeft();
   }
   
   if((digitalValue[3]==1 || digitalValue[4]==1) && digitalValue[0]==0 && digitalValue[1] ==0) {
-    if(control==2){
-     control=0; 
+    if(controlExtra==2){
+     controlExtra=0; 
     }
     moveRight();
   }
   if(digitalValue[0]==0 && digitalValue[1]==0 && digitalValue[2]==0 && digitalValue[3]==0 && digitalValue[4]==0){
-    if(control==2){
-       control=0; 
+    if(controlExtra==2){
+       controlExtra=0; 
       }
      //turn();
      stopping();
@@ -121,21 +125,21 @@ void Start (){
 
  if((digitalValue[0]==1 || digitalValue[1]==1) && (digitalValue[3]==1 || digitalValue[4]==1)){
 
-  while(control<2){
+  while(controlExtra<2){
     moveForward();
     delay(5);
     stopping();
     delay(50);
-    control++;
+    controlExtra++;
   }
-  if (control==2){
+  if (controlExtra==2){
     stopping();
   } 
  }
 
  if(digitalValue[0]==0 && digitalValue[1]==0 && digitalValue[2]==1 && digitalValue[3]==0 && digitalValue[4]==0){
-    if(control==2){
-       control=0; 
+    if(controlExtra==2){
+       controlExtra=0; 
       }
     moveForward();
  }
@@ -176,44 +180,84 @@ void convertDigital() {
     }
 }
 void moveForward(){
-  
-  digitalWrite(RM1, HIGH);// For right motor, moving forward is on
+  if(controlStop ==1 || controlStop == 2){
+  digitalWrite(RM1, HIGH); // For right motor, moving forward is on
   digitalWrite(RM2, LOW); // For right motor, moving backward is off
-  analogWrite(enR, FORWARD_POWER);  //  Right motor speed
+  analogWrite(enR, PUSHING_POWER); //  Right motor speed 
 
   digitalWrite(LM1, HIGH); //For left motor, moving forward is on
-  digitalWrite(LM2, LOW);  //For left motor, moving backward is off
-  analogWrite(enL, FORWARD_POWER);    //Right motor, motor speed
+  digitalWrite(LM2, LOW);  //For left motor, moving backward is of
+  analogWrite(enL, PUSHING_POWER);  //Right motor, motor speed 
+  
+  delay(PUSHING_DELAY);
+  }
+  
+  digitalWrite(RM1, HIGH);
+  digitalWrite(RM2, LOW); 
+  analogWrite(enR, FORWARD_POWER);  
+
+  digitalWrite(LM1, HIGH); 
+  digitalWrite(LM2, LOW);  
+  analogWrite(enL, FORWARD_POWER);
+   
+  controlStop = 0;  
        
   #ifdef FUNC_DEBUG
   Serial.write("F\n");
   #endif    
 }
 
-void moveRight(){ 
+void moveRight(){
+  //if(controlStop == 1){
+  digitalWrite(RM1, HIGH); 
+  digitalWrite(RM2, LOW); 
+  analogWrite(enR, 0); 
 
-  digitalWrite(RM1, LOW); 
+  digitalWrite(LM1, HIGH); 
+  digitalWrite(LM2, LOW); 
+  analogWrite(enL, PUSHING_POWER);
+  
+  delay(PUSHING_DELAY);
+ // }
+
+  digitalWrite(RM1, HIGH); 
   digitalWrite(RM2, LOW); 
   analogWrite(enR, 0); 
 
   digitalWrite(LM1, HIGH); 
   digitalWrite(LM2, LOW); 
   analogWrite(enL, TURNING_POWER); 
-       
+     
+  controlStop = 2;  
+            
   #ifdef FUNC_DEBUG
   Serial.write("R\n");
   #endif    
 }
 
 void moveLeft(){
+  //if(controlStop == 1){
+   digitalWrite(RM1, HIGH);
+  digitalWrite(RM2, LOW);
+  analogWrite(enR, PUSHING_POWER);
+
+  digitalWrite(LM1, HIGH);
+  digitalWrite(LM2, LOW);
+  analogWrite(enL, 0);
+
+  delay(PUSHING_DELAY);
+ //}
 
   digitalWrite(RM1, HIGH);
   digitalWrite(RM2, LOW);
   analogWrite(enR, TURNING_POWER);
 
-  digitalWrite(LM1, LOW);
+  digitalWrite(LM1, HIGH);
   digitalWrite(LM2, LOW);
   analogWrite(enL, 0);
+     
+  controlStop = 2;  
+            
      
   #ifdef FUNC_DEBUG
   Serial.write("L\n");
@@ -221,7 +265,6 @@ void moveLeft(){
 }
 
 void stopping(){
-
   digitalWrite(RM1, HIGH);
   digitalWrite(RM2, LOW);
   digitalWrite(enR, LOW);
@@ -230,7 +273,8 @@ void stopping(){
   digitalWrite(LM2, LOW);
   digitalWrite(enL, LOW);
 
-       
+   controlStop = 1; 
+      
   #ifdef FUNC_DEBUG
   Serial.write("S\n");
   #endif 
@@ -238,13 +282,7 @@ void stopping(){
 
 void turn(){
   
-  digitalWrite(RM1, HIGH);
-  digitalWrite(RM2, LOW);
-  digitalWrite(enR, LOW);
-
-  digitalWrite(LM1, HIGH);
-  digitalWrite(LM2, LOW);
-  digitalWrite(enL, LOW);
+stopping();
   
   #ifdef FUNC_DEBUG
   Serial.write("T\n");
