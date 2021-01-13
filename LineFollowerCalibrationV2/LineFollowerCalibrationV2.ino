@@ -16,15 +16,15 @@
 #define enR 5 //ENA (PWM)
 #define enL 6 //ENB (PWM)
 
-#define FORWARD_POWER 80
-#define TURNING_POWER 60
-#define PUSHING_POWER 110
+#define FORWARD_POWER 100
+#define PUSHING_POWER 120
 
-#define PUSHING_DELAY 20
+#define PUSHING_DELAY 15
 
-#define SENSOR_DEBUG_
-#define FUNC_DEBUG_
+#define SENSOR_DEBUG
+#define FUNC_DEBUG
 #define RFID_DEBUG
+
 int counter = 0;
 
 int RST_PIN = 9;
@@ -101,30 +101,72 @@ void Start (){
   #endif
 
   convertDigital();
+  int postn = positionCalculation();
   
-  if((digitalValue[0]==1 || digitalValue[1]==1) && digitalValue[3]==0 && digitalValue[4] ==0){
-    if(controlExtra==2){
+  if(postn == 1){
+    if(controlExtra == 2){
+     controlExtra = 0; 
+    }
+    moveRight(80);
+  }
+  else if(postn == 3){
+    if(controlExtra == 2){
      controlExtra=0; 
     }
-    moveLeft();
+    moveRight(70);
   }
-  
-  if((digitalValue[3]==1 || digitalValue[4]==1) && digitalValue[0]==0 && digitalValue[1] ==0) {
-    if(controlExtra==2){
+  else if(postn == 2){
+    if(controlExtra == 2){
      controlExtra=0; 
     }
-    moveRight();
+    moveRight(60);
   }
-  if(digitalValue[0]==0 && digitalValue[1]==0 && digitalValue[2]==0 && digitalValue[3]==0 && digitalValue[4]==0){
-    if(controlExtra==2){
-       controlExtra=0; 
+  else if(postn == 6){
+    if(controlExtra == 2){
+     controlExtra=0; 
+    }
+    moveRight(50);
+  }
+  else if(postn == 12){
+    if(controlExtra == 2){
+     controlExtra=0; 
+    }
+    moveLeft(50);
+  }
+  else if(postn == 8){
+    if(controlExtra == 2){
+     controlExtra = 0; 
+    }
+    moveRight(60);
+  }
+  else if(postn == 24){
+    if(controlExtra == 2){
+     controlExtra = 0; 
+    }
+    moveRight(70);
+  }
+  else if(postn == 16){
+    if(controlExtra == 2){
+     controlExtra = 0; 
+    }
+    moveRight(80);
+  }
+  
+  else if(postn == 0){
+    if(controlExtra == 2){
+       controlExtra = 0; 
       }
      //turn();
      stopping();
  }
+ else if(postn == 4){
+      if(controlExtra == 2){
+       controlExtra  =0; 
+      }
+  moveForward();
+ }
 
- if((digitalValue[0]==1 || digitalValue[1]==1) && (digitalValue[3]==1 || digitalValue[4]==1)){
-
+ else{
   while(controlExtra<2){
     moveForward();
     delay(5);
@@ -135,13 +177,6 @@ void Start (){
   if (controlExtra==2){
     stopping();
   } 
- }
-
- if(digitalValue[0]==0 && digitalValue[1]==0 && digitalValue[2]==1 && digitalValue[3]==0 && digitalValue[4]==0){
-    if(controlExtra==2){
-       controlExtra=0; 
-      }
-    moveForward();
  }
  
   RFIDreading();
@@ -157,7 +192,7 @@ void convertDigital() {
       
     }
     int avg = (sum) / 5;
-    int threshold = ( avg *6 ) / 5;  // 120% of avg
+    int threshold = ( avg *11 ) / 10;
 
     #ifdef SENSOR_DEBUG
         Serial.write(" avg :");
@@ -167,7 +202,7 @@ void convertDigital() {
         Serial.write("\n");
     #endif
     for(short i = 0; i < 5; i++){
-        digitalValue[i] = sensorValue[i] > threshold || sensorValue[i] > 250;
+        digitalValue[i] = sensorValue[i] >= threshold || sensorValue[i] > 250;
 
         #ifdef SENSOR_DEBUG
         Serial.print(sensorPins[i]);
@@ -207,8 +242,8 @@ void moveForward(){
   #endif    
 }
 
-void moveRight(){
-  //if(controlStop == 1){
+void moveRight(int power){
+  if(controlStop == 1){
   digitalWrite(RM1, HIGH); 
   digitalWrite(RM2, LOW); 
   analogWrite(enR, 0); 
@@ -218,7 +253,7 @@ void moveRight(){
   analogWrite(enL, PUSHING_POWER);
   
   delay(PUSHING_DELAY);
- // }
+  }
 
   digitalWrite(RM1, HIGH); 
   digitalWrite(RM2, LOW); 
@@ -226,17 +261,19 @@ void moveRight(){
 
   digitalWrite(LM1, HIGH); 
   digitalWrite(LM2, LOW); 
-  analogWrite(enL, TURNING_POWER); 
+  analogWrite(enL, power); 
      
   controlStop = 2;  
             
   #ifdef FUNC_DEBUG
   Serial.write("R\n");
+  Serial.print(power);
+  Serial.write("\n");
   #endif    
 }
 
-void moveLeft(){
-  //if(controlStop == 1){
+void moveLeft(int power){
+  if(controlStop == 1){
    digitalWrite(RM1, HIGH);
   digitalWrite(RM2, LOW);
   analogWrite(enR, PUSHING_POWER);
@@ -246,11 +283,11 @@ void moveLeft(){
   analogWrite(enL, 0);
 
   delay(PUSHING_DELAY);
- //}
+ }
 
   digitalWrite(RM1, HIGH);
   digitalWrite(RM2, LOW);
-  analogWrite(enR, TURNING_POWER);
+  analogWrite(enR, power);
 
   digitalWrite(LM1, HIGH);
   digitalWrite(LM2, LOW);
@@ -261,6 +298,8 @@ void moveLeft(){
      
   #ifdef FUNC_DEBUG
   Serial.write("L\n");
+  Serial.print(power);
+  Serial.write("\n");
   #endif 
 }
 
@@ -345,4 +384,25 @@ void writeToScreen(byte writeCardID[4]){
       Serial.print(" ");
     }
     Serial.write("\n");
+}
+
+int positionCalculation(){
+  
+  int postn = 0;
+    if(digitalValue[0]==1){
+    postn+=1;
+  }
+  if(digitalValue[1]==1){
+    postn+=2;
+  }
+  if(digitalValue[2]==1){
+    postn+=4;
+  }
+  if(digitalValue[3]==1){
+    postn+=8;
+  }
+  if(digitalValue[4]==1){
+    postn+=16;
+  }
+  return postn;
 }
