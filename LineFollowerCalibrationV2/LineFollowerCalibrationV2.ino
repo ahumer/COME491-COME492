@@ -32,7 +32,6 @@ int SS_PIN = 10;
 
 MFRC522 reader(SS_PIN ,RST_PIN);
 byte cardID[4] = {4,23,59,46};
-byte preCardID[4] = {0,0,0,0};
 byte readCardID[4] = {0,0,0,0};
 
 int sensorPins[] = {LMS , LS , MS , RS , RMS};
@@ -87,7 +86,7 @@ void loop() {
     Start(); 
   }
   
-  Start(); 
+  //Start(); 
 }
 
 void Start (){
@@ -344,13 +343,11 @@ void RFIDreading(){
     readCardID[i] = reader.uid.uidByte[i];
   }
 
-  Serial.print("Read card ID : ");
+  Serial.print("Read card ID ");
   writeToScreen(readCardID);
-  Serial.print("Previous card ID : ");
-  writeToScreen(preCardID);
   
-  if(reader.uid.uidByte[0] == cardID[0] && reader.uid.uidByte[1] == cardID[1] && 
-     reader.uid.uidByte[2] == cardID[2] && reader.uid.uidByte[3] == cardID[3]){
+  if(readCardID[0] == cardID[0] && readCardID[1] == cardID[1] && 
+     readCardID[2] == cardID[2] && readCardID[3] == cardID[3]){
       
       #ifdef RFID_DEBUG
        Serial.write("Authorized card\n");
@@ -368,17 +365,12 @@ void RFIDreading(){
        #endif  
   }
 
-    for(short i = 0; i<4; i++){
-    preCardID[i] = readCardID[i];
-    readCardID[i] = 0;
-  }
-
   reader.PICC_HaltA();
 }
 
 //for RFID reader
 void writeToScreen(byte writeCardID[4]){
-    Serial.print("ID No: ");
+    Serial.write("\n#\n");
     for(int counter = 0; counter<4; counter++){
       Serial.print(writeCardID[counter]);
       Serial.print(" ");
