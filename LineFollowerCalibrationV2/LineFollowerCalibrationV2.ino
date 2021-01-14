@@ -21,8 +21,8 @@
 
 #define PUSHING_DELAY 15
 
-#define SENSOR_DEBUG
-#define FUNC_DEBUG
+#define SENSOR_DEBUG_
+#define FUNC_DEBUG_
 #define RFID_DEBUG
 
 int counter = 0;
@@ -86,7 +86,7 @@ void loop() {
     Start(); 
   }
   
-  //Start(); 
+  Start(); 
 }
 
 void Start (){

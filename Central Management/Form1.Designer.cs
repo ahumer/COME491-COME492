@@ -34,6 +34,7 @@
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.gbSys = new System.Windows.Forms.GroupBox();
+            this.btnDirect = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.lblSensor = new System.Windows.Forms.Label();
             this.lblSys = new System.Windows.Forms.Label();
@@ -100,6 +101,7 @@
             // 
             // gbSys
             // 
+            this.gbSys.Controls.Add(this.btnDirect);
             this.gbSys.Controls.Add(this.btnClear);
             this.gbSys.Controls.Add(this.lblSensor);
             this.gbSys.Controls.Add(this.lblSys);
@@ -118,11 +120,21 @@
             this.gbSys.TabStop = false;
             this.gbSys.Text = "SYSTEM CONTROL";
             // 
+            // btnDirect
+            // 
+            this.btnDirect.Location = new System.Drawing.Point(130, 98);
+            this.btnDirect.Name = "btnDirect";
+            this.btnDirect.Size = new System.Drawing.Size(79, 35);
+            this.btnDirect.TabIndex = 13;
+            this.btnDirect.Text = "Direction Settings";
+            this.btnDirect.UseVisualStyleBackColor = true;
+            this.btnDirect.Click += new System.EventHandler(this.btnDirect_Click);
+            // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(313, 122);
+            this.btnClear.Location = new System.Drawing.Point(313, 98);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(78, 23);
+            this.btnClear.Size = new System.Drawing.Size(78, 35);
             this.btnClear.TabIndex = 10;
             this.btnClear.Text = "Clear text";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -163,7 +175,7 @@
             this.btnLctConf.Name = "btnLctConf";
             this.btnLctConf.Size = new System.Drawing.Size(90, 35);
             this.btnLctConf.TabIndex = 8;
-            this.btnLctConf.Text = "Location Configuration";
+            this.btnLctConf.Text = "Station Configuration";
             this.btnLctConf.UseVisualStyleBackColor = true;
             // 
             // btnSysInf
@@ -271,6 +283,8 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.gbSys.ResumeLayout(false);
             this.gbSys.PerformLayout();
             this.gbCon.ResumeLayout(false);
@@ -302,6 +316,7 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.GroupBox gbSerial;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Button btnDirect;
     }
 }
 

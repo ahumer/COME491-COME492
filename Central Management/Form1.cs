@@ -19,6 +19,7 @@ namespace Central_Management
         string cardID = "";
         string preCardID = "";
         int controlInTimer = 0;
+        public string[] CardIDs = { "", "", "", "", "", "", "", "", "" };
         public Form1()
         {
             InitializeComponent();
@@ -293,6 +294,36 @@ namespace Central_Management
             btnOFF.Visible = false;
             btnON.Visible = true;
             timer2.Enabled = false;
+        }
+
+        private void btnDirect_Click(object sender, EventArgs e)
+        {
+            Form direction = new directCal();
+            direction.Show();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            string filePath = @"configCardID.txt";
+
+            string configText;
+            configText = File.ReadAllText(filePath);
+
+            rtbSerial.Text = configText;
+
+            string [] subText = configText.Split('\n');
+
+            char[] seperator = new char[] { '\r' };
+            for(int i=0; i < 9; i++)
+            {
+                CardIDs[i] = subText[i].Trim('\r');
+            }
+
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
         }
     }
     
