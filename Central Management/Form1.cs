@@ -16,6 +16,9 @@ namespace Central_Management
     public partial class Form1 : Form
     {
         static SerialPort _serialPortV = new SerialPort();
+        string cardID = "";
+        string preCardID = "";
+        int controlInTimer = 0;
         public Form1()
         {
             InitializeComponent();
@@ -132,9 +135,12 @@ namespace Central_Management
         {
             try
             {
+                string preText = rtbSerial.Text;
+                Form frm = this.FindForm();
                 timer1.Enabled = false;
+                rtbSerial.Text = "\nSTOP\n\n" + preText;
                 gbCon.Visible = true;
-                btnOFF.Enabled = false;
+                frm.Enabled = false;
                 systemCommunication("201");
                 timer2.Enabled = true;              
             }
@@ -238,14 +244,33 @@ namespace Central_Management
         {
             string preText = rtbSerial.Text;
             string buffer;
+            
             if (_serialPortV.BytesToRead != 0)
             {
+                
                 try
                 {
-                    buffer = _serialPortV.ReadLine();
+                    if (controlInTimer == 0)
+                    {
+                        buffer = _serialPortV.ReadLine();
+                    }
+                    else
+                    {   
+                        buffer = _serialPortV.ReadLine();
+                        preCardID = cardID;
+                        cardID = buffer;
+                        controlInTimer = 0; ;
+                        
+                    }
+                    
+                    if(buffer == "#")
+                    {
+                        controlInTimer = 1;
+                    }
+                    
                     buffer += "\n" + preText;
                     rtbSerial.Text = buffer;
-                   
+                     
                 }
                 catch (TimeoutException) 
                 {
@@ -257,11 +282,14 @@ namespace Central_Management
         private void btnClear_Click(object sender, EventArgs e)
         {
             rtbSerial.Clear();
+            rtbSerial.Text = "Current card ID: \n" + cardID + "\nPrevious card ID: \n" + preCardID;
         }
 
         private void timer2_Tick(object sender, EventArgs e)
         {
+            Form frm = this.FindForm();
             Thread.Sleep(6500);
+            frm.Enabled = true;
             btnOFF.Visible = false;
             btnON.Visible = true;
             timer2.Enabled = false;
