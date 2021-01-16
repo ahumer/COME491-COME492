@@ -16,10 +16,9 @@ namespace Central_Management
     public partial class Form1 : Form
     {
         static SerialPort _serialPortV = new SerialPort();
-        string cardID = "";
-        string preCardID = "";
+
         int controlInTimer = 0;
-        public string[] CardIDs = { "", "", "", "", "", "", "", "", "" };
+        
         public Form1()
         {
             InitializeComponent();
@@ -258,8 +257,8 @@ namespace Central_Management
                     else
                     {   
                         buffer = _serialPortV.ReadLine();
-                        preCardID = cardID;
-                        cardID = buffer;
+                        cardIDreference.preCardID = cardIDreference.cardID;
+                        cardIDreference.cardID = buffer;
                         controlInTimer = 0; ;
                         
                     }
@@ -283,7 +282,7 @@ namespace Central_Management
         private void btnClear_Click(object sender, EventArgs e)
         {
             rtbSerial.Clear();
-            rtbSerial.Text = "Current card ID: \n" + cardID + "\nPrevious card ID: \n" + preCardID;
+            rtbSerial.Text = "Current card ID: \n" + cardIDreference.cardID + "\nPrevious card ID: \n" + cardIDreference.preCardID;
         }
 
         private void timer2_Tick(object sender, EventArgs e)
@@ -298,7 +297,10 @@ namespace Central_Management
 
         private void btnDirect_Click(object sender, EventArgs e)
         {
-            Form direction = new directCal();
+            directCal direction = new directCal();
+            Form frm = this.FindForm();
+            direction.parent = frm;
+            frm.Enabled = false;
             direction.Show();
         }
 
@@ -316,7 +318,7 @@ namespace Central_Management
             char[] seperator = new char[] { '\r' };
             for(int i=0; i < 9; i++)
             {
-                CardIDs[i] = subText[i].Trim('\r');
+                cardIDreference.CardIDArray[i] = subText[i].Trim('\r');
             }
 
         }
