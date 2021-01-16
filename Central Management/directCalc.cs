@@ -19,7 +19,7 @@ namespace Central_Management
         int posVehicle = 0;
         int prePosVehicle = 0;
         string[] alphabet = { "A", "B", "C", "D", "E", "F", "G", "H", "J" };
-        string defaultText;
+        string defaultText = "";
         string cardIDCopy;
         string preCardIDCopy;
         string  [] cardIDArrayCopy;
@@ -310,7 +310,7 @@ namespace Central_Management
                 }
             }
 
-            rtbPath.Text = pathCalculation(posVehicle, posDestination,prePosVehicle);
+            rtbPath.Text = pathCalculation(posVehicle, posDestination, prePosVehicle);
 
             //Destination is colored on graph
             SelectRichText(rtbGraph, alphabet[posDestination].ToString());
@@ -325,6 +325,8 @@ namespace Central_Management
         {
             int xL, xD, yL, yD, xPr, yPr;
             string directionPath = "";
+            string directionForVehicle="";
+            string [] directionCalcResult;
             string arrowStart;
 
             //According to index of them, current location, destination and the previous location coordinates are calculated
@@ -355,14 +357,24 @@ namespace Central_Management
                 //According to the current location and the destination coordinates, calculating the path
                 if (((xL < xD) || (xL > xD)) && ((yL < yD) || (yL > yD)))
                 {
-                    directionPath += oneDimensionPathCalc(vehicleFacet, xL, yL, xD, yL);
+                    directionCalcResult = Utilities.oneDimensionPathCalc(alphabet,vehicleFacet, xL, yL, xD, yL);
+                    directionPath += directionCalcResult[0];
+                    directionForVehicle += directionCalcResult[1];
+                    vehicleFacet = directionCalcResult[2];
+
                     int tempPosVehicle = xD * 3 + yL;
                     arrowAdding(tempPosVehicle);
-                    directionPath += oneDimensionPathCalc(vehicleFacet, xD, yL, xD, yD);
+
+                    directionCalcResult = Utilities.oneDimensionPathCalc(alphabet,vehicleFacet, xD, yL, xD, yD);
+                    directionPath += directionCalcResult[0];
+                    directionForVehicle += directionCalcResult[1];
+                    vehicleFacet = directionCalcResult[2];
                 }
                 else
                 {
-                    directionPath += oneDimensionPathCalc(vehicleFacet, xL, yL, xD, yD);
+                    directionCalcResult = Utilities.oneDimensionPathCalc(alphabet,vehicleFacet, xL, yL, xD, yD);
+                    directionPath += directionCalcResult[0];
+                    directionForVehicle += directionCalcResult[1];
                 }
                 SelectRichText(rtbGraph, arrowStart);
                 rtbGraph.SelectionColor = Color.Orange;
@@ -372,222 +384,11 @@ namespace Central_Management
             return directionPath;
         }
 
-        //Calculate the facet of the vehicle according to given current location and previous location
-        private string facetCalculation (int xLocation, int yLocation, int xPrevious, int yPrevious)
-        {
-            string facet = "Invalid";
-            if (xLocation == xPrevious)
-            {
-                if ((yLocation - yPrevious)==-1)
-                {
-                    facet = "up";
-                }
-                else if((yLocation - yPrevious) == 1)
-                {
-                    facet = "down";
-                }
-            }
-            if (yLocation == yPrevious)
-            {
-                if ((xLocation - xPrevious)==-1)
-                {
-                    facet = "left";
-                }
-                else if ((xLocation - xPrevious) == 1)
-                {
-                    facet = "right";
-                }
-            }
+       
 
-            return facet;
-        }
+        
 
-        //Calculate the direction for given location and destination coordinates, only on same x coordinates or  on same y coordinates
-        private string oneDimensionPathCalc(string facet, int xLocation, int yLocation, int xDestination, int yDestination)
-        {
-            string oneDimensionPath = "";
-            int indexD = xDestination* 3 + yDestination;
-            if (xLocation == xDestination)
-            {
-                if (yLocation < yDestination)
-                {
-                    if (facet == "down")
-                    {
-                        oneDimensionPath += "Vehicle points to down 🡻\n";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += "(down of user), ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "up")
-                    {
-
-                        oneDimensionPath += "Vehicle points to up 🡹\n";
-                        oneDimensionPath += "turn back,";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "left")
-                    {
-                    rtbGraph.SelectedText += "🡸";
-                        oneDimensionPath += "Vehicle points to left 🡸\n";
-                        oneDimensionPath += "turn left, ";
-                        oneDimensionPath += "(down of user), ";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "right")
-                    {
-                        oneDimensionPath += "Vehicle points to right 🡺\n";
-                        oneDimensionPath += "turn right, ";
-                        oneDimensionPath += "(down of user), ";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    vehicleFacet = "down";   
-                }
-
-                if (yLocation > yDestination)
-                {
-                    if (facet == "down")
-                    {
-                        oneDimensionPath += "Vehicle points to down 🡻\n";
-                        oneDimensionPath += "turn back,";
-                        oneDimensionPath += "(up of user), ";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "up")
-                    {
-                        oneDimensionPath += "Vehicle points to up 🡹\n";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "left")
-                    {
-                        oneDimensionPath += "Vehicle points to left 🡸\n";
-                        oneDimensionPath += "turn right, ";
-                        oneDimensionPath += "(up of user), ";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "right")
-                    {
-                        oneDimensionPath += "Vehicle points to right 🡺\n";
-                        oneDimensionPath += "turn left, ";
-                        oneDimensionPath += "(up of user), ";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    vehicleFacet = "up";
-                }
-            }
-
-            else if (yLocation == yDestination)
-            {
-                if (xLocation < xDestination)
-                {
-                    if (facet == "down")
-                    {
-                        oneDimensionPath += "Vehicle points to down 🡻\n";
-                        oneDimensionPath += "turn left, ";
-                        oneDimensionPath += "(right of user), ";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "up")
-                    {
-                        oneDimensionPath += "Vehicle points to up 🡹\n";
-                        oneDimensionPath += "turn right, ";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "left")
-                    {
-                        oneDimensionPath += "Vehicle points to left 🡸\n";
-                        oneDimensionPath += "turn back, ";
-                        oneDimensionPath += "(right of user), ";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "right")
-                    {
-                        oneDimensionPath += "Vehicle points to right 🡺\n";
-                        oneDimensionPath += "move forward, ";
-                        oneDimensionPath += "(right of user), ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    vehicleFacet = "right";
-                }
-                if (xLocation > xDestination)
-                {
-                    if (facet == "down")
-                    {
-                        oneDimensionPath += "Vehicle points to down 🡻\n";
-                        oneDimensionPath += "turn right, ";
-                        oneDimensionPath += "(left of user), ";
-                        oneDimensionPath += "move forward, ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "up")
-                    {
-                        oneDimensionPath += "Vehicle points to up 🡹\n";
-                        oneDimensionPath += "turn left, ";
-                        oneDimensionPath += "move forward, ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "left")
-                    {
-                        oneDimensionPath += "Vehicle points to left 🡸\n";
-                        oneDimensionPath += " move forward, ";
-                        oneDimensionPath += "(left of user), ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    else if (facet == "right")
-                    {
-                        oneDimensionPath += "Vehicle points to right 🡺\n";
-                        oneDimensionPath += "turn back, ";
-                        oneDimensionPath += "(left of user), ";
-                        oneDimensionPath += "move forward ";
-                        oneDimensionPath += " to ";
-                        oneDimensionPath += alphabet[indexD];
-                        oneDimensionPath += "\n";
-                    }
-                    vehicleFacet = "left";
-                }
-            }
-
-            return oneDimensionPath;
-        }
+        
 
         private void btnReLoad_Click(object sender, EventArgs e)
         {
@@ -659,5 +460,9 @@ namespace Central_Management
             }
         }
 
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

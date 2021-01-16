@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cardIDreference.cs" />
+    <Compile Include="communication.cs" />
     <Compile Include="directCalc.cs">
       <SubType>Form</SubType>
     </Compile>

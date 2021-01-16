@@ -18,6 +18,7 @@ namespace Central_Management
         static SerialPort _serialPortV = new SerialPort();
 
         int controlInTimer = 0;
+        public string directionToSend = "";
         
         public Form1()
         {
@@ -32,7 +33,7 @@ namespace Central_Management
                 MessageBox.Show("Enter the port name!");
             else
             {
-                if (SerialConnection() == true)
+                if (communication.SerialConnection(_serialPortV, tbVPort.Text) == true)
                 {
                     lblState.Text = "";
                     MessageBox.Show("Connection established!");
@@ -78,27 +79,6 @@ namespace Central_Management
             }
         }
 
-        private bool SerialConnection()
-        {
-            bool state = false;
-            try
-            {
-                _serialPortV.PortName = tbVPort.Text;
-                _serialPortV.BaudRate = 9600;
-                _serialPortV.Open();
-                _serialPortV.ReadTimeout = 5000;
-                _serialPortV.WriteTimeout = 5000;
-
-                state = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            return state;
-        }
-
         private void btnON_Click(object sender, EventArgs e)
         {
             _serialPortV.DiscardInBuffer();
@@ -141,7 +121,7 @@ namespace Central_Management
                 rtbSerial.Text = "\nSTOP\n\n" + preText;
                 gbCon.Visible = true;
                 frm.Enabled = false;
-                systemCommunication("201");
+                communication.systemCommunication(_serialPortV, "201");
                 timer2.Enabled = true;              
             }
             catch (Exception ex)
@@ -158,7 +138,7 @@ namespace Central_Management
             string inMessage = "";
             bool control = false;
             
-            inMessage = systemCommunication("200",false);
+            inMessage = communication.systemCommunication(_serialPortV, "200",false);
             if (inMessage == "OK")
             {
                 lblSensor.Text = "connected";
@@ -172,73 +152,7 @@ namespace Central_Management
             }
             return control;
         }
-        private string systemCommunication(string message = "null", bool onlyWrite = true)
-        {
-            string buffer = "";
-            short counter = 0;
-            if (message != "null")
-            { 
-                try
-                {
-                    _serialPortV.Write(message);
-                }
-                catch(TimeoutException)
-                {
-                    MessageBox.Show("Serial port writing time out");
-                }
-            
-                
-            }
-            if (onlyWrite == false)
-            {
-                while (counter < 10)
-                {
-                    if (_serialPortV.BytesToRead == 0)
-                    {
-                        Thread.Sleep(1000);
-                        counter++;
-
-                    }
-
-                    if (_serialPortV.BytesToRead > 2)
-                    {
-                        try
-                        {
-                            buffer = _serialPortV.ReadLine();
-                            //tbSerial.Text += "sysCom"+ buffer;
-                            counter = 11;
-                        }
-                        catch (TimeoutException)
-                        {
-                            MessageBox.Show("Serial port reading time out");
-                        }
-
-                    }
-                    else
-                    {
-                        Thread.Sleep(1000);
-                        counter++;
-                    }
-                }
-
-                if (buffer == "OK")
-                {
-                    try
-                    {
-                        _serialPortV.Write("002");
-                    }
-                    catch (TimeoutException)
-                    {
-                        MessageBox.Show("Serial port writing time out (start)");
-                    }
-                }
-            }
-
-            
-           
-            return buffer;
-
-        }
+        
 
         private void timer1_Tick(object sender, EventArgs e)
         {
