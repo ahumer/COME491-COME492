@@ -15,10 +15,9 @@ namespace Central_Management
         
         bool controlShowBtn = false;
         string destination;
-        string vehicleFacet;
         int posVehicle = 0;
         int prePosVehicle = 0;
-        string[] alphabet = { "A", "B", "C", "D", "E", "F", "G", "H", "J" };
+        
         string defaultText = "";
         string cardIDCopy;
         string preCardIDCopy;
@@ -57,8 +56,8 @@ namespace Central_Management
             }
 
             //Writing the current position and the previous position information of the vehicle on the form, according to graph.
-            lblVposition.Text = alphabet[posVehicle];
-            lblVprePos.Text = alphabet[prePosVehicle];
+            lblVposition.Text = Utilities.alphabet[posVehicle];
+            lblVprePos.Text = Utilities.alphabet[prePosVehicle];
 
             lblVfacet.Text = "";
             lblA.Visible = false;
@@ -93,7 +92,7 @@ namespace Central_Management
             lblJ.Text = cardIDArrayCopy[8];
 
             //Coloring the current position of the vehicle on the graph 
-            SelectRichText(rtbGraph, alphabet[posVehicle].ToString());
+            Utilities.SelectRichText(rtbGraph, Utilities.alphabet[posVehicle].ToString());
             rtbGraph.SelectionColor = Color.DarkRed;
         }
 
@@ -310,86 +309,16 @@ namespace Central_Management
                 }
             }
 
-            rtbPath.Text = pathCalculation(posVehicle, posDestination, prePosVehicle);
+            rtbPath.Text = Utilities.pathCalculation(posVehicle, posDestination, prePosVehicle,lblVfacet,rtbGraph);
 
             //Destination is colored on graph
-            SelectRichText(rtbGraph, alphabet[posDestination].ToString());
+            Utilities.SelectRichText(rtbGraph, Utilities.alphabet[posDestination].ToString());
             rtbGraph.SelectionColor = Color.Green;
 
             btnCalc.Enabled = false;
             rbVehicle.Enabled = false;
         }
-
-        //Calculate the path from given current location to given destination
-        private string pathCalculation(int indexL, int indexD, int indexPr)
-        {
-            int xL, xD, yL, yD, xPr, yPr;
-            string directionPath = "";
-            string directionForVehicle="";
-            string [] directionCalcResult;
-            string arrowStart;
-
-            //According to index of them, current location, destination and the previous location coordinates are calculated
-            xL = indexL / 3;
-            xD = indexD / 3;
-            yL = indexL % 3;
-            yD = indexD % 3;
-            xPr = indexPr / 3;
-            yPr = indexPr % 3;
-
-            //Calculate which direction the vehicle is facing
-            vehicleFacet = facetCalculation(xL, yL, xPr, yPr);
-            lblVfacet .Text= vehicleFacet;
-
-            if (vehicleFacet == "Invalid")
-            {
-                lblVfacet.ForeColor = Color.Black;
-                directionPath += "move forward\n";
-                directionPath += "Calculate again";
-            }
-            else
-            {
-                lblVfacet.ForeColor = Color.Orange;
-
-                //Adding an arrow to the graph that indicates the direction the vehicle is facing
-                arrowStart = arrowAdding(posVehicle);
-             
-                //According to the current location and the destination coordinates, calculating the path
-                if (((xL < xD) || (xL > xD)) && ((yL < yD) || (yL > yD)))
-                {
-                    directionCalcResult = Utilities.oneDimensionPathCalc(alphabet,vehicleFacet, xL, yL, xD, yL);
-                    directionPath += directionCalcResult[0];
-                    directionForVehicle += directionCalcResult[1];
-                    vehicleFacet = directionCalcResult[2];
-
-                    int tempPosVehicle = xD * 3 + yL;
-                    arrowAdding(tempPosVehicle);
-
-                    directionCalcResult = Utilities.oneDimensionPathCalc(alphabet,vehicleFacet, xD, yL, xD, yD);
-                    directionPath += directionCalcResult[0];
-                    directionForVehicle += directionCalcResult[1];
-                    vehicleFacet = directionCalcResult[2];
-                }
-                else
-                {
-                    directionCalcResult = Utilities.oneDimensionPathCalc(alphabet,vehicleFacet, xL, yL, xD, yD);
-                    directionPath += directionCalcResult[0];
-                    directionForVehicle += directionCalcResult[1];
-                }
-                SelectRichText(rtbGraph, arrowStart);
-                rtbGraph.SelectionColor = Color.Orange;
-                SelectRichText(rtbGraph, alphabet[posVehicle].ToString());
-                rtbGraph.SelectionColor = Color.DarkRed;
-            }  
-            return directionPath;
-        }
-
-       
-
         
-
-        
-
         private void btnReLoad_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -414,55 +343,22 @@ namespace Central_Management
             parent.Enabled = true;
             e.Cancel = false;
         }
-
-        private string arrowAdding (int index)
-        {
-            string arrow = "";
-
-            SelectRichText(rtbGraph, alphabet[index].ToString());
-
-            if (vehicleFacet == "up")
-            {
-                arrow = "🡹";
-                rtbGraph.SelectedText += arrow;
-            }
-            if (vehicleFacet == "down")
-            {
-                arrow = "🡻";
-                rtbGraph.SelectedText += arrow;
-            }
-            if (vehicleFacet == "left")
-            {
-                arrow = "🡸";
-                rtbGraph.SelectedText += arrow;
-            }
-            if (vehicleFacet == "right")
-            {
-                arrow = "🡺";
-                rtbGraph.SelectedText += arrow;
-            }
-
-            rtbGraph.Text = rtbGraph.Text.Remove((rtbGraph.Text.IndexOf(arrow) - 3), 2);
-            return arrow;
-        }
-
-        //Select given text from rich text box
-        private void SelectRichText(RichTextBox rch, string target)
-        {
-            int pos = rch.Text.IndexOf(target);
-            if (pos < 0)
-            {
-                rch.Select(0, 0);
-            }
-            else
-            {
-                rch.Select(pos, target.Length);
-            }
-        }
-
         private void btnSend_Click(object sender, EventArgs e)
         {
-            
+            string [] subDirections;
+            string[] messages;
+            string directions = Utilities.directionForVehicle;
+            subDirections = directions.ToString().Split('@');
+            messages = subDirections[0].ToString().Split('$');
+            foreach(var item in messages)
+            {
+                if(item != "F")
+                {
+                    communication.systemCommunication(item);
+                }
+            }
+
+
         }
     }
 }

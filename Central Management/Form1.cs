@@ -15,7 +15,7 @@ namespace Central_Management
 {
     public partial class Form1 : Form
     {
-        static SerialPort _serialPortV = new SerialPort();
+        
 
         int controlInTimer = 0;
         public string directionToSend = "";
@@ -33,7 +33,7 @@ namespace Central_Management
                 MessageBox.Show("Enter the port name!");
             else
             {
-                if (communication.SerialConnection(_serialPortV, tbVPort.Text) == true)
+                if (communication.SerialConnection(tbVPort.Text) == true)
                 {
                     lblState.Text = "";
                     MessageBox.Show("Connection established!");
@@ -64,8 +64,8 @@ namespace Central_Management
 
             //Investigate if exception handling is required here
             
-            _serialPortV.Close();
-            if (_serialPortV.IsOpen == false)
+            
+            if (communication.connectionClosing() == false)
             {
                 lblState.Text = "";
                 MessageBox.Show("Connection closed!");
@@ -81,8 +81,8 @@ namespace Central_Management
 
         private void btnON_Click(object sender, EventArgs e)
         {
-            _serialPortV.DiscardInBuffer();
-            _serialPortV.DiscardOutBuffer();
+            communication.port.DiscardInBuffer();
+            communication.port.DiscardOutBuffer();
             bool state = false;
             try
             {
@@ -121,7 +121,7 @@ namespace Central_Management
                 rtbSerial.Text = "\nSTOP\n\n" + preText;
                 gbCon.Visible = true;
                 frm.Enabled = false;
-                communication.systemCommunication(_serialPortV, "201");
+                communication.systemCommunication("201");
                 timer2.Enabled = true;              
             }
             catch (Exception ex)
@@ -138,7 +138,7 @@ namespace Central_Management
             string inMessage = "";
             bool control = false;
             
-            inMessage = communication.systemCommunication(_serialPortV, "200",false);
+            inMessage = communication.systemCommunication("200",false);
             if (inMessage == "OK")
             {
                 lblSensor.Text = "connected";
@@ -159,18 +159,18 @@ namespace Central_Management
             string preText = rtbSerial.Text;
             string buffer;
             
-            if (_serialPortV.BytesToRead != 0)
+            if (communication.port.BytesToRead != 0)
             {
                 
                 try
                 {
                     if (controlInTimer == 0)
                     {
-                        buffer = _serialPortV.ReadLine();
+                        buffer = communication.port.ReadLine();
                     }
                     else
                     {   
-                        buffer = _serialPortV.ReadLine();
+                        buffer = communication.port.ReadLine();
                         cardIDreference.preCardID = cardIDreference.cardID;
                         cardIDreference.cardID = buffer;
                         controlInTimer = 0; ;

@@ -12,13 +12,13 @@ namespace Central_Management
     {
         public static string[] alphabet = { "A", "B", "C", "D", "E", "F", "G", "H", "J" };
         public static string vehicleFacet = "";
+        public static string directionForVehicle = "";
 
         //Calculate the path from given current location to given destination
         public static string pathCalculation(int indexL, int indexD, int indexPr, Label lblFacet, RichTextBox rch)
         {
             int xL, xD, yL, yD, xPr, yPr;
             string directionPath = "";
-            string directionForVehicle = "";
             string[] directionCalcResult;
             string arrowStart;
 
@@ -59,6 +59,7 @@ namespace Central_Management
                     Utilities.arrowAdding(alphabet[tempPosVehicle], vehicleFacet, rch);
 
                     directionCalcResult = oneDimensionPathCalc(xD, yL, xD, yD);
+                    directionPath += "@";
                     directionPath += directionCalcResult[0];
                     directionForVehicle += directionCalcResult[1];
                 }
@@ -79,7 +80,7 @@ namespace Central_Management
         //Calculate the direction for given location and destination coordinates, only on same x coordinates or  on same y coordinates
         public static string[] oneDimensionPathCalc( int xLocation, int yLocation, int xDestination, int yDestination)
         {
-            string oneDimensionPath = "$";
+            string oneDimensionPath = "";
             string directionForVehicle = "";
             string facetOut = vehicleFacet;
 
@@ -96,7 +97,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$F";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
 
                     }
                     else if (vehicleFacet == "up")
@@ -108,8 +112,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "turn back$";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$243";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     else if (vehicleFacet == "left")
                     {
@@ -120,8 +126,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "turn left$";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$241";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     else if (vehicleFacet == "right")
                     {
@@ -132,8 +140,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "turn right$";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$242";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                        facetOut = "down";
                 }
@@ -149,8 +159,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "turn back$";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$243";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     else if (vehicleFacet == "up")
                     {
@@ -159,7 +171,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$F";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     else if (vehicleFacet == "left")
                     {
@@ -170,8 +185,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "turn right$";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$242";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     else if (vehicleFacet == "right")
                     {
@@ -182,8 +199,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "turn left$";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$241";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     facetOut = "up";
                 }
@@ -202,8 +221,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "turn left$";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$241";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     else if (vehicleFacet == "up")
                     {
@@ -213,8 +234,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "turn right$";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$242";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     else if (vehicleFacet == "left")
                     {
@@ -225,8 +248,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "turn back$";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$243";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     else if (vehicleFacet == "right")
                     {
@@ -236,7 +261,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$F";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     facetOut = "right";
                 }
@@ -251,7 +279,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$242";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     else if (vehicleFacet == "up")
                     {
@@ -261,7 +292,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$241";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     else if (vehicleFacet == "left")
                     {
@@ -271,7 +305,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$F";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     else if (vehicleFacet == "right")
                     {
@@ -282,7 +319,10 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += alphabet[indexD];
+                        directionForVehicle += "$243";
+                        directionForVehicle += "$";
+                        directionForVehicle += indexD;
+
                     }
                     facetOut = "left";
                 }
@@ -337,7 +377,7 @@ namespace Central_Management
             }
         }
 
-        //Adding arrow to the graph accoridng to the direciton that the vehicle is facing and the index of the location
+        //Adding arrow to the graph according to the direction that the vehicle is facing and the index of the location
         public static string arrowAdding(string locOnGraph, string facet, RichTextBox rch)
         {
             string arrow = "";

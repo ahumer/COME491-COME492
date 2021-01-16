@@ -11,7 +11,8 @@ namespace Central_Management
 {
     public static class communication
     {
-        public static bool SerialConnection (SerialPort port, string portName)
+        public static SerialPort port = new SerialPort();
+        public static bool SerialConnection (string portName)
         {
             bool state = false;
             try
@@ -32,7 +33,7 @@ namespace Central_Management
             return state;
         }
 
-        public static string systemCommunication(SerialPort port, string message = "null", bool onlyWrite = true)
+        public static string systemCommunication(string message = "null", bool onlyWrite = true)
         {
             string buffer = "";
             short counter = 0;
@@ -98,6 +99,14 @@ namespace Central_Management
 
             return buffer;
 
+        }
+        public static bool connectionClosing ()
+        {
+            bool control = true;
+            port.Close();
+            control = port.IsOpen;
+
+            return control;
         }
     }
 }
