@@ -69,6 +69,7 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.rtbGraph = new System.Windows.Forms.RichTextBox();
             this.btnCalc = new System.Windows.Forms.Button();
+            this.btnSend = new System.Windows.Forms.Button();
             this.gbLocation.SuspendLayout();
             this.gbFunctions.SuspendLayout();
             this.SuspendLayout();
@@ -291,6 +292,7 @@
             // 
             // gbFunctions
             // 
+            this.gbFunctions.Controls.Add(this.btnSend);
             this.gbFunctions.Controls.Add(this.btnReLoad);
             this.gbFunctions.Controls.Add(this.lblAssignHeader);
             this.gbFunctions.Controls.Add(this.lblCalcHeader);
@@ -517,6 +519,16 @@
             this.btnCalc.UseVisualStyleBackColor = true;
             this.btnCalc.Click += new System.EventHandler(this.btnCalc_Click);
             // 
+            // btnSend
+            // 
+            this.btnSend.Location = new System.Drawing.Point(304, 217);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(47, 23);
+            this.btnSend.TabIndex = 23;
+            this.btnSend.Text = "Send";
+            this.btnSend.UseVisualStyleBackColor = true;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            // 
             // directCal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -579,5 +591,6 @@
         private System.Windows.Forms.Label lblAssignHeader;
         private System.Windows.Forms.Label lblCalcHeader;
         private System.Windows.Forms.Button btnReLoad;
+        private System.Windows.Forms.Button btnSend;
     }
 }
