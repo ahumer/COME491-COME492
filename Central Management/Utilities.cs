@@ -13,6 +13,7 @@ namespace Central_Management
         public static string[] alphabet = { "A", "B", "C", "D", "E", "F", "G", "H", "J" };
         public static string vehicleFacet = "";
 
+        //Calculate the path from given current location to given destination
         public static string pathCalculation(int indexL, int indexD, int indexPr, Label lblFacet, RichTextBox rch)
         {
             int xL, xD, yL, yD, xPr, yPr;
@@ -335,6 +336,8 @@ namespace Central_Management
                 rch.Select(pos, target.Length);
             }
         }
+
+        //Adding arrow to the graph accoridng to the direciton that the vehicle is facing and the index of the location
         public static string arrowAdding(string locOnGraph, string facet, RichTextBox rch)
         {
             string arrow = "";
