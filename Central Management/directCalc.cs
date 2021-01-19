@@ -36,6 +36,7 @@ namespace Central_Management
             preCardIDCopy = cardIDreference.preCardID.Trim();
             cardIDArrayCopy = cardIDreference.CardIDArray;
             defaultText = rtbGraph.Text;
+            timerCalc.Enabled = true;
 
             //Finding index in the card IDs array, for card ID of the current location of the vehicle 
             for (int i = 0; i < 9; i++)
@@ -380,7 +381,6 @@ namespace Central_Management
             string message = "";
             try
             {
-
                 if (btnSendControl == 0)
                 {
                     string[] subDirectionsArray;
@@ -395,15 +395,14 @@ namespace Central_Management
 
                         if (message != "fail")
                         {
-                            rtbProcess.Text += "Wait for 'Send' button being enabled for second path sending.\n";
+                            //rtbProcess.Text += "Wait for 'Send' button being enabled for second path sending.\n";
                             btnSendControl = 1;
-
                         }
                         else
                         {
                             MessageBox.Show("Control the vehicle!");
                             Utilities.subDirectionCash = ""; //Prevent conflict with next calculation
-                        }
+                        }    
                     }
                     else
                     {
@@ -434,6 +433,7 @@ namespace Central_Management
                     {
                         MessageBox.Show("Control the vehicle!");
                     }
+                    Utilities.subDirectionCash = ""; //Prevent conflict with next calculation
                 }
     
             }
@@ -463,6 +463,7 @@ namespace Central_Management
                     rtbProcess.Text += "The vehicle arrived to mid-stop.\n";
                     btnSend.Enabled = true;
                     btnSendControl = 2;
+                    btnSend_Click(timerCalc, e);
                 }
             }
             if(btnSendControl == 3)
