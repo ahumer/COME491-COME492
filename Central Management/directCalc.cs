@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,14 +16,15 @@ namespace Central_Management
         
         bool controlShowBtn = false;
         string destination;
-        int posVehicle = 0;
-        int prePosVehicle = 0;
+        int posVehicle = -1;
+        int prePosVehicle = -1;
         
         string defaultText = "";
         string cardIDCopy;
         string preCardIDCopy;
         string  [] cardIDArrayCopy;
         public Form parent;
+        int btnSendControl = 0;
         public directCal()
         {
             InitializeComponent();
@@ -56,8 +58,23 @@ namespace Central_Management
             }
 
             //Writing the current position and the previous position information of the vehicle on the form, according to graph.
-            lblVposition.Text = Utilities.alphabet[posVehicle];
-            lblVprePos.Text = Utilities.alphabet[prePosVehicle];
+            if (posVehicle != -1)
+            {
+                lblVposition.Text = Utilities.alphabet[posVehicle];
+            }
+            else
+            {
+                lblVposition.Text = "";
+            }
+            
+            if(prePosVehicle != -1)
+            {
+                lblVprePos.Text = Utilities.alphabet[prePosVehicle];
+            }
+            else
+            {
+                lblVprePos.Text = "";
+            }
 
             lblVfacet.Text = "";
             lblA.Visible = false;
@@ -91,9 +108,13 @@ namespace Central_Management
             lblH.Text = cardIDArrayCopy[7];
             lblJ.Text = cardIDArrayCopy[8];
 
-            //Coloring the current position of the vehicle on the graph 
-            Utilities.SelectRichText(rtbGraph, Utilities.alphabet[posVehicle].ToString());
-            rtbGraph.SelectionColor = Color.DarkRed;
+            //Coloring the current position of the vehicle on the graph
+            if (posVehicle != -1)
+            {
+                Utilities.SelectRichText(rtbGraph, Utilities.alphabet[posVehicle].ToString());
+                rtbGraph.SelectionColor = Color.DarkRed;
+            }
+
         }
 
         private void rbA_CheckedChanged(object sender, EventArgs e)
@@ -298,29 +319,38 @@ namespace Central_Management
 
         private void btnCalc_Click(object sender, EventArgs e)
         {
-            //The index in the card ID array for selected destination
-            int posDestination = 0;
-            for (int i = 0; i < 9; i++)
+            try
             {
-                if (cardIDArrayCopy[i] == destination)
+                //The index in the card ID array for selected destination
+                int posDestination = 0;
+                for (int i = 0; i < 9; i++)
                 {
-                    posDestination = i;
-                    break;
+                    if (cardIDArrayCopy[i] == destination)
+                    {
+                        posDestination = i;
+                        break;
+                    }
                 }
+
+                rtbPath.Text = Utilities.pathCalculation(posVehicle, posDestination, prePosVehicle, lblVfacet, rtbGraph);
+
+                //Destination is colored on graph
+                Utilities.SelectRichText(rtbGraph, Utilities.alphabet[posDestination].ToString());
+                rtbGraph.SelectionColor = Color.Green;
+
+                btnCalc.Enabled = false;
+                rbVehicle.Enabled = false;
+                btnSend.Enabled = true;
             }
-
-            rtbPath.Text = Utilities.pathCalculation(posVehicle, posDestination, prePosVehicle,lblVfacet,rtbGraph);
-
-            //Destination is colored on graph
-            Utilities.SelectRichText(rtbGraph, Utilities.alphabet[posDestination].ToString());
-            rtbGraph.SelectionColor = Color.Green;
-
-            btnCalc.Enabled = false;
-            rbVehicle.Enabled = false;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
         
         private void btnReLoad_Click(object sender, EventArgs e)
         {
+            this.Dispose();
             this.Close();
             directCal direction = new directCal();
             direction.cardIDArrayCopy = cardIDreference.CardIDArray;
@@ -333,7 +363,8 @@ namespace Central_Management
         private void btnClose_Click(object sender, EventArgs e)
         {
             var frm = this.FindForm();
-            parent.Enabled = true;
+            timerCalc.Enabled = true;
+            parent.Visible = true;
             frm.Close();
             
         }
@@ -345,20 +376,103 @@ namespace Central_Management
         }
         private void btnSend_Click(object sender, EventArgs e)
         {
-            string [] subDirections;
-            string[] messages;
-            string directions = Utilities.directionForVehicle;
-            subDirections = directions.ToString().Split('@');
-            messages = subDirections[0].ToString().Split('$');
-            foreach(var item in messages)
+            btnSend.Enabled = false;
+            string message = "";
+            try
             {
-                if(item != "F")
+
+                if (btnSendControl == 0)
                 {
-                    communication.systemCommunication(item);
+                    string[] subDirectionsArray;
+                    subDirectionsArray = Utilities.directionForVehicle.ToString().Split('@');
+                    Utilities.directionForVehicle = ""; //Prevent conflict with next calculation
+
+                    if (subDirectionsArray[1].ToString() != "null")
+                    {
+                        Utilities.subDirectionCash = subDirectionsArray[1].ToString();
+                        rtbProcess.Text += "First ";
+                        message = communication.sendingDirections(subDirectionsArray[0].ToString(), rtbProcess, true);
+
+                        if (message != "fail")
+                        {
+                            rtbProcess.Text += "Wait for 'Send' button being enabled for second path sending.\n";
+                            btnSendControl = 1;
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("Control the vehicle!");
+                            Utilities.subDirectionCash = ""; //Prevent conflict with next calculation
+                        }
+                    }
+                    else
+                    {
+                        rtbProcess.Text += "The ";
+                        message = communication.sendingDirections(subDirectionsArray[0].ToString(), rtbProcess, false);
+
+                        if (message != "fail")
+                        {
+                            btnSendControl = 3;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Control the vehicle!");
+                        }
+                    }
+                    
+                }
+                else if(btnSendControl == 2)
+                {
+                    btnSendControl = 3;
+                    rtbProcess.Text += "Second ";
+                    message = communication.sendingDirections(Utilities.subDirectionCash, rtbProcess, false);
+                    if (message != "fail")
+                    {
+                        
+                    }
+                    else
+                    {
+                        MessageBox.Show("Control the vehicle!");
+                    }
+                }
+    
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+           
+            
+        }
+
+        private void timerCalc_Tick(object sender, EventArgs e)
+        {
+
+            string buffer;
+            string preText = communication.serialText;
+            buffer = communication.readingSerialTimer();
+            if (buffer != "")
+            {
+                buffer += "\n" + preText;
+                communication.serialText = buffer;
+            }
+            if (btnSendControl == 1)
+            {
+                if(cardIDreference.CardIDArray[communication.index] == cardIDreference.cardID)
+                {
+                    rtbProcess.Text += "The vehicle arrived to mid-stop.\n";
+                    btnSend.Enabled = true;
+                    btnSendControl = 2;
                 }
             }
-
-
+            if(btnSendControl == 3)
+            {
+                if (cardIDreference.CardIDArray[communication.index].ToString() == cardIDreference.cardID.ToString())
+                {
+                    rtbProcess.Text += "The vehicle arrived to the destination.";
+                    btnSendControl = 0;
+                }
+            }
         }
     }
 }

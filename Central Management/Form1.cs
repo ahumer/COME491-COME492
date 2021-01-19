@@ -98,7 +98,7 @@ namespace Central_Management
                 btnON.Visible = false;
                 btnOFF.Visible = true;
                 btnOFF.Enabled = true;
-                timer1.Enabled = true;
+                timer1Main.Enabled = true;
                 gbCon.Visible = false;
                 MessageBox.Show("The system is initialized succesfully.");
             }
@@ -117,12 +117,12 @@ namespace Central_Management
             {
                 string preText = rtbSerial.Text;
                 Form frm = this.FindForm();
-                timer1.Enabled = false;
+                timer1Main.Enabled = false;
                 rtbSerial.Text = "\nSTOP\n\n" + preText;
                 gbCon.Visible = true;
                 frm.Enabled = false;
-                communication.systemCommunication("201");
-                timer2.Enabled = true;              
+                communication.systemCommunication(10, "201");
+                timer2Main.Enabled = true;              
             }
             catch (Exception ex)
             {
@@ -138,7 +138,7 @@ namespace Central_Management
             string inMessage = "";
             bool control = false;
             
-            inMessage = communication.systemCommunication("200",false);
+            inMessage = communication.systemCommunication(10, "200",false);
             if (inMessage == "OK")
             {
                 lblSensor.Text = "connected";
@@ -156,41 +156,7 @@ namespace Central_Management
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            string preText = rtbSerial.Text;
-            string buffer;
-            
-            if (communication.port.BytesToRead != 0)
-            {
-                
-                try
-                {
-                    if (controlInTimer == 0)
-                    {
-                        buffer = communication.port.ReadLine();
-                    }
-                    else
-                    {   
-                        buffer = communication.port.ReadLine();
-                        cardIDreference.preCardID = cardIDreference.cardID;
-                        cardIDreference.cardID = buffer;
-                        controlInTimer = 0; ;
-                        
-                    }
-                    
-                    if(buffer == "#")
-                    {
-                        controlInTimer = 1;
-                    }
-                    
-                    buffer += "\n" + preText;
-                    rtbSerial.Text = buffer;
-                     
-                }
-                catch (TimeoutException) 
-                {
-                    MessageBox.Show("Serial port reading time out");
-                }
-            }
+           
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -201,12 +167,7 @@ namespace Central_Management
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            Form frm = this.FindForm();
-            Thread.Sleep(6500);
-            frm.Enabled = true;
-            btnOFF.Visible = false;
-            btnON.Visible = true;
-            timer2.Enabled = false;
+           
         }
 
         private void btnDirect_Click(object sender, EventArgs e)
@@ -214,7 +175,9 @@ namespace Central_Management
             directCal direction = new directCal();
             Form frm = this.FindForm();
             direction.parent = frm;
-            frm.Enabled = false;
+            frm.Visible = false;
+            communication.serialText = rtbSerial.Text;
+            timer1Main.Enabled = false;
             direction.Show();
         }
 
@@ -240,6 +203,38 @@ namespace Central_Management
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
 
+        }
+
+        private void timer1Main_Tick(object sender, EventArgs e)
+        {
+             string buffer;
+            string preText = rtbSerial.Text;
+            if (communication.serialText != "")
+            {
+                buffer = communication.serialText;
+                communication.serialText = "";
+            }
+            else
+            {
+                buffer = communication.readingSerialTimer();
+            }
+           
+            if(buffer !="")
+            {
+                buffer += "\n" + preText;
+                rtbSerial.Text = buffer;
+            }
+
+        }
+
+        private void timer2Main_Tick(object sender, EventArgs e)
+        {
+            Form frm = this.FindForm();
+            Thread.Sleep(6500);
+            frm.Enabled = true;
+            btnOFF.Visible = false;
+            btnON.Visible = true;
+            timer2Main.Enabled = false;
         }
     }
     

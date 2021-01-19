@@ -12,6 +12,9 @@ namespace Central_Management
     public static class communication
     {
         public static SerialPort port = new SerialPort();
+        public static int controlInTimer = 0;
+        public static string serialText = "";
+        public static int index;   //In sendingDirections
         public static bool SerialConnection (string portName)
         {
             bool state = false;
@@ -33,10 +36,10 @@ namespace Central_Management
             return state;
         }
 
-        public static string systemCommunication(string message = "null", bool onlyWrite = true)
+        public static string systemCommunication(int wait, string message = "null", bool onlyWrite = true)
         {
             string buffer = "";
-            short counter = 0;
+            int counter = 0;
             if (message != "null")
             {
                 try
@@ -52,7 +55,7 @@ namespace Central_Management
             }
             if (onlyWrite == false)
             {
-                while (counter < 10)
+                while (counter < wait)
                 {
                     if (port.BytesToRead == 0)
                     {
@@ -66,8 +69,13 @@ namespace Central_Management
                         try
                         {
                             buffer = port.ReadLine();
+                            counter = wait + 1;
                             //tbSerial.Text += "sysCom"+ buffer;
-                            counter = 11;
+                            if (buffer.ElementAt(0) == '&')
+                            {
+                                counter = 0;
+                            }
+                            
                         }
                         catch (TimeoutException)
                         {
@@ -80,6 +88,7 @@ namespace Central_Management
                         Thread.Sleep(1000);
                         counter++;
                     }
+                    
                 }
 
                 if (buffer == "OK")
@@ -93,6 +102,7 @@ namespace Central_Management
                         MessageBox.Show("Serial port writing time out (start)");
                     }
                 }
+               
             }
 
 
@@ -107,6 +117,99 @@ namespace Central_Management
             control = port.IsOpen;
 
             return control;
+        }
+        public static string sendingDirections(string directions, RichTextBox tb, bool midStop)
+        {
+            string[] messages;
+            string inMessage = "";
+            string ID = "";
+
+            messages = directions.ToString().Split('$');
+
+            index = Int32.Parse(messages[2]);
+
+            if (messages[1] == "F")
+            {
+                inMessage = "OK1";
+            }
+            else
+            {
+                inMessage = communication.systemCommunication(10, messages[1], false);
+                if (inMessage == "OK1")
+                {
+                    tb.Text += "direction message has been sent.\n";
+                }
+                else
+                {
+                    tb.Text += "direction message couldn't be sent.\n";
+                    inMessage = "fail";
+                }
+            }
+
+            if(inMessage == "OK1")
+            {
+                inMessage = "";
+                ID = cardIDreference.CardIDArray[index];
+                inMessage = communication.systemCommunication(10, ID, false);
+                if(inMessage == "OK2")
+                {
+                    if (midStop == true)
+                    {
+                        tb.Text += "Waiting the vehicle to arrive mid-stop.\n";
+                    }
+                    else
+                    {
+                        tb.Text += "Waiting the vehicle to arrive destination.\n";
+                    }
+
+                   
+                }
+                else
+                {
+                    tb.Text += "ID message couldn't be sent.\n";
+                    inMessage = "fail";
+                }
+            }
+
+            return inMessage;
+
+        }
+        public static string readingSerialTimer()
+        {
+            string buffer = "";
+
+            if (communication.port.BytesToRead != 0)
+            {
+
+                try
+                {
+                    if (controlInTimer == 0)
+                    {
+                        buffer = communication.port.ReadLine();
+                    }
+                    else
+                    {
+                        buffer = communication.port.ReadLine();
+                        cardIDreference.preCardID = cardIDreference.cardID;
+                        cardIDreference.cardID = buffer;
+                        cardIDreference.cardID = cardIDreference.cardID.Trim();
+                        controlInTimer = 0; ;
+
+                    }
+
+                    if (buffer == "#")
+                    {
+                        controlInTimer = 1;
+                    }
+
+
+                }
+                catch (TimeoutException)
+                {
+                    MessageBox.Show("Serial port reading time out");
+                }
+            }
+            return buffer;
         }
     }
 }

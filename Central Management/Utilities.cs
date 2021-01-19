@@ -13,6 +13,7 @@ namespace Central_Management
         public static string[] alphabet = { "A", "B", "C", "D", "E", "F", "G", "H", "J" };
         public static string vehicleFacet = "";
         public static string directionForVehicle = "";
+        public static string subDirectionCash = "";
 
         //Calculate the path from given current location to given destination
         public static string pathCalculation(int indexL, int indexD, int indexPr, Label lblFacet, RichTextBox rch)
@@ -23,16 +24,44 @@ namespace Central_Management
             string arrowStart;
 
             //According to index of them, current location, destination and the previous location coordinates are calculated
-            xL = indexL / 3;
+            if(indexL != -1)
+            {
+                xL = indexL / 3;
+                yL = indexL % 3;
+            }
+            else
+            {
+                xL = -1;
+                yL = -1;
+            }
+            
             xD = indexD / 3;
-            yL = indexL % 3;
             yD = indexD % 3;
-            xPr = indexPr / 3;
-            yPr = indexPr % 3;
+
+            if(indexPr != -1)
+            {
+                xPr = indexPr / 3;
+                yPr = indexPr % 3;
+            }
+            else
+            {
+                xPr = -1;
+                yPr = -1;
+            }
+
 
             //Calculate which direction the vehicle is facing
-            vehicleFacet = Utilities.facetCalculation(xL, yL, xPr, yPr);
-            lblFacet.Text = vehicleFacet;
+            if(indexPr == -1 && indexL == 8)
+            {
+                //If previous card ID readed isn't on the list, and the card ID readed is the card ID of the enterence point of the vehicle to the stage.
+                vehicleFacet = "up";
+            }
+            else
+            {
+                vehicleFacet = Utilities.facetCalculation(xL, yL, xPr, yPr);
+                lblFacet.Text = vehicleFacet;
+            }
+
 
             if (vehicleFacet == "Invalid")
             {
@@ -45,7 +74,7 @@ namespace Central_Management
                 lblFacet.ForeColor = Color.Orange;
 
                 //Adding an arrow to the graph that indicates the direction the vehicle is facing
-                arrowStart = Utilities.arrowAdding(alphabet[indexL], vehicleFacet,rch);
+                arrowStart = Utilities.arrowAdding(alphabet[indexL], rch);
 
                 //According to the current location and the destination coordinates, calculating the path
                 if (((xL < xD) || (xL > xD)) && ((yL < yD) || (yL > yD)))
@@ -53,14 +82,14 @@ namespace Central_Management
                     directionCalcResult = oneDimensionPathCalc(xL, yL, xD, yL);
                     directionPath += directionCalcResult[0];
                     directionForVehicle += directionCalcResult[1];
-                    vehicleFacet = directionCalcResult[2];
 
                     int tempPosVehicle = xD * 3 + yL;
-                    Utilities.arrowAdding(alphabet[tempPosVehicle], vehicleFacet, rch);
+                    Utilities.arrowAdding(alphabet[tempPosVehicle], rch);
 
                     directionCalcResult = oneDimensionPathCalc(xD, yL, xD, yD);
-                    directionPath += "@";
+                    directionPath += "MID-STOP: ";
                     directionPath += directionCalcResult[0];
+                    directionForVehicle += "@";
                     directionForVehicle += directionCalcResult[1];
                 }
                 else
@@ -68,12 +97,16 @@ namespace Central_Management
                     directionCalcResult = oneDimensionPathCalc( xL, yL, xD, yD);
                     directionPath += directionCalcResult[0];
                     directionForVehicle += directionCalcResult[1];
+                    directionForVehicle += "@";
+                    directionForVehicle += "null";
                 }
                 Utilities.SelectRichText(rch, arrowStart);
                 rch.SelectionColor = Color.Orange;
                 Utilities.SelectRichText(rch, alphabet[indexL].ToString());
                 rch.SelectionColor = Color.DarkRed;
+
             }
+            vehicleFacet = ""; //Prevent conflict with next calculation
             return directionPath;
         }
 
@@ -337,28 +370,32 @@ namespace Central_Management
         public static string facetCalculation(int xLocation, int yLocation, int xPrevious, int yPrevious)
         {
             string facet = "Invalid";
-            if (xLocation == xPrevious)
+            if(xLocation != -1 || yLocation != -1 || xPrevious != -1 || yPrevious != -1)
             {
-                if ((yLocation - yPrevious) == -1)
+                if (xLocation == xPrevious)
                 {
-                    facet = "up";
+                    if ((yLocation - yPrevious) == -1)
+                    {
+                        facet = "up";
+                    }
+                    else if ((yLocation - yPrevious) == 1)
+                    {
+                        facet = "down";
+                    }
                 }
-                else if ((yLocation - yPrevious) == 1)
+                if (yLocation == yPrevious)
                 {
-                    facet = "down";
+                    if ((xLocation - xPrevious) == -1)
+                    {
+                        facet = "left";
+                    }
+                    else if ((xLocation - xPrevious) == 1)
+                    {
+                        facet = "right";
+                    }
                 }
             }
-            if (yLocation == yPrevious)
-            {
-                if ((xLocation - xPrevious) == -1)
-                {
-                    facet = "left";
-                }
-                else if ((xLocation - xPrevious) == 1)
-                {
-                    facet = "right";
-                }
-            }
+           
 
             return facet;
         }
@@ -378,28 +415,28 @@ namespace Central_Management
         }
 
         //Adding arrow to the graph according to the direction that the vehicle is facing and the index of the location
-        public static string arrowAdding(string locOnGraph, string facet, RichTextBox rch)
+        public static string arrowAdding(string locOnGraph, RichTextBox rch)
         {
             string arrow = "";
 
             Utilities.SelectRichText(rch,locOnGraph);
 
-            if (facet == "up")
+            if (vehicleFacet == "up")
             {
                 arrow = "🡹";
                 rch.SelectedText += arrow;
             }
-            if (facet == "down")
+            if (vehicleFacet == "down")
             {
                 arrow = "🡻";
                 rch.SelectedText += arrow;
             }
-            if (facet == "left")
+            if (vehicleFacet == "left")
             {
                 arrow = "🡸";
                 rch.SelectedText += arrow;
             }
-            if (facet == "right")
+            if (vehicleFacet == "right")
             {
                 arrow = "🡺";
                 rch.SelectedText += arrow;
