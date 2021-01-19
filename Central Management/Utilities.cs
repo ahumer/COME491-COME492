@@ -126,11 +126,11 @@ namespace Central_Management
                     {
                         oneDimensionPath += "Vehicle points to down 🡻\n";
                         oneDimensionPath += "move forward ";
-                        oneDimensionPath += "(down of user), ";
+                        oneDimensionPath += "(down of user) ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "$F";
+                        directionForVehicle += "$240";
                         directionForVehicle += "$";
                         directionForVehicle += indexD;
 
@@ -140,7 +140,7 @@ namespace Central_Management
                     {
 
                         oneDimensionPath += "Vehicle points to up 🡹\n";
-                        oneDimensionPath += "turn back,";
+                        oneDimensionPath += "turn back,\n";
                         oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
@@ -153,8 +153,8 @@ namespace Central_Management
                     else if (vehicleFacet == "left")
                     {
                         oneDimensionPath += "Vehicle points to left 🡸\n";
-                        oneDimensionPath += "turn left, ";
-                        oneDimensionPath += "(down of user), ";
+                        oneDimensionPath += "turn left ";
+                        oneDimensionPath += "(down of user),\n ";
                         oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
@@ -167,8 +167,8 @@ namespace Central_Management
                     else if (vehicleFacet == "right")
                     {
                         oneDimensionPath += "Vehicle points to right 🡺\n";
-                        oneDimensionPath += "turn right, ";
-                        oneDimensionPath += "(down of user), ";
+                        oneDimensionPath += "turn right ";
+                        oneDimensionPath += "(down of user),\n ";
                         oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
@@ -186,8 +186,8 @@ namespace Central_Management
                     if (vehicleFacet == "down")
                     {
                         oneDimensionPath += "Vehicle points to down 🡻\n";
-                        oneDimensionPath += "turn back,";
-                        oneDimensionPath += "(up of user), ";
+                        oneDimensionPath += "turn back ";
+                        oneDimensionPath += "(up of user),\n ";
                         oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
@@ -204,7 +204,7 @@ namespace Central_Management
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "$F";
+                        directionForVehicle += "$240";
                         directionForVehicle += "$";
                         directionForVehicle += indexD;
 
@@ -212,8 +212,8 @@ namespace Central_Management
                     else if (vehicleFacet == "left")
                     {
                         oneDimensionPath += "Vehicle points to left 🡸\n";
-                        oneDimensionPath += "turn right, ";
-                        oneDimensionPath += "(up of user), ";
+                        oneDimensionPath += "turn right ";
+                        oneDimensionPath += "(up of user),\n ";
                         oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
@@ -227,7 +227,7 @@ namespace Central_Management
                     {
                         oneDimensionPath += "Vehicle points to right 🡺\n";
                         oneDimensionPath += "turn left, ";
-                        oneDimensionPath += "(up of user), ";
+                        oneDimensionPath += "(up of user),\n ";
                         oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
@@ -248,8 +248,8 @@ namespace Central_Management
                     if (vehicleFacet == "down")
                     {
                         oneDimensionPath += "Vehicle points to down 🡻\n";
-                        oneDimensionPath += "turn left, ";
-                        oneDimensionPath += "(right of user), ";
+                        oneDimensionPath += "turn left ";
+                        oneDimensionPath += "(right of user),\n ";
                         oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
@@ -262,7 +262,7 @@ namespace Central_Management
                     else if (vehicleFacet == "up")
                     {
                         oneDimensionPath += "Vehicle points to up 🡹\n";
-                        oneDimensionPath += "turn right, ";
+                        oneDimensionPath += "turn right,\n ";
                         oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
@@ -275,8 +275,8 @@ namespace Central_Management
                     else if (vehicleFacet == "left")
                     {
                         oneDimensionPath += "Vehicle points to left 🡸\n";
-                        oneDimensionPath += "turn back, ";
-                        oneDimensionPath += "(right of user), ";
+                        oneDimensionPath += "turn back ";
+                        oneDimensionPath += "(right of user),\n ";
                         oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
@@ -289,12 +289,12 @@ namespace Central_Management
                     else if (vehicleFacet == "right")
                     {
                         oneDimensionPath += "Vehicle points to right 🡺\n";
-                        oneDimensionPath += "move forward, ";
+                        oneDimensionPath += "move forward ";
                         oneDimensionPath += "(right of user), ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "$F";
+                        directionForVehicle += "$240";
                         directionForVehicle += "$";
                         directionForVehicle += indexD;
 
@@ -306,9 +306,9 @@ namespace Central_Management
                     if (vehicleFacet == "down")
                     {
                         oneDimensionPath += "Vehicle points to down 🡻\n";
-                        oneDimensionPath += "turn right, ";
-                        oneDimensionPath += "(left of user), ";
-                        oneDimensionPath += "move forward, ";
+                        oneDimensionPath += "turn right ";
+                        oneDimensionPath += "(left of user),\n ";
+                        oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
@@ -320,8 +320,8 @@ namespace Central_Management
                     else if (vehicleFacet == "up")
                     {
                         oneDimensionPath += "Vehicle points to up 🡹\n";
-                        oneDimensionPath += "turn left, ";
-                        oneDimensionPath += "move forward, ";
+                        oneDimensionPath += "turn left,\n ";
+                        oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
@@ -333,12 +333,12 @@ namespace Central_Management
                     else if (vehicleFacet == "left")
                     {
                         oneDimensionPath += "Vehicle points to left 🡸\n";
-                        oneDimensionPath += " move forward, ";
+                        oneDimensionPath += " move forward ";
                         oneDimensionPath += "(left of user), ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
                         oneDimensionPath += "\n";
-                        directionForVehicle += "$F";
+                        directionForVehicle += "$240";
                         directionForVehicle += "$";
                         directionForVehicle += indexD;
 
@@ -346,8 +346,8 @@ namespace Central_Management
                     else if (vehicleFacet == "right")
                     {
                         oneDimensionPath += "Vehicle points to right 🡺\n";
-                        oneDimensionPath += "turn back, ";
-                        oneDimensionPath += "(left of user), ";
+                        oneDimensionPath += "turn back ";
+                        oneDimensionPath += "(left of user),\n ";
                         oneDimensionPath += "move forward ";
                         oneDimensionPath += " to ";
                         oneDimensionPath += alphabet[indexD];
