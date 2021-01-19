@@ -130,26 +130,20 @@ namespace Central_Management
 
             index = Int32.Parse(messages[2]);
 
-            //If message doesn't include any turning movement
-            if (messages[1] == "F")
-            {
-                inMessage = "OK1";
-            }
-            else  //If message includes a turning movement
-            {
-                inMessage = communication.systemCommunication(10, messages[1], false);
+            
+            inMessage = communication.systemCommunication(10, messages[1], false);
 
-                //If vehicle sent the message OK1 which indicates it got the direction message
-                if (inMessage == "OK1")
-                {
-                    tb.Text += "direction message has been sent.\n";
-                }
-                else  //If the vehicle doesn't sent comfirmation message of OK1
-                {
-                    tb.Text += "direction message couldn't be sent.\n";
-                    inMessage = "fail";
-                }
+            //If vehicle sent the message OK1 which indicates it got the direction message
+            if (inMessage == "OK1")
+            {
+                tb.Text += "direction message has been sent.\n";
             }
+            else  //If the vehicle doesn't sent comfirmation message of OK1
+            {
+                tb.Text += "direction message couldn't be sent.\n";
+                inMessage = "fail";
+            }
+            
 
             //If OK1 confirmation message is receiveed or there is no direction message to send, send the ID message
             if(inMessage == "OK1")
