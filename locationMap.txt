@@ -4,7 +4,12 @@ y0  0A      3D       6G
                                   Left                   Right
 y1  1B      4E       7H
 
-y2  2C      5F       8J                      Down             
-
-      
-
+y2  2C      5F       8J                      Down   
+                                
+                     🢁 (Enterence)
+                
+                    (-1)  -->     This card won't be on the list of card IDs, and code
+                                    
+                                  is written as turning (-1) when couldn't find the
+                                    
+                                  card ID which is searched on the list.
