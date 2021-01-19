@@ -86,8 +86,14 @@ void loop() {
         Serial.println("STOP");
         Serial.println();
         message=""; 
-      } 
-       if(message == "241" && start == true){
+      }
+      //This direction message indicate that there is no need to change vehicle direction.
+      if(message == "240" && start == true){
+        Serial.write("OK1\n");
+        controlMessage = true;
+        message="";
+      }
+      if(message == "241" && start == true){
         Serial.write("OK1\n");
         Serial.println("&turn left");
         controlMessage = true;
@@ -119,6 +125,8 @@ void loop() {
         Serial.print(" ");
         }
         Serial.println(" ");
+        Serial.println("Move and read");
+        
         controlID = false;
         //control = false;
         
@@ -247,7 +255,9 @@ void RFIDreading(){
         readCardID[2] == cardID[2] && readCardID[3] == cardID[3]){
       
       #ifdef RFID_DEBUG
-       Serial.write("Destination card\n\n");
+       Serial.println("&Destination card");
+       Serial.println("&Stop");
+       Serial.println("&");
        #endif
        
        stopping();
@@ -258,7 +268,8 @@ void RFIDreading(){
   }
   else{
       #ifdef RFID_DEBUG
-       Serial.write("Invalid card\n\n");
+       Serial.println("Invalid card");
+       Serial.println();
        #endif  
   }
 
