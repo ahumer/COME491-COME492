@@ -119,14 +119,15 @@
   </resheader>
   <data name="rtbGraph.Text" xml:space="preserve">
     <value>
-           x1               x2                  x3
+           x1          x2             x3
  
-y1        A                  D                   G                  
+y1        A             D              G                  
                                                                                                                                    
-
-y2        B                  E                   H                      
+y2        B             E              H                      
                                                                                                                                  
-
-y3        C                  F                    J                  </value>
+y3        C             F               J                  </value>
   </data>
+  <metadata name="timerCalc.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>26, 7</value>
+  </metadata>
 </root>

@@ -47,9 +47,9 @@
             this.lblState = new System.Windows.Forms.Label();
             this.tbVPort = new System.Windows.Forms.TextBox();
             this.rtbSerial = new System.Windows.Forms.RichTextBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer1Main = new System.Windows.Forms.Timer(this.components);
             this.gbSerial = new System.Windows.Forms.GroupBox();
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.timer2Main = new System.Windows.Forms.Timer(this.components);
             this.gbSys.SuspendLayout();
             this.gbCon.SuspendLayout();
             this.gbSerial.SuspendLayout();
@@ -253,9 +253,9 @@
             this.rtbSerial.TabIndex = 0;
             this.rtbSerial.Text = "";
             // 
-            // timer1
+            // timer1Main
             // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timer1Main.Tick += new System.EventHandler(this.timer1Main_Tick);
             // 
             // gbSerial
             // 
@@ -268,9 +268,9 @@
             this.gbSerial.TabStop = false;
             this.gbSerial.Text = "SERIAL VEHICLE";
             // 
-            // timer2
+            // timer2Main
             // 
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            this.timer2Main.Tick += new System.EventHandler(this.timer2Main_Tick);
             // 
             // Form1
             // 
@@ -312,10 +312,10 @@
         private System.Windows.Forms.Label lblSensor;
         private System.Windows.Forms.Label lblV;
         private System.Windows.Forms.RichTextBox rtbSerial;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timer1Main;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.GroupBox gbSerial;
-        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Timer timer2Main;
         private System.Windows.Forms.Button btnDirect;
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(directCal));
             this.gbLocation = new System.Windows.Forms.GroupBox();
             this.lblJ = new System.Windows.Forms.Label();
@@ -49,6 +50,7 @@
             this.rbB = new System.Windows.Forms.RadioButton();
             this.rbA = new System.Windows.Forms.RadioButton();
             this.gbFunctions = new System.Windows.Forms.GroupBox();
+            this.btnSend = new System.Windows.Forms.Button();
             this.btnReLoad = new System.Windows.Forms.Button();
             this.lblAssignHeader = new System.Windows.Forms.Label();
             this.lblCalcHeader = new System.Windows.Forms.Label();
@@ -69,7 +71,8 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.rtbGraph = new System.Windows.Forms.RichTextBox();
             this.btnCalc = new System.Windows.Forms.Button();
-            this.btnSend = new System.Windows.Forms.Button();
+            this.timerCalc = new System.Windows.Forms.Timer(this.components);
+            this.rtbProcess = new System.Windows.Forms.RichTextBox();
             this.gbLocation.SuspendLayout();
             this.gbFunctions.SuspendLayout();
             this.SuspendLayout();
@@ -292,6 +295,7 @@
             // 
             // gbFunctions
             // 
+            this.gbFunctions.Controls.Add(this.rtbProcess);
             this.gbFunctions.Controls.Add(this.btnSend);
             this.gbFunctions.Controls.Add(this.btnReLoad);
             this.gbFunctions.Controls.Add(this.lblAssignHeader);
@@ -308,23 +312,34 @@
             this.gbFunctions.Controls.Add(this.tbID3);
             this.gbFunctions.Controls.Add(this.tbID2);
             this.gbFunctions.Controls.Add(this.tbID1);
+            this.gbFunctions.Controls.Add(this.btnClose);
             this.gbFunctions.Controls.Add(this.btnShow);
             this.gbFunctions.Controls.Add(this.btnAssign);
-            this.gbFunctions.Controls.Add(this.btnClose);
-            this.gbFunctions.Controls.Add(this.rtbGraph);
             this.gbFunctions.Controls.Add(this.btnCalc);
+            this.gbFunctions.Controls.Add(this.rtbGraph);
             this.gbFunctions.Location = new System.Drawing.Point(12, 263);
             this.gbFunctions.Name = "gbFunctions";
-            this.gbFunctions.Size = new System.Drawing.Size(525, 330);
+            this.gbFunctions.Size = new System.Drawing.Size(525, 421);
             this.gbFunctions.TabIndex = 1;
             this.gbFunctions.TabStop = false;
             this.gbFunctions.Text = "Functions";
             // 
+            // btnSend
+            // 
+            this.btnSend.Enabled = false;
+            this.btnSend.Location = new System.Drawing.Point(155, 312);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(63, 23);
+            this.btnSend.TabIndex = 23;
+            this.btnSend.Text = "Send";
+            this.btnSend.UseVisualStyleBackColor = true;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            // 
             // btnReLoad
             // 
-            this.btnReLoad.Location = new System.Drawing.Point(342, 291);
+            this.btnReLoad.Location = new System.Drawing.Point(9, 384);
             this.btnReLoad.Name = "btnReLoad";
-            this.btnReLoad.Size = new System.Drawing.Size(75, 23);
+            this.btnReLoad.Size = new System.Drawing.Size(62, 23);
             this.btnReLoad.TabIndex = 22;
             this.btnReLoad.Text = "Reload";
             this.btnReLoad.UseVisualStyleBackColor = true;
@@ -375,17 +390,18 @@
             this.rtbPath.Location = new System.Drawing.Point(225, 140);
             this.rtbPath.Name = "rtbPath";
             this.rtbPath.ReadOnly = true;
-            this.rtbPath.Size = new System.Drawing.Size(294, 58);
+            this.rtbPath.Size = new System.Drawing.Size(294, 83);
             this.rtbPath.TabIndex = 17;
             this.rtbPath.Text = "";
             // 
             // lblVprePos
             // 
             this.lblVprePos.AutoSize = true;
+            this.lblVprePos.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVprePos.ForeColor = System.Drawing.Color.Black;
             this.lblVprePos.Location = new System.Drawing.Point(152, 85);
             this.lblVprePos.Name = "lblVprePos";
-            this.lblVprePos.Size = new System.Drawing.Size(35, 13);
+            this.lblVprePos.Size = new System.Drawing.Size(41, 13);
             this.lblVprePos.TabIndex = 16;
             this.lblVprePos.Text = "label1";
             // 
@@ -401,10 +417,11 @@
             // lblVposition
             // 
             this.lblVposition.AutoSize = true;
+            this.lblVposition.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVposition.ForeColor = System.Drawing.Color.DarkRed;
             this.lblVposition.Location = new System.Drawing.Point(152, 62);
             this.lblVposition.Name = "lblVposition";
-            this.lblVposition.Size = new System.Drawing.Size(35, 13);
+            this.lblVposition.Size = new System.Drawing.Size(41, 13);
             this.lblVposition.TabIndex = 14;
             this.lblVposition.Text = "label1";
             // 
@@ -471,7 +488,7 @@
             // 
             // btnShow
             // 
-            this.btnShow.Location = new System.Drawing.Point(456, 248);
+            this.btnShow.Location = new System.Drawing.Point(297, 96);
             this.btnShow.Name = "btnShow";
             this.btnShow.Size = new System.Drawing.Size(63, 23);
             this.btnShow.TabIndex = 6;
@@ -491,7 +508,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(456, 291);
+            this.btnClose.Location = new System.Drawing.Point(155, 384);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(63, 23);
             this.btnClose.TabIndex = 2;
@@ -501,17 +518,18 @@
             // 
             // rtbGraph
             // 
-            this.rtbGraph.Location = new System.Drawing.Point(0, 140);
+            this.rtbGraph.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbGraph.Location = new System.Drawing.Point(6, 140);
             this.rtbGraph.Name = "rtbGraph";
             this.rtbGraph.ReadOnly = true;
-            this.rtbGraph.Size = new System.Drawing.Size(219, 161);
+            this.rtbGraph.Size = new System.Drawing.Size(214, 148);
             this.rtbGraph.TabIndex = 1;
             this.rtbGraph.Text = resources.GetString("rtbGraph.Text");
             // 
             // btnCalc
             // 
             this.btnCalc.Enabled = false;
-            this.btnCalc.Location = new System.Drawing.Point(225, 217);
+            this.btnCalc.Location = new System.Drawing.Point(9, 312);
             this.btnCalc.Name = "btnCalc";
             this.btnCalc.Size = new System.Drawing.Size(62, 23);
             this.btnCalc.TabIndex = 0;
@@ -519,21 +537,25 @@
             this.btnCalc.UseVisualStyleBackColor = true;
             this.btnCalc.Click += new System.EventHandler(this.btnCalc_Click);
             // 
-            // btnSend
+            // timerCalc
             // 
-            this.btnSend.Location = new System.Drawing.Point(304, 217);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(47, 23);
-            this.btnSend.TabIndex = 23;
-            this.btnSend.Text = "Send";
-            this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            this.timerCalc.Enabled = true;
+            this.timerCalc.Tick += new System.EventHandler(this.timerCalc_Tick);
+            // 
+            // rtbProcess
+            // 
+            this.rtbProcess.Location = new System.Drawing.Point(226, 229);
+            this.rtbProcess.Name = "rtbProcess";
+            this.rtbProcess.Size = new System.Drawing.Size(293, 178);
+            this.rtbProcess.TabIndex = 24;
+            this.rtbProcess.Text = "";
             // 
             // directCal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(549, 609);
+            this.ClientSize = new System.Drawing.Size(549, 696);
+            this.ControlBox = false;
             this.Controls.Add(this.gbFunctions);
             this.Controls.Add(this.gbLocation);
             this.Name = "directCal";
@@ -592,5 +614,7 @@
         private System.Windows.Forms.Label lblCalcHeader;
         private System.Windows.Forms.Button btnReLoad;
         private System.Windows.Forms.Button btnSend;
+        private System.Windows.Forms.Timer timerCalc;
+        private System.Windows.Forms.RichTextBox rtbProcess;
     }
 }
