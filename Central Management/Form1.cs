@@ -39,7 +39,6 @@ namespace Central_Management
                     btnClose.Visible = true;
                     btnON.Enabled = true;
                     btnSysInf.Enabled = true;
-                    btnLctConf.Enabled = true;
                     rtbSerial.Enabled = true;
 
                 }
@@ -71,7 +70,6 @@ namespace Central_Management
                 btnClose.Visible = false;
                 btnON.Enabled = false;
                 btnSysInf.Enabled = false;
-                btnLctConf.Enabled = false;
                 rtbSerial.Enabled = false;
             }
         }
@@ -94,6 +92,7 @@ namespace Central_Management
             {
                 btnON.Visible = false;
                 btnOFF.Visible = true;
+                lblSys.Text = "ON";
                 btnOFF.Enabled = true;
                 timer1Main.Enabled = true;
                 gbCon.Visible = false;
@@ -118,6 +117,7 @@ namespace Central_Management
                 rtbSerial.Text = "\nSTOP\n\n" + preText;
                 gbCon.Visible = true;
                 frm.Enabled = false;
+                lblSys.Text = "OFF";
                 communication.systemCommunication(10, "201");
                 timer2Main.Enabled = true;              
             }
@@ -138,7 +138,6 @@ namespace Central_Management
             inMessage = communication.systemCommunication(10, "200",false);
             if (inMessage == "OK")
             {
-                lblSensor.Text = "connected";
                 rtbSerial.Text += "\n" + inMessage;
                 control = true;
             }
@@ -159,7 +158,7 @@ namespace Central_Management
         private void btnClear_Click(object sender, EventArgs e)
         {
             rtbSerial.Clear();
-            rtbSerial.Text = "Current card ID: \n" + cardIDreference.cardID + "\nPrevious card ID: \n" + cardIDreference.preCardID;
+            //rtbSerial.Text = "Current card ID: \n" + cardIDreference.cardID + "\nPrevious card ID: \n" + cardIDreference.preCardID;
         }
 
         private void timer2_Tick(object sender, EventArgs e)
