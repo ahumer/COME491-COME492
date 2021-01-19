@@ -36,10 +36,8 @@
             this.gbSys = new System.Windows.Forms.GroupBox();
             this.btnDirect = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
-            this.lblSensor = new System.Windows.Forms.Label();
             this.lblSys = new System.Windows.Forms.Label();
             this.lblSysHeader = new System.Windows.Forms.Label();
-            this.btnLctConf = new System.Windows.Forms.Button();
             this.btnSysInf = new System.Windows.Forms.Button();
             this.gbCon = new System.Windows.Forms.GroupBox();
             this.lblV = new System.Windows.Forms.Label();
@@ -103,10 +101,8 @@
             // 
             this.gbSys.Controls.Add(this.btnDirect);
             this.gbSys.Controls.Add(this.btnClear);
-            this.gbSys.Controls.Add(this.lblSensor);
             this.gbSys.Controls.Add(this.lblSys);
             this.gbSys.Controls.Add(this.lblSysHeader);
-            this.gbSys.Controls.Add(this.btnLctConf);
             this.gbSys.Controls.Add(this.btnSysInf);
             this.gbSys.Controls.Add(this.btnON);
             this.gbSys.Controls.Add(this.btnOFF);
@@ -122,9 +118,9 @@
             // 
             // btnDirect
             // 
-            this.btnDirect.Location = new System.Drawing.Point(130, 98);
+            this.btnDirect.Location = new System.Drawing.Point(12, 98);
             this.btnDirect.Name = "btnDirect";
-            this.btnDirect.Size = new System.Drawing.Size(79, 35);
+            this.btnDirect.Size = new System.Drawing.Size(88, 35);
             this.btnDirect.TabIndex = 13;
             this.btnDirect.Text = "Direction Settings";
             this.btnDirect.UseVisualStyleBackColor = true;
@@ -140,19 +136,10 @@
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
-            // lblSensor
-            // 
-            this.lblSensor.AutoSize = true;
-            this.lblSensor.Location = new System.Drawing.Point(232, 67);
-            this.lblSensor.Name = "lblSensor";
-            this.lblSensor.Size = new System.Drawing.Size(79, 13);
-            this.lblSensor.TabIndex = 12;
-            this.lblSensor.Text = " not connected";
-            // 
             // lblSys
             // 
             this.lblSys.AutoSize = true;
-            this.lblSys.Location = new System.Drawing.Point(232, 47);
+            this.lblSys.Location = new System.Drawing.Point(232, 57);
             this.lblSys.Name = "lblSys";
             this.lblSys.Size = new System.Drawing.Size(27, 13);
             this.lblSys.TabIndex = 10;
@@ -167,16 +154,6 @@
             this.lblSysHeader.Size = new System.Drawing.Size(113, 20);
             this.lblSysHeader.TabIndex = 9;
             this.lblSysHeader.Text = "System Status";
-            // 
-            // btnLctConf
-            // 
-            this.btnLctConf.Enabled = false;
-            this.btnLctConf.Location = new System.Drawing.Point(10, 98);
-            this.btnLctConf.Name = "btnLctConf";
-            this.btnLctConf.Size = new System.Drawing.Size(90, 35);
-            this.btnLctConf.TabIndex = 8;
-            this.btnLctConf.Text = "Station Configuration";
-            this.btnLctConf.UseVisualStyleBackColor = true;
             // 
             // btnSysInf
             // 
@@ -305,11 +282,9 @@
         private System.Windows.Forms.TextBox tbVPort;
         private System.Windows.Forms.Label lblState;
         private System.Windows.Forms.Label lblSysHeader;
-        private System.Windows.Forms.Button btnLctConf;
         private System.Windows.Forms.Button btnSysInf;
         private System.Windows.Forms.Label lblSys;
         private System.Windows.Forms.Label lblCntHeader;
-        private System.Windows.Forms.Label lblSensor;
         private System.Windows.Forms.Label lblV;
         private System.Windows.Forms.RichTextBox rtbSerial;
         private System.Windows.Forms.Timer timer1Main;

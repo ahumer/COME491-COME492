@@ -50,6 +50,7 @@
             this.rbB = new System.Windows.Forms.RadioButton();
             this.rbA = new System.Windows.Forms.RadioButton();
             this.gbFunctions = new System.Windows.Forms.GroupBox();
+            this.rtbProcess = new System.Windows.Forms.RichTextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.btnReLoad = new System.Windows.Forms.Button();
             this.lblAssignHeader = new System.Windows.Forms.Label();
@@ -66,13 +67,12 @@
             this.tbID3 = new System.Windows.Forms.TextBox();
             this.tbID2 = new System.Windows.Forms.TextBox();
             this.tbID1 = new System.Windows.Forms.TextBox();
+            this.btnClose = new System.Windows.Forms.Button();
             this.btnShow = new System.Windows.Forms.Button();
             this.btnAssign = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.rtbGraph = new System.Windows.Forms.RichTextBox();
             this.btnCalc = new System.Windows.Forms.Button();
+            this.rtbGraph = new System.Windows.Forms.RichTextBox();
             this.timerCalc = new System.Windows.Forms.Timer(this.components);
-            this.rtbProcess = new System.Windows.Forms.RichTextBox();
             this.gbLocation.SuspendLayout();
             this.gbFunctions.SuspendLayout();
             this.SuspendLayout();
@@ -324,6 +324,14 @@
             this.gbFunctions.TabStop = false;
             this.gbFunctions.Text = "Functions";
             // 
+            // rtbProcess
+            // 
+            this.rtbProcess.Location = new System.Drawing.Point(226, 229);
+            this.rtbProcess.Name = "rtbProcess";
+            this.rtbProcess.Size = new System.Drawing.Size(293, 178);
+            this.rtbProcess.TabIndex = 24;
+            this.rtbProcess.Text = "";
+            // 
             // btnSend
             // 
             this.btnSend.Enabled = false;
@@ -486,6 +494,16 @@
             this.tbID1.TabIndex = 7;
             this.tbID1.TextChanged += new System.EventHandler(this.tbID1_TextChanged);
             // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(155, 384);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(63, 23);
+            this.btnClose.TabIndex = 2;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // btnShow
             // 
             this.btnShow.Location = new System.Drawing.Point(297, 96);
@@ -506,26 +524,6 @@
             this.btnAssign.Text = "Assign Card ID";
             this.btnAssign.UseVisualStyleBackColor = true;
             // 
-            // btnClose
-            // 
-            this.btnClose.Location = new System.Drawing.Point(155, 384);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(63, 23);
-            this.btnClose.TabIndex = 2;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // rtbGraph
-            // 
-            this.rtbGraph.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbGraph.Location = new System.Drawing.Point(6, 140);
-            this.rtbGraph.Name = "rtbGraph";
-            this.rtbGraph.ReadOnly = true;
-            this.rtbGraph.Size = new System.Drawing.Size(214, 148);
-            this.rtbGraph.TabIndex = 1;
-            this.rtbGraph.Text = resources.GetString("rtbGraph.Text");
-            // 
             // btnCalc
             // 
             this.btnCalc.Enabled = false;
@@ -537,18 +535,19 @@
             this.btnCalc.UseVisualStyleBackColor = true;
             this.btnCalc.Click += new System.EventHandler(this.btnCalc_Click);
             // 
+            // rtbGraph
+            // 
+            this.rtbGraph.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbGraph.Location = new System.Drawing.Point(6, 140);
+            this.rtbGraph.Name = "rtbGraph";
+            this.rtbGraph.ReadOnly = true;
+            this.rtbGraph.Size = new System.Drawing.Size(214, 148);
+            this.rtbGraph.TabIndex = 1;
+            this.rtbGraph.Text = resources.GetString("rtbGraph.Text");
+            // 
             // timerCalc
             // 
-            this.timerCalc.Enabled = true;
             this.timerCalc.Tick += new System.EventHandler(this.timerCalc_Tick);
-            // 
-            // rtbProcess
-            // 
-            this.rtbProcess.Location = new System.Drawing.Point(226, 229);
-            this.rtbProcess.Name = "rtbProcess";
-            this.rtbProcess.Size = new System.Drawing.Size(293, 178);
-            this.rtbProcess.TabIndex = 24;
-            this.rtbProcess.Text = "";
             // 
             // directCal
             // 
