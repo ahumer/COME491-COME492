@@ -118,6 +118,8 @@ namespace Central_Management
 
             return control;
         }
+
+        //Sending the direction messages and destination ID to the vehicle for one dimension path thorugh comfirmation messages
         public static string sendingDirections(string directions, RichTextBox tb, bool midStop)
         {
             string[] messages;
@@ -128,43 +130,50 @@ namespace Central_Management
 
             index = Int32.Parse(messages[2]);
 
+            //If message doesn't include any turning movement
             if (messages[1] == "F")
             {
                 inMessage = "OK1";
             }
-            else
+            else  //If message includes a turning movement
             {
                 inMessage = communication.systemCommunication(10, messages[1], false);
+
+                //If vehicle sent the message OK1 which indicates it got the direction message
                 if (inMessage == "OK1")
                 {
                     tb.Text += "direction message has been sent.\n";
                 }
-                else
+                else  //If the vehicle doesn't sent comfirmation message of OK1
                 {
                     tb.Text += "direction message couldn't be sent.\n";
                     inMessage = "fail";
                 }
             }
 
+            //If OK1 confirmation message is receiveed or there is no direction message to send, send the ID message
             if(inMessage == "OK1")
             {
                 inMessage = "";
                 ID = cardIDreference.CardIDArray[index];
                 inMessage = communication.systemCommunication(10, ID, false);
+
+                //If the vehicle sent the message OK2 which indicates it got the ID message
                 if(inMessage == "OK2")
                 {
+                    //If this is the first path of two-stage path(or the path with two dimensions)
                     if (midStop == true)
                     {
                         tb.Text += "Waiting the vehicle to arrive mid-stop.\n";
                     }
-                    else
+                    else  //If this is a one dimension path
                     {
                         tb.Text += "Waiting the vehicle to arrive destination.\n";
                     }
 
                    
                 }
-                else
+                else  //If the vehicle doesn't sent OK2 confirmation message, so It couldn't be confirmed if the vehicle got the ID
                 {
                     tb.Text += "ID message couldn't be sent.\n";
                     inMessage = "fail";
@@ -178,16 +187,18 @@ namespace Central_Management
         {
             string buffer = "";
 
+
             if (communication.port.BytesToRead != 0)
             {
 
                 try
                 {
+                    //If the previous read line is not '#'
                     if (controlInTimer == 0)
                     {
                         buffer = communication.port.ReadLine();
                     }
-                    else
+                    else  //If the previous read line is '#', then this line will be include card ID information as coded at the vehicle side
                     {
                         buffer = communication.port.ReadLine();
                         cardIDreference.preCardID = cardIDreference.cardID;
@@ -196,7 +207,7 @@ namespace Central_Management
                         controlInTimer = 0; ;
 
                     }
-
+                    //setting control variable to be able to detect whether the previous line is '#'
                     if (buffer == "#")
                     {
                         controlInTimer = 1;

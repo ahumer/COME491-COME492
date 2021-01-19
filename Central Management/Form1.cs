@@ -15,9 +15,6 @@ namespace Central_Management
 {
     public partial class Form1 : Form
     {
-        
-
-        int controlInTimer = 0;
         public string directionToSend = "";
         
         public Form1()
