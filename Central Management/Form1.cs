@@ -147,13 +147,16 @@ namespace Central_Management
                     lblSys.Text = "Waiting";
                     serialPort1.Write("200");
                     short counter = 0;
-                    while (dataInfo.start == false && counter < 8)
+                    while (dataInfo.start == false && counter < 8)  //control it for '||' operator
                     {
                         Thread.Sleep(1000);
                         counter++;
                     }
 
-                    if (dataInfo.fail == true)
+                    if (dataInfo.fail == true)   //Maybe, I do this instead of dataInfo.start == false because of readability 
+                                                 //or maybe because of flow changes, the need for it lost, but it stayed like this
+                                                 //think about it later
+
                     {
                         lblSys.Text = "OFF";
                         lblRbt.Text = "Robot arm : Fail";
@@ -203,7 +206,7 @@ namespace Central_Management
             {
                 MessageBox.Show(ex.Message);
                 dataInfo.start = false;
-                dataInfo.confError = false;
+                dataInfo.confError = true;
                 dataInfo.fail = false;
                 MessageBox.Show("Reopen the connection!");
                 lblSys.Text = "Exception!";
@@ -230,7 +233,7 @@ namespace Central_Management
             {
                 MessageBox.Show(ex.Message);
                 dataInfo.start = false;
-                dataInfo.confError = false;
+                dataInfo.confError = false; //control it later for the change
                 dataInfo.fail = false;
                 MessageBox.Show("Reopen the connection!");
                 lblSys.Text = "Exception!";
@@ -341,7 +344,7 @@ namespace Central_Management
             {
                 start = false;
                 fail = true;
-                confError = false;
+                confError = false;  //control it later for true value
                 process = -1;  //none
             }
             if(data=="212")
@@ -389,7 +392,7 @@ namespace Central_Management
                 product = -1;
                 start = false;
                 fail = false;
-                confError = false;
+                confError = true; //control it later for the change
             }
             if(data=="206")
             {
@@ -401,7 +404,7 @@ namespace Central_Management
             if (data == "207")
             {
                 start = false;
-                confError = true;
+                confError = true;//control it later for its absence
                 fail = false;
 
             }

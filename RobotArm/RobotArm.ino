@@ -73,7 +73,7 @@ void loop()
       InitialPosition();
     }
    
-    if (message == "0"){
+    if (message == "000"){
       InitialPosition();
     }
 }

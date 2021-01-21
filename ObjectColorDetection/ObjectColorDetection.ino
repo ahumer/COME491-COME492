@@ -132,7 +132,7 @@ void Initialization(){
       Serial.println(message);
     }
 
-    //If start message is came from computer.
+    //If start message has come from computer.
     if(message=="200"){
       //Communicating with robot arm.
       short counter=0;
