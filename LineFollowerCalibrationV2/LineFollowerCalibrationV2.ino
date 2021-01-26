@@ -16,14 +16,16 @@
 #define enR 5 //ENA (PWM)
 #define enL 6 //ENB (PWM)
 
-#define FORWARD_POWER 100
+#define FORWARD_POWER 70
 #define PUSHING_POWER 120
+#define TURNING_POWER 30
 
 #define PUSHING_DELAY 15
+#define TURNING_DELAY 200
 
 #define SENSOR_DEBUG_
 #define FUNC_DEBUG_
-#define RFID_DEBUG
+#define RFID_DEBUG_
 
 int counter = 0;
 
@@ -48,8 +50,7 @@ bool controlID = false; //Controlling for if the vehicle find the RFID card with
 String message = "none";
 
 void setup() {
- 
-  //Sensor pins
+   //Sensor pins
   for ( short i=0; i < 5; i++){
     pinMode(sensorPins[i], INPUT);
   }
@@ -65,10 +66,11 @@ void setup() {
   Serial.setTimeout(5000);
   SPI.begin();  //for Arduino and RFID reader being able to communicate
   reader.PCD_Init(); //Initialization of RFID reader
-}//end of setup
+
+}
 
 void loop() {
- if(Serial.available()){
+  if(Serial.available()){
     message = Serial.readString();
       if(message == "200"){
       Serial.write("OK\n");
@@ -135,6 +137,7 @@ void loop() {
  } 
  //If synchronized communication is established, start.
      while(controlID == false && start == true){
+      Movement();
       RFIDreading();
         /*if(control == false){
           Serial.println("StartLoop");
@@ -143,8 +146,10 @@ void loop() {
      }
     
 }//End of loop
+  
 
-//Movement desicion according to sensor states
+}
+
 void Movement (){
    #ifdef SENSOR_DEBUG
   counter++;
@@ -161,31 +166,31 @@ void Movement (){
     if(controlPostn == 2){
      controlPostn = 0; 
     }
-    moveRight(80);
+    moveLeft(70);
   }
   else if(postn == 3){
     if(controlPostn == 2){
      controlPostn=0; 
     }
-    moveRight(70);
+    moveLeft(70);
   }
   else if(postn == 2){
     if(controlPostn == 2){
      controlPostn=0; 
     }
-    moveRight(60);
+    moveLeft(60);
   }
   else if(postn == 6){
     if(controlPostn == 2){
      controlPostn=0; 
     }
-    moveRight(50);
+    moveLeft(60);
   }
   else if(postn == 12){
     if(controlPostn == 2){
      controlPostn=0; 
     }
-    moveLeft(50);
+    moveRight(60);
   }
   else if(postn == 8){
     if(controlPostn == 2){
@@ -203,28 +208,31 @@ void Movement (){
     if(controlPostn == 2){
      controlPostn = 0; 
     }
-    moveRight(80);
+    moveRight(70);
   }
   
   else if(postn == 0){
     if(controlPostn == 2){
        controlPostn = 0; 
       }
-     //turn();
      stopping();
  }
  else if(postn == 4){
       if(controlPostn == 2){
        controlPostn  =0; 
       }
+      moveForward();
+ }
+ else if(postn == 31){
+  moveForward();
  }
  else{
   while(controlPostn<2){
-    /*moveForward();
-    delay(5);
+    moveForward();
+    delay(100);
     stopping();
     delay(50);
-    controlPostn++;*/
+    controlPostn++;
   }
   if (controlPostn==2){
     stopping();
@@ -261,6 +269,12 @@ void RFIDreading(){
        #endif
        
        stopping();
+       delay(5000);
+       turnBack();
+       //turnLeft();
+       //turnRight();
+       stopping();
+       delay(5000);
        controlID = true;
        //control = true;
        //return; //to prevent the reader from calling the halt function. 
@@ -413,15 +427,52 @@ void stopping(){
   #endif 
 }//End of stopping
 
-void turn(){
+void turnBack(){
   
-stopping();
+digitalWrite(RM1, HIGH);
+  digitalWrite(RM2, LOW);
+  digitalWrite(enR, TURNING_POWER);
+
+  digitalWrite(LM1, LOW);
+  digitalWrite(LM2, HIGH);
+  digitalWrite(enL,TURNING_POWER );
+  delay(TURNING_DELAY);
+  delay(TURNING_DELAY);
+  #ifdef FUNC_DEBUG
+  Serial.write("T\n");
+  #endif
+}//End of turn back
+
+void turnLeft(){
+  
+digitalWrite(RM1, HIGH);
+  digitalWrite(RM2, LOW);
+  digitalWrite(enR, TURNING_POWER);
+
+  digitalWrite(LM1, LOW);
+  digitalWrite(LM2, HIGH);
+  digitalWrite(enL, TURNING_POWER);
+  delay(TURNING_DELAY);
   
   #ifdef FUNC_DEBUG
   Serial.write("T\n");
   #endif
-}//End of turn
+}//End of turn LEFT
 
+void turnRight(){
+  
+digitalWrite(RM1, LOW);
+  digitalWrite(RM2, HIGH);
+  digitalWrite(enR, TURNING_POWER);
+
+  digitalWrite(LM1, HIGH);
+  digitalWrite(LM2, LOW);
+  digitalWrite(enL, TURNING_POWER);
+  delay(TURNING_DELAY);
+  #ifdef FUNC_DEBUG
+  Serial.write("T\n");
+  #endif
+}//End of turn RİGHT
 
 //for RFID reader
 void writeToScreen(byte writeCardID[4]){
