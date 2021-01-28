@@ -1,6 +1,12 @@
 #include <MFRC522.h>
 #include <SPI.h>
 
+#define SENSOR_DEBUG_
+#define FUNC_DEBUG_
+#define RFID_DEBUG_
+#define LINE_TEST_
+#define RFID_TEST_
+
 //Five infrared sensors
 #define LMS 15 //Leftmost sensor
 #define LS 16 //Left Sensor
@@ -16,16 +22,12 @@
 #define enR 5 //ENA (PWM)
 #define enL 6 //ENB (PWM)
 
-#define FORWARD_POWER 70
-#define PUSHING_POWER 120
-#define TURNING_POWER 30
+#define FORWARD_POWER 50
+#define PUSHING_POWER 220
+#define TURNING_POWER 5
 
-#define PUSHING_DELAY 15
-#define TURNING_DELAY 200
-
-#define SENSOR_DEBUG_
-#define FUNC_DEBUG_
-#define RFID_DEBUG_
+#define PUSHING_DELAY 2
+#define TURNING_DELAY 30
 
 int counter = 0;
 
@@ -33,7 +35,7 @@ int RST_PIN = 9;
 int SS_PIN = 10;
 
 MFRC522 reader(SS_PIN ,RST_PIN);
-byte cardID[4] = {99,72,0,21};  //Destination card ID
+byte cardID[4] = {243,189,233,20};  //Destination card ID
 byte readCardID[4] = {0,0,0,0};
 
 int sensorPins[] = {LMS , LS , MS , RS , RMS};
@@ -42,7 +44,6 @@ float sensorValue[5];
 boolean digitalValue[5];
 
 bool start=false;
-//bool control = false;
 short controlPostn = 0;  //Controlling whether unexpected sensor positions are accrued.
 short controlStop = 1;  //Controlling whether one of the wheels or both of the wheels are stopped.
 bool controlMessage = false;  //Controlling whether the previous message was 241,242,243 or not.
@@ -97,19 +98,25 @@ void loop() {
       }
       if(message == "241" && start == true){
         Serial.write("OK1\n");
-        Serial.println("&turn left");
+        //Serial.println("&turn left");
+        turnLeft();
+        stopping();
         controlMessage = true;
         message="";
       }
       if(message == "242" && start == true){
         Serial.write("OK1\n");
-        Serial.println("&turn right");
+        //Serial.println("&turn right");
+        turnRight();
+        stopping();
         controlMessage = true;
         message="";
       }
       if(message == "243" && start == true){
         Serial.write("OK1\n");
-        Serial.println("&turn back");
+        //Serial.println("&turn back");
+        turnBack();
+        stopping();
         controlMessage = true;
         message="";
       }
@@ -118,6 +125,7 @@ void loop() {
         Serial.write("OK2\n");
         storeCardID(message);
         
+        #ifdef FUNC_DEBUG
         Serial.print("Sended card: ");
         Serial.println(message);
         Serial.print("Destination card: ");
@@ -128,28 +136,31 @@ void loop() {
         }
         Serial.println(" ");
         Serial.println("Move and read");
+        #endif
         
         controlID = false;
         //control = false;
         
         message="";
      }
- } 
+  } // if(serial.available) end
+   
  //If synchronized communication is established, start.
-     while(controlID == false && start == true){
-      Movement();
-      RFIDreading();
-        /*if(control == false){
-          Serial.println("StartLoop");
-          control=true;
-        } */
-     }
+ while(controlID == false && start == true){
+  Movement();
+  RFIDreading();
+  //Serial.println("StartLoop");
+ }
+     
+  #ifdef LINE_TEST
+  Movement();
+  #endif
+  #ifdef RFID_TEST
+   RFIDreading(); 
+  #endif
     
 }//End of loop
   
-
-}
-
 void Movement (){
    #ifdef SENSOR_DEBUG
   counter++;
@@ -163,80 +174,45 @@ void Movement (){
   int postn = positionCalculation();
   
   if(postn == 1){
-    if(controlPostn == 2){
-     controlPostn = 0; 
-    }
-    moveLeft(70);
+    moveLeft(50);
   }
   else if(postn == 3){
-    if(controlPostn == 2){
-     controlPostn=0; 
-    }
-    moveLeft(70);
+    moveLeft(50);
   }
   else if(postn == 2){
-    if(controlPostn == 2){
-     controlPostn=0; 
-    }
-    moveLeft(60);
+    moveLeft(40);
   }
   else if(postn == 6){
-    if(controlPostn == 2){
-     controlPostn=0; 
-    }
-    moveLeft(60);
+    moveLeft(40);
   }
   else if(postn == 12){
-    if(controlPostn == 2){
-     controlPostn=0; 
-    }
-    moveRight(60);
+    moveRight(40);
   }
   else if(postn == 8){
-    if(controlPostn == 2){
-     controlPostn = 0; 
-    }
-    moveRight(60);
+    moveRight(40);
   }
   else if(postn == 24){
-    if(controlPostn == 2){
-     controlPostn = 0; 
-    }
-    moveRight(70);
+    moveRight(50);
   }
   else if(postn == 16){
-    if(controlPostn == 2){
-     controlPostn = 0; 
-    }
-    moveRight(70);
+    moveRight(50);
   }
   
-  else if(postn == 0){
-    if(controlPostn == 2){
-       controlPostn = 0; 
-      }
-     stopping();
- }
+/*  else if(postn == 0){   //there is no need for whole white stuation, because lots of time it isn't recognized
+                            //so it can goes into else statement block by making it comment out
+     moveForward();
+ }*/
  else if(postn == 4){
-      if(controlPostn == 2){
-       controlPostn  =0; 
-      }
       moveForward();
  }
- else if(postn == 31){
+ /*else if(postn == 31){  //whole of them are black stuation can goes into else statement, too.
+                          //because there is no need to stop at the whole black
+                          //and also, it isn't always recognized, because sensor readings are not stable.
   moveForward();
- }
+  //stopping();
+ }*/
  else{
-  while(controlPostn<2){
-    moveForward();
-    delay(100);
-    stopping();
-    delay(50);
-    controlPostn++;
-  }
-  if (controlPostn==2){
-    stopping();
-  } 
+  moveForward();
  }
 }//End of movement
 
@@ -256,7 +232,9 @@ void RFIDreading(){
     readCardID[i] = reader.uid.uidByte[i];
   }
 
+  #ifdef RFID_DEBUG
   Serial.print("Read card ");
+  #endif
   writeToScreen(readCardID);
   
   if(readCardID[0] == cardID[0] && readCardID[1] == cardID[1] && 
@@ -269,12 +247,12 @@ void RFIDreading(){
        #endif
        
        stopping();
-       delay(5000);
-       turnBack();
+       //delay(5000);
+       //turnBack();
        //turnLeft();
        //turnRight();
-       stopping();
-       delay(5000);
+       //stopping();
+       //delay(5000);
        controlID = true;
        //control = true;
        //return; //to prevent the reader from calling the halt function. 
@@ -299,7 +277,7 @@ void convertDigital() {
       
     }
     int avg = (sum) / 5;
-    int threshold = ( avg *11 ) / 10;
+    int threshold = ( avg *6 ) / 5;
 
     #ifdef SENSOR_DEBUG
         Serial.write(" avg :");
@@ -323,7 +301,7 @@ void convertDigital() {
 }//End of convert digital
 
 void moveForward(){
-  if(controlStop ==1 || controlStop == 2){
+  
   digitalWrite(RM1, HIGH); // For right motor, moving forward is on
   digitalWrite(RM2, LOW); // For right motor, moving backward is off
   analogWrite(enR, PUSHING_POWER); //  Right motor speed 
@@ -333,17 +311,14 @@ void moveForward(){
   analogWrite(enL, PUSHING_POWER);  //Right motor, motor speed 
   
   delay(PUSHING_DELAY);
-  }
-  
+   
   digitalWrite(RM1, HIGH);
   digitalWrite(RM2, LOW); 
   analogWrite(enR, FORWARD_POWER);  
 
   digitalWrite(LM1, HIGH); 
   digitalWrite(LM2, LOW);  
-  analogWrite(enL, FORWARD_POWER);
-   
-  controlStop = 0;  
+  analogWrite(enL, FORWARD_POWER); 
        
   #ifdef FUNC_DEBUG
   Serial.write("F\n");
@@ -351,7 +326,7 @@ void moveForward(){
 }//End of moveForward
 
 void moveRight(int power){
-  if(controlStop == 1){
+  
   digitalWrite(RM1, HIGH); 
   digitalWrite(RM2, LOW); 
   analogWrite(enR, 0); 
@@ -361,17 +336,14 @@ void moveRight(int power){
   analogWrite(enL, PUSHING_POWER);
   
   delay(PUSHING_DELAY);
-  }
-
+  
   digitalWrite(RM1, HIGH); 
   digitalWrite(RM2, LOW); 
   analogWrite(enR, 0); 
 
   digitalWrite(LM1, HIGH); 
   digitalWrite(LM2, LOW); 
-  analogWrite(enL, power); 
-     
-  controlStop = 2;  
+  analogWrite(enL, power);   
             
   #ifdef FUNC_DEBUG
   Serial.write("R\n");
@@ -381,8 +353,8 @@ void moveRight(int power){
 }//End of moveRight
 
 void moveLeft(int power){
-  if(controlStop == 1){
-   digitalWrite(RM1, HIGH);
+  
+  digitalWrite(RM1, HIGH);
   digitalWrite(RM2, LOW);
   analogWrite(enR, PUSHING_POWER);
 
@@ -391,7 +363,6 @@ void moveLeft(int power){
   analogWrite(enL, 0);
 
   delay(PUSHING_DELAY);
- }
 
   digitalWrite(RM1, HIGH);
   digitalWrite(RM2, LOW);
@@ -399,11 +370,8 @@ void moveLeft(int power){
 
   digitalWrite(LM1, HIGH);
   digitalWrite(LM2, LOW);
-  analogWrite(enL, 0);
-     
-  controlStop = 2;  
-            
-     
+  analogWrite(enL, 0);  
+                
   #ifdef FUNC_DEBUG
   Serial.write("L\n");
   Serial.print(power);
@@ -418,61 +386,62 @@ void stopping(){
 
   digitalWrite(LM1, HIGH);
   digitalWrite(LM2, LOW);
-  digitalWrite(enL, LOW);
-
-   controlStop = 1; 
+  digitalWrite(enL, LOW); 
       
   #ifdef FUNC_DEBUG
   Serial.write("S\n");
   #endif 
 }//End of stopping
 
-void turnBack(){
+void turnLeft(){
+  turn(6, true);
   
-digitalWrite(RM1, HIGH);
+  #ifdef FUNC_DEBUG
+  Serial.write("TL\n");
+  #endif
+}//End of turn LEFT
+
+void turnRight(){
+  turn(6, false);
+  
+  #ifdef FUNC_DEBUG
+  Serial.write("TR\n");
+  #endif
+}//End of turn RIGHT
+
+void turnBack(){
+  turn(10, true);
+ 
+  #ifdef FUNC_DEBUG
+  Serial.write("TB\n");
+  #endif 
+}//end of turn BACK
+void turn(short count, bool left){
+  for(short i = 0; i<count; i++){
+    if(left == true){
+  digitalWrite(RM1, HIGH);
   digitalWrite(RM2, LOW);
   digitalWrite(enR, TURNING_POWER);
 
   digitalWrite(LM1, LOW);
   digitalWrite(LM2, HIGH);
   digitalWrite(enL,TURNING_POWER );
-  delay(TURNING_DELAY);
-  delay(TURNING_DELAY);
-  #ifdef FUNC_DEBUG
-  Serial.write("T\n");
-  #endif
-}//End of turn back
-
-void turnLeft(){
-  
-digitalWrite(RM1, HIGH);
-  digitalWrite(RM2, LOW);
-  digitalWrite(enR, TURNING_POWER);
-
-  digitalWrite(LM1, LOW);
-  digitalWrite(LM2, HIGH);
-  digitalWrite(enL, TURNING_POWER);
-  delay(TURNING_DELAY);
-  
-  #ifdef FUNC_DEBUG
-  Serial.write("T\n");
-  #endif
-}//End of turn LEFT
-
-void turnRight(){
-  
-digitalWrite(RM1, LOW);
+  }
+  else{
+  digitalWrite(RM1, LOW);
   digitalWrite(RM2, HIGH);
   digitalWrite(enR, TURNING_POWER);
 
   digitalWrite(LM1, HIGH);
   digitalWrite(LM2, LOW);
-  digitalWrite(enL, TURNING_POWER);
-  delay(TURNING_DELAY);
-  #ifdef FUNC_DEBUG
-  Serial.write("T\n");
-  #endif
-}//End of turn RİGHT
+  digitalWrite(enL,TURNING_POWER ); 
+  }
+ delay(TURNING_DELAY);
+ stopping();
+ delay(100); 
+  
+  }
+}//End of turn
 
 //for RFID reader
 void writeToScreen(byte writeCardID[4]){
