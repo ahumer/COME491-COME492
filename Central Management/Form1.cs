@@ -188,10 +188,11 @@ namespace Central_Management
 
             string [] subText = configText.Split('\n');
 
-            char[] seperator = new char[] { '\r' };
+            //char[] seperator = new char[] { '\r' };
             for(int i=0; i < 9; i++)
             {
                 cardIDreference.CardIDArray[i] = subText[i].Trim('\r');
+                //cardIDreference.CardIDArray[i] = subText[i].Trim('\n');
             }
 
         }

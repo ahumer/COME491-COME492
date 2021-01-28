@@ -458,7 +458,7 @@ namespace Central_Management
             }
             if (btnSendControl == 1)
             {
-                if(cardIDreference.CardIDArray[communication.index] == cardIDreference.cardID)
+                if(cardIDreference.CardIDArray[communication.index].ToString() == cardIDreference.cardID.ToString())
                 {
                     rtbProcess.Text += "The vehicle arrived to mid-stop.\n";
                     btnSend.Enabled = true;
