@@ -9,8 +9,8 @@ namespace Central_Management
     public static class cardIDreference
     {
         
-        public static string cardID = "";
-        public static string preCardID = "";
+        public static string cardID = "0 0 0 0";
+        public static string preCardID = "0 0 0 0";
         public static string[] CardIDArray = { "","","","","","","","",""};
     }
 }

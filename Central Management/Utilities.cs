@@ -51,7 +51,7 @@ namespace Central_Management
 
 
             //Calculate which direction the vehicle is facing
-            if(indexPr == -1 && indexL == 8)
+            if(indexPr == -1 && indexL == 2)
             {
                 //If previous card ID readed isn't on the list, and the card ID readed is the card ID of the enterence point of the vehicle to the stage.
                 vehicleFacet = "up";
