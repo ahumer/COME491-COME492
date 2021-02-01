@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,16 +14,16 @@ namespace Central_Management
 {
     public partial class directCal : Form
     {
-        
+
         bool controlShowBtn = false;
         string destination;
         int posVehicle = -1;
         int prePosVehicle = -1;
-        
+
         string defaultText = "";
         string cardIDCopy;
         string preCardIDCopy;
-        string  [] cardIDArrayCopy;
+        string[] cardIDArrayCopy;
         public Form parent;
         int btnSendControl = 0;
         public directCal()
@@ -67,8 +68,8 @@ namespace Central_Management
             {
                 lblVposition.Text = "";
             }
-            
-            if(prePosVehicle != -1)
+
+            if (prePosVehicle != -1)
             {
                 lblVprePos.Text = Utilities.alphabet[prePosVehicle];
             }
@@ -348,7 +349,7 @@ namespace Central_Management
                 MessageBox.Show(ex.ToString());
             }
         }
-        
+
         private void btnReLoad_Click(object sender, EventArgs e)
         {
             this.Dispose();
@@ -367,7 +368,7 @@ namespace Central_Management
             timerCalc.Enabled = true;
             parent.Visible = true;
             frm.Close();
-            
+
         }
 
         private void directCal_FormClosing(object sender, FormClosingEventArgs e)
@@ -402,7 +403,7 @@ namespace Central_Management
                         {
                             MessageBox.Show("Control the vehicle!");
                             Utilities.subDirectionCash = ""; //Prevent conflict with next calculation
-                        }    
+                        }
                     }
                     else
                     {
@@ -418,31 +419,28 @@ namespace Central_Management
                             MessageBox.Show("Control the vehicle!");
                         }
                     }
-                    
+
                 }
-                else if(btnSendControl == 2)
+                else if (btnSendControl == 2)
                 {
                     btnSendControl = 3;
                     rtbProcess.Text += "Second ";
                     message = communication.sendingDirections(Utilities.subDirectionCash, rtbProcess, false);
-                    if (message != "fail")
-                    {
-                        
-                    }
-                    else
+                    if (message == "fail")
                     {
                         MessageBox.Show("Control the vehicle!");
                     }
+                    
                     Utilities.subDirectionCash = ""; //Prevent conflict with next calculation
                 }
-    
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
-           
-            
+
+
         }
 
         private void timerCalc_Tick(object sender, EventArgs e)
@@ -458,7 +456,7 @@ namespace Central_Management
             }
             if (btnSendControl == 1)
             {
-                if(cardIDreference.CardIDArray[communication.index].ToString() == cardIDreference.cardID.ToString())
+                if (cardIDreference.CardIDArray[communication.index].ToString() == cardIDreference.cardID.ToString())
                 {
                     rtbProcess.Text += "The vehicle arrived to mid-stop.\n";
                     btnSend.Enabled = true;
@@ -466,7 +464,7 @@ namespace Central_Management
                     btnSend_Click(timerCalc, e);
                 }
             }
-            if(btnSendControl == 3)
+            if (btnSendControl == 3)
             {
                 if (cardIDreference.CardIDArray[communication.index].ToString() == cardIDreference.cardID.ToString())
                 {
@@ -474,6 +472,83 @@ namespace Central_Management
                     btnSendControl = 0;
                 }
             }
+        }
+
+        private void btnAssign_Click(object sender, EventArgs e)
+        {
+            string cardID = "";
+            if (tbID1.Text == "" || tbID2.Text == "" || tbID3.Text == "" || tbID4.Text == "")
+            {
+                MessageBox.Show("Enter new ID!");
+            }
+            else
+            {
+                cardID += tbID1.Text + " ";
+                cardID += tbID2.Text + " ";
+                cardID += tbID3.Text + " ";
+                cardID += tbID4.Text;
+
+                if (rbA.Checked == true)
+                {
+                    lblA.Text = cardID;
+                }
+                if (rbB.Checked == true)
+                {
+                    lblB.Text = cardID;
+                }
+                if (rbC.Checked == true)
+                {
+                    lblC.Text = cardID;
+                }
+                if (rbD.Checked == true)
+                {
+                    lblD.Text = cardID;
+                }
+                if (rbE.Checked == true)
+                {
+                    lblE.Text = cardID;
+                }
+                if (rbF.Checked == true)
+                {
+                    lblF.Text = cardID;
+                }
+                if (rbG.Checked == true)
+                {
+                    lblG.Text = cardID;
+                }
+                if (rbH.Checked == true)
+                {
+                    lblH.Text = cardID;
+                }
+                if (rbJ.Checked == true)
+                {
+                    lblJ.Text = cardID;
+                }
+
+                string strNewConfig = lblA.Text + "\n" + lblB.Text + "\n" + lblC.Text + "\n" + lblD.Text + "\n" + lblE.Text + "\n" + lblF.Text + "\n" + lblG.Text + "\n" + lblH.Text + "\n" + lblJ.Text + "\n";
+                string filePath = @"configCardID.txt";
+                File.WriteAllText(filePath, strNewConfig);
+                tbID1.Text = "";
+                tbID2.Text = "";
+                tbID3.Text = "";
+                tbID4.Text = "";
+                MessageBox.Show("Saved!");
+            }
+
+        }
+
+        private void btnStation_Click(object sender, EventArgs e)
+        {
+            btnReLoad_Click(this, e);
+            rbG.Checked = true;
+            btnCalc_Click(this, e);
+            btnSend_Click(this, e);
+            Thread.Sleep(5000);
+            btnReLoad_Click(this, e);
+            rbA.Checked = true;
+            btnCalc_Click(this, e);
+            btnSend_Click(this, e);
+
         }
     }
 }
