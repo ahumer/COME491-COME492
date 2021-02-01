@@ -370,7 +370,7 @@ namespace Central_Management
         public static string facetCalculation(int xLocation, int yLocation, int xPrevious, int yPrevious)
         {
             string facet = "Invalid";
-            if(xLocation != -1 || yLocation != -1 || xPrevious != -1 || yPrevious != -1)
+            if(xLocation != -1 || yLocation != -1 || xPrevious != -1 || yPrevious != -1)//examine later if there is a need for this
             {
                 if (xLocation == xPrevious)
                 {
