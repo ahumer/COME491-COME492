@@ -13,11 +13,11 @@ using System.Threading;
 
 namespace Central_Management
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        public string directionToSend = "";
+        //public string directionToSend = "";
         
-        public Form1()
+        public Main()
         {
             InitializeComponent();
 
@@ -38,7 +38,6 @@ namespace Central_Management
                     btnOpen.Visible = false;
                     btnClose.Visible = true;
                     btnON.Enabled = true;
-                    btnSysInf.Enabled = true;
                     rtbSerial.Enabled = true;
 
                 }
@@ -69,7 +68,6 @@ namespace Central_Management
                 btnOpen.Visible = true;
                 btnClose.Visible = false;
                 btnON.Enabled = false;
-                btnSysInf.Enabled = false;
                 rtbSerial.Enabled = false;
             }
         }
@@ -150,20 +148,10 @@ namespace Central_Management
         }
         
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-           
-        }
-
         private void btnClear_Click(object sender, EventArgs e)
         {
             rtbSerial.Clear();
             //rtbSerial.Text = "Current card ID: \n" + cardIDreference.cardID + "\nPrevious card ID: \n" + cardIDreference.preCardID;
-        }
-
-        private void timer2_Tick(object sender, EventArgs e)
-        {
-           
         }
 
         private void btnDirect_Click(object sender, EventArgs e)
@@ -179,6 +167,9 @@ namespace Central_Management
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            btnOFF.Location.Offset(13, 34);
+            btnOFF.Location.Offset(13, 34);
+
             string filePath = @"configCardID.txt";
 
             string configText;
@@ -232,6 +223,11 @@ namespace Central_Management
             btnOFF.Visible = false;
             btnON.Visible = true;
             timer2Main.Enabled = false;
+        }
+
+        private void btnState_Click(object sender, EventArgs e)
+        {
+
         }
     }
     
