@@ -385,7 +385,7 @@ String decodeConfigData (String clr){
     case '1' : motion = "251";break;
     case '2' : motion = "252";break;
     case '3' : motion = "253";break;
-    default : motion = "224";break;
+    //default : motion = "224";break;
     
     }
   }
@@ -394,7 +394,7 @@ String decodeConfigData (String clr){
     case '1' : motion = "251";break;
     case '2' : motion = "252";break;
     case '3' : motion = "253";break;
-    default : motion = "224"; break;
+    //default : motion = "224"; break;
     }
   }
     if(clr == "223"){
@@ -402,7 +402,7 @@ String decodeConfigData (String clr){
     case '1' : motion = "251";break;
     case '2' : motion = "252";break;
     case '3' : motion = "253";break;
-    default : motion = "224"; break;
+    //default : motion = "224"; break;
     }
   }
   Serial.println(motion);
