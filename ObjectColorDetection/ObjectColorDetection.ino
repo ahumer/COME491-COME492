@@ -12,7 +12,7 @@ String objInf;
 String clrInf;
 String mtnInf;
 String configData;
-char configArray[3];
+char configArray[3]={"","",""};
 
 //color detection
 int redPin = 8;
