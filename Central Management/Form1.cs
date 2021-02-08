@@ -263,10 +263,19 @@ namespace Central_Management
 
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            if (serialPort1.BytesToRead > 3)
+            try
             {
-                dataInfo.keepData(serialPort1.ReadLine());
+                if (serialPort1.BytesToRead > 3)
+                {
+                    dataInfo.keepData(serialPort1.ReadLine());
+                }
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            
+           
         }
 
         private void btnLctConf_Click(object sender, EventArgs e)
